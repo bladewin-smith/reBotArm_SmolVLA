@@ -5,8 +5,12 @@
 # Licensed under the Apache License, Version 2.0 (the "License");
 
 import logging
+import sys
 import time
+from pathlib import Path
 from typing import Any
+
+import numpy as np
 
 from lerobot.motors import Motor, MotorCalibration, MotorNormMode
 from lerobot.motors.damiao import DamiaoMotorsBus
@@ -29,6 +33,22 @@ class RebotB601Leader(Teleoperator):
     def __init__(self, config: RebotB601LeaderConfig):
         super().__init__(config)
         self.config = config
+        if self.config.transport not in {"motorbridge", "socketcan"}:
+            raise ValueError("B601 leader transport must be 'motorbridge' or 'socketcan'.")
+        if self.config.manual_control_mode not in {"disabled", "impedance", "stiff", "gravity_comp"}:
+            raise ValueError(
+                "B601 leader manual_control_mode must be 'disabled', 'impedance', 'stiff', or 'gravity_comp'."
+            )
+        if self.config.gravity_comp_gripper_mode not in {
+            "disabled",
+            "zero_torque",
+            "low_stiffness",
+            "force_assist",
+        }:
+            raise ValueError(
+                "B601 leader gravity_comp_gripper_mode must be 'disabled', 'zero_torque', "
+                "'low_stiffness', or 'force_assist'."
+            )
 
         motors: dict[str, Motor] = {}
         for motor_name, (send_id, recv_id, motor_type_str) in config.motor_config.items():
@@ -54,6 +74,9 @@ class RebotB601Leader(Teleoperator):
                 bitrate=self.config.can_bitrate,
                 data_bitrate=self.config.can_data_bitrate if self.config.use_can_fd else None,
             )
+        self._gravity_model: Any | None = None
+        self._gravity_data: Any | None = None
+        self._compute_generalized_gravity: Any | None = None
 
     @property
     def action_features(self) -> dict[str, type]:
@@ -116,6 +139,13 @@ class RebotB601Leader(Teleoperator):
     def configure(self) -> None:
         if self.config.manual_control_mode == "disabled":
             self.bus.disable_torque()
+        elif self.config.manual_control_mode == "gravity_comp":
+            self._ensure_gravity_comp_ready()
+            self.bus.configure_motors()
+            self.bus.disable_torque()
+            self.bus.enable_torque(self._gravity_comp_enabled_joints())
+            states = self.bus.sync_read_all_states()
+            self._send_gravity_comp(states)
         else:
             self.bus.configure_motors()
             states = self.bus.sync_read_all_states()
@@ -129,6 +159,172 @@ class RebotB601Leader(Teleoperator):
             names = list(self.bus.motors)
             return float(values[names.index(motor_name)])
         return float(values)
+
+    def _gravity_gain_for(self, values: list[float] | float, motor_name: str) -> float:
+        if not isinstance(values, list):
+            return float(values)
+        motor_names = list(self.bus.motors)
+        enabled_names = self._gravity_comp_enabled_joints()
+        if len(values) == len(motor_names):
+            return float(values[motor_names.index(motor_name)])
+        if len(values) == len(enabled_names):
+            return float(values[enabled_names.index(motor_name)])
+        raise ValueError(
+            "Gravity compensation gain length must match either all motors "
+            f"({len(motor_names)}) or enabled joints ({len(enabled_names)})."
+        )
+
+    def _gravity_kp_for(self, motor_name: str) -> float:
+        if motor_name == "gripper" and self.config.gravity_comp_gripper_mode == "zero_torque":
+            return 0.0
+        if motor_name == "gripper" and self.config.gravity_comp_gripper_mode == "force_assist":
+            return 0.0 if self.config.gravity_comp_gripper_kp is None else float(self.config.gravity_comp_gripper_kp)
+        if (
+            motor_name == "gripper"
+            and self._uses_gripper_low_stiffness()
+            and self.config.gravity_comp_gripper_kp is not None
+        ):
+            return float(self.config.gravity_comp_gripper_kp)
+        return self._gravity_gain_for(self.config.gravity_comp_kp, motor_name)
+
+    def _gravity_kd_for(self, motor_name: str) -> float:
+        if motor_name == "gripper" and self.config.gravity_comp_gripper_mode == "zero_torque":
+            return 0.0
+        if motor_name == "gripper" and self.config.gravity_comp_gripper_mode == "force_assist":
+            return 0.0 if self.config.gravity_comp_gripper_kd is None else float(self.config.gravity_comp_gripper_kd)
+        if (
+            motor_name == "gripper"
+            and self._uses_gripper_low_stiffness()
+            and self.config.gravity_comp_gripper_kd is not None
+        ):
+            return float(self.config.gravity_comp_gripper_kd)
+        return self._gravity_gain_for(self.config.gravity_comp_kd, motor_name)
+
+    def _gripper_assist_torque(self, state: dict[str, Any]) -> float:
+        if self.config.gravity_comp_gripper_mode != "force_assist" and (
+            not self.config.gravity_comp_gripper_assist or not self.config.gravity_comp_gripper_force_assist
+        ):
+            return 0.0
+
+        position = float(state.get("position", 0.0))
+        velocity = float(state.get("velocity", 0.0))
+        threshold = float(self.config.gravity_comp_gripper_velocity_threshold)
+        torque = 0.0
+
+        if position > self.config.gravity_comp_gripper_open_limit + self.config.gravity_comp_gripper_limit_margin:
+            torque -= float(self.config.gravity_comp_gripper_open_bias_torque)
+
+        if velocity < -threshold:
+            torque -= float(self.config.gravity_comp_gripper_open_motion_torque)
+        elif velocity > threshold:
+            torque += float(self.config.gravity_comp_gripper_close_motion_torque)
+
+        return float(
+            np.clip(
+                torque,
+                -self.config.gravity_comp_gripper_torque_limit,
+                self.config.gravity_comp_gripper_torque_limit,
+            )
+        )
+
+    def _uses_gripper_low_stiffness(self) -> bool:
+        return self.config.gravity_comp_gripper_mode in {"low_stiffness", "force_assist"} or (
+            self.config.gravity_comp_gripper_assist and self.config.gravity_comp_gripper_mode != "disabled"
+        )
+
+    def _gravity_comp_enabled_joints(self) -> list[str]:
+        enabled_joints = list(self.config.gravity_comp_enabled_joints)
+        if self.config.gravity_comp_gripper_mode != "disabled" and "gripper" not in enabled_joints:
+            enabled_joints.append("gripper")
+        return enabled_joints
+
+    @staticmethod
+    def _default_sdk_root() -> Path:
+        current = Path(__file__).resolve()
+        for parent in current.parents:
+            candidate = parent / "rebot_grasp" / "sdk" / "reBotArm_control_py"
+            if (candidate / "src" / "reBotArm_control_py").exists():
+                return candidate
+        return Path.home() / "ws" / "rebot_grasp" / "sdk" / "reBotArm_control_py"
+
+    def _ensure_gravity_comp_ready(self) -> None:
+        if self._compute_generalized_gravity is not None:
+            return
+        if self.config.transport != "motorbridge":
+            raise ValueError("gravity_comp mode is supported for the B601-DM motorbridge transport.")
+
+        sdk_root = (
+            Path(self.config.gravity_comp_sdk_root)
+            if self.config.gravity_comp_sdk_root
+            else self._default_sdk_root()
+        )
+        if sdk_root.exists():
+            sys.path.insert(0, str(sdk_root / "src"))
+
+        try:
+            from reBotArm_control_py.dynamics import compute_generalized_gravity, load_dynamics_model
+        except ImportError as exc:
+            raise ImportError(
+                "gravity_comp mode requires Seeed reBotArm_control_py dynamics. "
+                "Install the SDK or set --teleop.gravity_comp_sdk_root=/path/to/reBotArm_control_py."
+            ) from exc
+
+        self._gravity_model = load_dynamics_model()
+        self._gravity_data = self._gravity_model.createData()
+        self._compute_generalized_gravity = compute_generalized_gravity
+
+        motor_names = list(self.bus.motors)
+        enabled_joints = self._gravity_comp_enabled_joints()
+        for motor_name in enabled_joints:
+            if motor_name not in motor_names:
+                raise ValueError(f"Unknown gravity compensation joint {motor_name!r}. Available: {motor_names}")
+        for motor_name in self._gravity_comp_torque_joints():
+            if motor_name not in enabled_joints:
+                raise ValueError(
+                    f"Gravity compensation torque joint {motor_name!r} must also be enabled. "
+                    f"Enabled joints: {enabled_joints}"
+                )
+
+    def _gravity_comp_torque_joints(self) -> list[str]:
+        if self.config.gravity_comp_torque_joints is not None:
+            return list(self.config.gravity_comp_torque_joints)
+        return [motor_name for motor_name in self._gravity_comp_enabled_joints() if motor_name != "gripper"]
+
+    def _send_gravity_comp(self, states: dict[str, dict[str, Any]]) -> None:
+        if self.config.manual_control_mode != "gravity_comp":
+            return
+        self._ensure_gravity_comp_ready()
+
+        motor_names = list(self.bus.motors)
+        q_rad = np.asarray(
+            [np.radians(float(states.get(motor_name, {}).get("position", 0.0))) for motor_name in motor_names],
+            dtype=np.float64,
+        )
+        tau_g = self._compute_generalized_gravity(model=self._gravity_model, q=q_rad, data=self._gravity_data)
+
+        commands = {}
+        torque_joints = set(self._gravity_comp_torque_joints())
+        for motor_name in self._gravity_comp_enabled_joints():
+            index = motor_names.index(motor_name)
+            tau = 0.0
+            if motor_name in torque_joints:
+                tau = float(
+                    np.clip(
+                        self.config.gravity_comp_torque_scale * tau_g[index],
+                        -self.config.gravity_comp_torque_limit,
+                        self.config.gravity_comp_torque_limit,
+                    )
+                )
+            elif motor_name == "gripper":
+                tau = self._gripper_assist_torque(states.get(motor_name, {}))
+            commands[motor_name] = (
+                self._gravity_kp_for(motor_name),
+                self._gravity_kd_for(motor_name),
+                float(states.get(motor_name, {}).get("position", 0.0)),
+                0.0,
+                tau,
+            )
+        self.bus.sync_write_mit(commands)
 
     def _send_compliance(self, states: dict[str, dict[str, Any]]) -> None:
         if self.config.manual_control_mode == "disabled":
@@ -156,7 +352,9 @@ class RebotB601Leader(Teleoperator):
             raise DeviceNotConnectedError(f"{self} is not connected.")
 
         states = self.bus.sync_read_all_states()
-        if self.config.manual_control_mode != "disabled":
+        if self.config.manual_control_mode == "gravity_comp":
+            self._send_gravity_comp(states)
+        elif self.config.manual_control_mode != "disabled":
             self._send_compliance(states)
 
         action_dict = {

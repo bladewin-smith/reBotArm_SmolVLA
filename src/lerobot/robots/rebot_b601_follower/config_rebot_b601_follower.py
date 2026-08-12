@@ -5,7 +5,6 @@
 # Licensed under the Apache License, Version 2.0 (the "License");
 
 from dataclasses import dataclass, field
-from typing import Literal
 
 from lerobot.cameras import CameraConfig
 
@@ -43,14 +42,25 @@ class RebotB601FollowerConfigBase:
     """
 
     port: str
-    transport: Literal["motorbridge", "socketcan"] = "motorbridge"
+    transport: str = "motorbridge"
     motorbridge_baudrate: int = 921600
     can_interface: str = "socketcan"
     use_can_fd: bool = False
     can_bitrate: int = 1000000
     can_data_bitrate: int = 5000000
     disable_torque_on_disconnect: bool = True
-    max_relative_target: float | dict[str, float] | None = 10.0
+    max_relative_target: float | dict[str, float] | None = 15.0
+    gripper_action_scale: float = 1.0
+    gripper_action_offset: float = 0.0
+    gripper_leader_close_pos: float | None = 5.0
+    gripper_leader_open_pos: float | None = -310.0
+    gripper_follower_close_pos: float | None = 10.0
+    gripper_follower_open_pos: float | None = -320.0
+    gripper_max_relative_target: float | None = 60.0
+    gripper_min_pos: float | None = -330.0
+    gripper_max_pos: float | None = 10.0
+    gripper_position_kp: float | None = 35.0
+    gripper_position_kd: float | None = 0.8
     cameras: dict[str, CameraConfig] = field(default_factory=dict)
 
     motor_config: dict[str, tuple[int, int, str]] = field(default_factory=lambda: DEFAULT_MOTOR_CONFIG.copy())

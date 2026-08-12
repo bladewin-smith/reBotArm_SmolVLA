@@ -32,6 +32,8 @@ class RebotB601Follower(Robot):
     def __init__(self, config: RebotB601FollowerConfig):
         super().__init__(config)
         self.config = config
+        if self.config.transport not in {"motorbridge", "socketcan"}:
+            raise ValueError("B601 follower transport must be 'motorbridge' or 'socketcan'.")
 
         motors: dict[str, Motor] = {}
         for motor_name, (send_id, recv_id, motor_type_str) in config.motor_config.items():
@@ -58,6 +60,7 @@ class RebotB601Follower(Robot):
                 data_bitrate=self.config.can_data_bitrate if self.config.use_can_fd else None,
             )
         self.cameras = make_cameras_from_configs(config.cameras)
+        self._last_observation_states: dict[str, dict[str, float]] = {}
 
     @property
     def _state_ft(self) -> dict[str, type]:
@@ -154,6 +157,7 @@ class RebotB601Follower(Robot):
         start = time.perf_counter()
         obs_dict: dict[str, Any] = {}
         states = self.bus.sync_read_all_states()
+        self._last_observation_states = {motor: state.copy() for motor, state in states.items()}
         for motor in self.bus.motors:
             state = states.get(motor, {})
             obs_dict[f"{motor}.pos"] = state.get("position", 0.0)
@@ -173,26 +177,71 @@ class RebotB601Follower(Robot):
             return float(values[names.index(motor_name)])
         return float(values)
 
+    def _map_gripper_goal(self, leader_position: float) -> float:
+        if (
+            self.config.gripper_leader_close_pos is None
+            or self.config.gripper_leader_open_pos is None
+            or self.config.gripper_follower_close_pos is None
+            or self.config.gripper_follower_open_pos is None
+        ):
+            return leader_position * self.config.gripper_action_scale + self.config.gripper_action_offset
+
+        leader_close = self.config.gripper_leader_close_pos
+        leader_open = self.config.gripper_leader_open_pos
+        follower_close = self.config.gripper_follower_close_pos
+        follower_open = self.config.gripper_follower_open_pos
+        span = leader_open - leader_close
+        if abs(span) < 1e-6:
+            raise ValueError("gripper_leader_open_pos and gripper_leader_close_pos must be different.")
+
+        alpha = (leader_position - leader_close) / span
+        alpha = max(0.0, min(1.0, alpha))
+        return follower_close + alpha * (follower_open - follower_close)
+
     def send_action(self, action: RobotAction) -> RobotAction:
         if not self.is_connected:
             raise DeviceNotConnectedError(f"{self} is not connected.")
 
         goal_pos = {key.removesuffix(".pos"): val for key, val in action.items() if key.endswith(".pos")}
+        if "gripper" in goal_pos:
+            goal_pos["gripper"] = self._map_gripper_goal(float(goal_pos["gripper"]))
 
         for motor_name, position in goal_pos.items():
             if motor_name in self.config.joint_limits:
                 min_limit, max_limit = self.config.joint_limits[motor_name]
+                if motor_name == "gripper":
+                    if self.config.gripper_min_pos is not None:
+                        min_limit = self.config.gripper_min_pos
+                    if self.config.gripper_max_pos is not None:
+                        max_limit = self.config.gripper_max_pos
                 goal_pos[motor_name] = max(min_limit, min(max_limit, float(position)))
 
         if self.config.max_relative_target is not None:
-            present_pos = self.bus.sync_read("Present_Position")
+            present_pos = (
+                {motor: state["position"] for motor, state in self._last_observation_states.items()}
+                if self._last_observation_states
+                else self.bus.sync_read("Present_Position")
+            )
             goal_present_pos = {key: (g_pos, present_pos[key]) for key, g_pos in goal_pos.items()}
-            goal_pos = ensure_safe_goal_position(goal_present_pos, self.config.max_relative_target)
+            max_relative_target = self.config.max_relative_target
+            if self.config.gripper_max_relative_target is not None and "gripper" in goal_present_pos:
+                if isinstance(max_relative_target, dict):
+                    max_relative_target = {**max_relative_target, "gripper": self.config.gripper_max_relative_target}
+                else:
+                    max_relative_target = {
+                        motor_name: float(max_relative_target) for motor_name in goal_present_pos
+                    }
+                    max_relative_target["gripper"] = self.config.gripper_max_relative_target
+            goal_pos = ensure_safe_goal_position(goal_present_pos, max_relative_target)
 
         commands = {
             motor_name: (
-                self._gain_for(self.config.position_kp, motor_name),
-                self._gain_for(self.config.position_kd, motor_name),
+                self.config.gripper_position_kp
+                if motor_name == "gripper" and self.config.gripper_position_kp is not None
+                else self._gain_for(self.config.position_kp, motor_name),
+                self.config.gripper_position_kd
+                if motor_name == "gripper" and self.config.gripper_position_kd is not None
+                else self._gain_for(self.config.position_kd, motor_name),
                 float(position_degrees),
                 0.0,
                 0.0,

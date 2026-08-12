@@ -37,7 +37,7 @@ class RebotMotorbridgeBus:
         *,
         baudrate: int = 921600,
         feedback_poll_retries: int = 3,
-        feedback_poll_interval_s: float = 0.005,
+        feedback_poll_interval_s: float = 0.001,
     ) -> None:
         self.port = port
         self.motors = motors
