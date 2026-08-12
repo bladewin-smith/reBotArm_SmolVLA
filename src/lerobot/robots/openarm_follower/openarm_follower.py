@@ -26,7 +26,7 @@ from lerobot.processor import RobotAction, RobotObservation
 from lerobot.utils.errors import DeviceAlreadyConnectedError, DeviceNotConnectedError
 
 from ..robot import Robot
-from ..utils import ensure_safe_goal_position
+from ..utils import ensure_safe_goal_position, get_camera_observation_features, read_camera_observations
 from .config_openarm_follower import (
     LEFT_DEFAULT_JOINTS_LIMITS,
     RIGHT_DEFAULT_JOINTS_LIMITS,
@@ -98,14 +98,12 @@ class OpenArmFollower(Robot):
         return features
 
     @property
-    def _cameras_ft(self) -> dict[str, tuple]:
+    def _cameras_ft(self) -> dict[str, tuple | dict]:
         """Camera features for observation space."""
-        return {
-            cam: (self.config.cameras[cam].height, self.config.cameras[cam].width, 3) for cam in self.cameras
-        }
+        return get_camera_observation_features(self.config.cameras, self.cameras)
 
     @cached_property
-    def observation_features(self) -> dict[str, type | tuple]:
+    def observation_features(self) -> dict[str, type | tuple | dict]:
         """Combined observation features from motors and cameras."""
         return {**self._motors_ft, **self._cameras_ft}
 
@@ -241,12 +239,9 @@ class OpenArmFollower(Robot):
             obs_dict[f"{motor}.vel"] = state.get("velocity", 0.0)
             obs_dict[f"{motor}.torque"] = state.get("torque", 0.0)
 
-        # Capture images from cameras
-        for cam_key, cam in self.cameras.items():
-            start = time.perf_counter()
-            obs_dict[cam_key] = cam.async_read()
-            dt_ms = (time.perf_counter() - start) * 1e3
-            logger.debug(f"{self} read {cam_key}: {dt_ms:.1f}ms")
+        obs_dict.update(
+            read_camera_observations(self.cameras, self.config.cameras, logger=logger, robot_name=str(self))
+        )
 
         dt_ms = (time.perf_counter() - start) * 1e3
         logger.debug(f"{self} get_observation took: {dt_ms:.1f}ms")

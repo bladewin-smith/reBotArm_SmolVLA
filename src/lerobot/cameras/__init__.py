@@ -14,4 +14,15 @@
 
 from .camera import Camera
 from .configs import CameraConfig, ColorMode, Cv2Rotation
+from .orbbec import OrbbecCamera, OrbbecCameraConfig
 from .utils import make_cameras_from_configs
+
+__all__ = [
+    "Camera",
+    "CameraConfig",
+    "ColorMode",
+    "Cv2Rotation",
+    "OrbbecCamera",
+    "OrbbecCameraConfig",
+    "make_cameras_from_configs",
+]

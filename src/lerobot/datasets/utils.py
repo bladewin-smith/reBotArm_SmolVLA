@@ -44,7 +44,7 @@ from lerobot.datasets.backward_compatibility import (
     BackwardCompatibilityError,
     ForwardCompatibilityError,
 )
-from lerobot.utils.constants import ACTION, OBS_ENV_STATE, OBS_STR
+from lerobot.utils.constants import ACTION, OBS_DEPTHS, OBS_ENV_STATE, OBS_STR
 from lerobot.utils.utils import SuppressProgressBars, is_valid_numpy_dtype_string
 
 DEFAULT_CHUNK_SIZE = 1000  # Max number of files per chunk
@@ -624,7 +624,7 @@ def _validate_feature_names(features: dict[str, dict]) -> None:
 
 
 def hw_to_dataset_features(
-    hw_features: dict[str, type | tuple], prefix: str, use_video: bool = True
+    hw_features: dict[str, type | tuple | dict], prefix: str, use_video: bool = True
 ) -> dict[str, dict]:
     """Convert hardware-specific features to a LeRobot dataset feature dictionary.
 
@@ -646,9 +646,45 @@ def hw_to_dataset_features(
     joint_fts = {
         key: ftype
         for key, ftype in hw_features.items()
-        if ftype is float or (isinstance(ftype, PolicyFeature) and ftype.type != FeatureType.VISUAL)
+        if ftype is float
+        or (
+            isinstance(ftype, PolicyFeature)
+            and ftype.type != FeatureType.VISUAL
+            and len(ftype.shape) == 1
+        )
     }
-    cam_fts = {key: shape for key, shape in hw_features.items() if isinstance(shape, tuple)}
+    cam_fts = {
+        key: shape
+        for key, shape in hw_features.items()
+        if isinstance(shape, tuple) and len(shape) == 3
+    }
+    array_fts = {
+        key: ftype
+        for key, ftype in hw_features.items()
+        if isinstance(ftype, dict) and "dtype" in ftype and "shape" in ftype
+    }
+    array_fts.update(
+        {
+            key: {"dtype": "float32", "shape": ftype.shape}
+            for key, ftype in hw_features.items()
+            if (
+                isinstance(ftype, PolicyFeature)
+                and ftype.type != FeatureType.VISUAL
+                and len(ftype.shape) > 1
+            )
+        }
+    )
+    array_fts.update(
+        {
+            key: {"dtype": "uint16", "shape": shape, "names": ["height", "width"]}
+            for key, shape in hw_features.items()
+            if (
+                isinstance(shape, tuple)
+                and len(shape) == 2
+                and key.startswith(f"{OBS_DEPTHS.split('.')[-1]}.")
+            )
+        }
+    )
 
     if joint_fts and prefix == ACTION:
         features[prefix] = {
@@ -669,6 +705,14 @@ def hw_to_dataset_features(
             "dtype": "video" if use_video else "image",
             "shape": shape,
             "names": ["height", "width", "channels"],
+        }
+
+    for key, ft in array_fts.items():
+        feature_key = key if key.startswith(f"{prefix}.") else f"{prefix}.{key}"
+        features[feature_key] = {
+            "dtype": ft["dtype"],
+            "shape": tuple(ft["shape"]),
+            "names": ft.get("names"),
         }
 
     _validate_feature_names(features)
@@ -700,6 +744,17 @@ def build_dataset_frame(
             frame[key] = np.array([values[name] for name in ft["names"]], dtype=np.float32)
         elif ft["dtype"] in ["image", "video"]:
             frame[key] = values[key.removeprefix(f"{prefix}.images.")]
+        elif key.startswith(prefix):
+            raw_key = key.removeprefix(f"{prefix}.")
+            if key in values:
+                value = values[key]
+            elif raw_key in values:
+                value = values[raw_key]
+            else:
+                raise KeyError(
+                    f"Missing value for dataset feature '{key}' (looked for '{key}' or '{raw_key}')."
+                )
+            frame[key] = np.asarray(value, dtype=np.dtype(ft["dtype"]))
 
     return frame
 

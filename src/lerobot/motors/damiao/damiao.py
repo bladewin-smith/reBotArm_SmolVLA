@@ -200,6 +200,12 @@ class DamiaoMotorsBus(MotorsBusBase):
 
             logger.debug(f"{self.__class__.__name__} connected via {self.can_interface}.")
         except Exception as e:
+            if self.canbus is not None:
+                try:
+                    self.canbus.shutdown()
+                except Exception as shutdown_error:
+                    logger.warning(f"Failed to shutdown CAN bus after connection error: {shutdown_error}")
+                self.canbus = None
             self._is_connected = False
             raise ConnectionError(f"Failed to connect to CAN bus: {e}") from e
 
@@ -236,7 +242,7 @@ class DamiaoMotorsBus(MotorsBusBase):
             if response is None:
                 missing_motors.append(motor_name)
             else:
-                self._process_response(motor_name, msg)
+                self._process_response(motor_name, response)
             time.sleep(MEDIUM_TIMEOUT_SEC)
 
         if missing_motors:
@@ -505,6 +511,20 @@ class DamiaoMotorsBus(MotorsBusBase):
         for recv_id, motor_name in recv_id_to_motor.items():
             if msg := responses.get(recv_id):
                 self._process_response(motor_name, msg)
+
+    def sync_write_mit(
+        self,
+        commands: dict[NameOrID, tuple[float, float, float, float, float]],
+    ) -> None:
+        """Send batch MIT control commands.
+
+        Each command tuple is ``(kp, kd, position_deg, velocity_deg_s, torque_nm)``.
+        This is the public wrapper used by robots/teleoperators that need compliant
+        position control instead of the default ``Goal_Position`` path.
+        """
+        if not self.is_connected:
+            raise DeviceNotConnectedError(f"{self} is not connected.")
+        self._mit_control_batch(commands)
 
     def _float_to_uint(self, x: float, x_min: float, x_max: float, bits: int) -> int:
         """Convert float to unsigned integer for CAN transmission."""

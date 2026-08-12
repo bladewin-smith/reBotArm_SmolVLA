@@ -32,6 +32,7 @@ from pprint import pformat
 import draccus
 
 from lerobot.cameras.opencv.configuration_opencv import OpenCVCameraConfig  # noqa: F401
+from lerobot.cameras.orbbec.configuration_orbbec import OrbbecCameraConfig  # noqa: F401
 from lerobot.cameras.realsense.configuration_realsense import RealSenseCameraConfig  # noqa: F401
 from lerobot.robots import (  # noqa: F401
     Robot,
@@ -44,6 +45,7 @@ from lerobot.robots import (  # noqa: F401
     make_robot_from_config,
     omx_follower,
     openarm_follower,
+    rebot_b601_follower,
     so_follower,
 )
 from lerobot.teleoperators import (  # noqa: F401
@@ -56,6 +58,7 @@ from lerobot.teleoperators import (  # noqa: F401
     make_teleoperator_from_config,
     omx_leader,
     openarm_leader,
+    rebot_b601_leader,
     so_leader,
     unitree_g1,
 )

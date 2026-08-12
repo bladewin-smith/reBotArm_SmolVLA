@@ -29,7 +29,7 @@ from lerobot.processor import RobotAction, RobotObservation
 from lerobot.utils.decorators import check_if_already_connected, check_if_not_connected
 
 from ..robot import Robot
-from ..utils import ensure_safe_goal_position
+from ..utils import ensure_safe_goal_position, get_camera_observation_features, read_camera_observations
 from .config_so_follower import SOFollowerRobotConfig
 
 logger = logging.getLogger(__name__)
@@ -68,13 +68,11 @@ class SOFollower(Robot):
         return {f"{motor}.pos": float for motor in self.bus.motors}
 
     @property
-    def _cameras_ft(self) -> dict[str, tuple]:
-        return {
-            cam: (self.config.cameras[cam].height, self.config.cameras[cam].width, 3) for cam in self.cameras
-        }
+    def _cameras_ft(self) -> dict[str, tuple | dict]:
+        return get_camera_observation_features(self.config.cameras, self.cameras)
 
     @cached_property
-    def observation_features(self) -> dict[str, type | tuple]:
+    def observation_features(self) -> dict[str, type | tuple | dict]:
         return {**self._motors_ft, **self._cameras_ft}
 
     @cached_property
@@ -184,12 +182,9 @@ class SOFollower(Robot):
         dt_ms = (time.perf_counter() - start) * 1e3
         logger.debug(f"{self} read state: {dt_ms:.1f}ms")
 
-        # Capture images from cameras
-        for cam_key, cam in self.cameras.items():
-            start = time.perf_counter()
-            obs_dict[cam_key] = cam.async_read()
-            dt_ms = (time.perf_counter() - start) * 1e3
-            logger.debug(f"{self} read {cam_key}: {dt_ms:.1f}ms")
+        obs_dict.update(
+            read_camera_observations(self.cameras, self.config.cameras, logger=logger, robot_name=str(self))
+        )
 
         return obs_dict
 

@@ -19,7 +19,7 @@ from typing import Any
 from lerobot.configs.types import PipelineFeatureType
 from lerobot.datasets.utils import hw_to_dataset_features
 from lerobot.processor import DataProcessorPipeline, RobotAction, RobotObservation
-from lerobot.utils.constants import ACTION, OBS_IMAGES, OBS_STATE, OBS_STR
+from lerobot.utils.constants import ACTION, OBS_DEPTHS, OBS_IMAGES, OBS_STATE, OBS_STR
 
 
 def create_initial_features(
@@ -96,6 +96,7 @@ def aggregate_pipeline_dataset_features(
         OBS_STR: {},
     }
     images_token = OBS_IMAGES.split(".")[-1]
+    depths_token = OBS_DEPTHS.split(".")[-1]
 
     # Iterate through all features transformed by the pipeline.
     for ptype, feats in all_features.items():
@@ -115,11 +116,16 @@ def aggregate_pipeline_dataset_features(
                     or f".{images_token}." in key
                 )
             )
+            is_depth = not is_action and (
+                key.startswith(f"{OBS_DEPTHS}.")
+                or key.startswith(f"{depths_token}.")
+                or f".{depths_token}." in key
+            )
 
             # 2. Apply filtering rules.
             if is_image and not use_videos:
                 continue
-            if not is_image and not should_keep(key, patterns):
+            if not is_image and not is_depth and not should_keep(key, patterns):
                 continue
 
             # 3. Add the feature to the appropriate group with a clean name.

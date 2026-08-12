@@ -16,6 +16,7 @@
 import numpy as np
 
 from lerobot.datasets.utils import load_image_as_numpy
+from lerobot.utils.constants import OBS_DEPTHS
 
 DEFAULT_QUANTILES = [0.01, 0.10, 0.50, 0.90, 0.99]
 
@@ -511,6 +512,10 @@ def compute_episode_stats(
         if features[key]["dtype"] in ["image", "video"]:
             ep_ft_array = sample_images(data)
             axes_to_reduce = (0, 2, 3)
+            keepdims = True
+        elif key.startswith(f"{OBS_DEPTHS}."):
+            ep_ft_array = data
+            axes_to_reduce = None
             keepdims = True
         else:
             ep_ft_array = data

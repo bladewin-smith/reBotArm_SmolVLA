@@ -59,6 +59,7 @@ from pprint import pformat
 import rerun as rr
 
 from lerobot.cameras.opencv.configuration_opencv import OpenCVCameraConfig  # noqa: F401
+from lerobot.cameras.orbbec.configuration_orbbec import OrbbecCameraConfig  # noqa: F401
 from lerobot.cameras.realsense.configuration_realsense import RealSenseCameraConfig  # noqa: F401
 from lerobot.configs import parser
 from lerobot.processor import (
@@ -79,6 +80,7 @@ from lerobot.robots import (  # noqa: F401
     omx_follower,
     openarm_follower,
     reachy2,
+    rebot_b601_follower,
     so_follower,
     unitree_g1 as unitree_g1_robot,
 )
@@ -95,6 +97,7 @@ from lerobot.teleoperators import (  # noqa: F401
     omx_leader,
     openarm_leader,
     reachy2_teleoperator,
+    rebot_b601_leader,
     so_leader,
     unitree_g1,
 )
