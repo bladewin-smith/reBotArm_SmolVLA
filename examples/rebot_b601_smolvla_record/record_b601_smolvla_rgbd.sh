@@ -13,14 +13,21 @@ REPO_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
 
 # Local dataset folder to create/write. Example:
 # DATASET_ROOT="/home/r/datasets/rebot_b601_banana_bottle_rgbd"
-DATASET_ROOT="/home/r/ws/rebot_lerobot/datasets/rebot_b601_banana_bottle_rgbd_1"
+DATASET_ROOT="/home/r/ws/rebot_lerobot/datasets/rebot_b601_banana_bottle_rgbd"
 
 # Dataset id stored in metadata. Keep this identical when training locally.
-DATASET_REPO_ID="${HF_USER:-local}/rebot_b601_banana_bottle_rgbd_1"
+DATASET_REPO_ID="${HF_USER:-local}/rebot_b601_banana_bottle_rgbd"
 
 # reBot B601 motorbridge ports.
 FOLLOWER_PORT="/dev/ttyACM0"
 LEADER_PORT="/dev/ttyACM1"
+
+# Follower safety defaults for dataset collection. Keep these conservative
+# until the leader/follower pose mapping has been verified across the whole task.
+FOLLOWER_MAX_RELATIVE_TARGET=6.0
+FOLLOWER_GRIPPER_MAX_RELATIVE_TARGET=30.0
+FOLLOWER_DISABLE_TORQUE_ON_DISCONNECT=false
+FOLLOWER_SAFETY_HOLD_ON_RELATIVE_CLAMP=true
 
 # Top Gemini 335L OrbbecSDK serial number. This is not a /dev/video* path.
 # If the bridge reports available serials, choose the Gemini 335L serial from that list.
@@ -39,9 +46,9 @@ LINGBOT_MODEL="/home/r/ws/model.sm4"
 WIDTH=640
 HEIGHT=480
 FPS=10
-NUM_EPISODES=30
-EPISODE_TIME_S=300
-RESET_TIME_S=30
+NUM_EPISODES=50
+EPISODE_TIME_S=45
+RESET_TIME_S=20
 
 # Task prompt saved in every frame.
 TASK="Arrange the banana model and the transparent plastic cola bottle back to their assigned places on the desktop"
@@ -85,6 +92,12 @@ Optional command line overrides:
   --repo-id ID                Dataset repo id stored in metadata. Default: ${HF_USER:-local}/rebot_b601_banana_bottle_rgbd
   --follower-port PORT        B601 follower motorbridge port. Default: /dev/ttyACM1
   --leader-port PORT          B601 leader motorbridge port. Default: /dev/ttyACM0
+  --follower-max-relative-target N
+                              Max follower joint step per control frame. Default: 6.0
+  --follower-gripper-max-relative-target N
+                              Max follower gripper step per control frame. Default: 30.0
+  --follower-disable-torque-on-disconnect true|false
+                              Whether to disable follower torque when the script exits. Default: false.
   --orbbec-bridge PATH        Built orbbec_rgbd_bridge binary.
   --lingbot-model PATH        LingBot EnhancedDepthFilter model.sm4 path.
   --fps N                     Dataset/control FPS. Default: 10 with EnhancedDepthFilter.
@@ -116,6 +129,10 @@ while [[ $# -gt 0 ]]; do
     --repo-id) DATASET_REPO_ID="$2"; shift 2 ;;
     --follower-port) FOLLOWER_PORT="$2"; shift 2 ;;
     --leader-port) LEADER_PORT="$2"; shift 2 ;;
+    --follower-max-relative-target) FOLLOWER_MAX_RELATIVE_TARGET="$2"; shift 2 ;;
+    --follower-gripper-max-relative-target) FOLLOWER_GRIPPER_MAX_RELATIVE_TARGET="$2"; shift 2 ;;
+    --follower-disable-torque-on-disconnect) FOLLOWER_DISABLE_TORQUE_ON_DISCONNECT="$2"; shift 2 ;;
+    --follower-safety-hold-on-relative-clamp) FOLLOWER_SAFETY_HOLD_ON_RELATIVE_CLAMP="$2"; shift 2 ;;
     --top-serial) TOP_SERIAL="$2"; shift 2 ;;
     --wrist-serial) WRIST_SERIAL="$2"; shift 2 ;;
     --orbbec-bridge) ORBBEC_BRIDGE="$2"; shift 2 ;;
@@ -251,6 +268,10 @@ lerobot-record \
   --robot.port="${FOLLOWER_PORT}" \
   --robot.transport=motorbridge \
   --robot.id=b601_follower \
+  --robot.max_relative_target="${FOLLOWER_MAX_RELATIVE_TARGET}" \
+  --robot.gripper_max_relative_target="${FOLLOWER_GRIPPER_MAX_RELATIVE_TARGET}" \
+  --robot.disable_torque_on_disconnect="${FOLLOWER_DISABLE_TORQUE_ON_DISCONNECT}" \
+  --robot.safety_hold_on_relative_clamp="${FOLLOWER_SAFETY_HOLD_ON_RELATIVE_CLAMP}" \
   --robot.cameras="${CAMERAS_CONFIG}" \
   --teleop.type=rebot_b601_leader \
   --teleop.port="${LEADER_PORT}" \

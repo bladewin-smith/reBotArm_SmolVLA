@@ -254,6 +254,36 @@ arms in a similar neutral pose before starting the test. For controlled bench
 testing you may temporarily raise `--robot.max_relative_target`, but keep it
 enabled during normal teleoperation and recording.
 
+## Follower Safety During Recording
+
+Do not continue recording if the follower arm repeatedly reports relative goal
+clamping on several arm joints. That means the leader command has moved far
+away from the follower's current pose, often because the follower is near a
+singular or mechanically weak posture. The B601 follower now enters a software
+safety hold when multiple arm joints are heavily clamped: it commands the
+current follower pose instead of chasing the unreachable target.
+
+For collection, the recording script uses conservative follower defaults:
+
+```text
+FOLLOWER_MAX_RELATIVE_TARGET=6.0
+FOLLOWER_GRIPPER_MAX_RELATIVE_TARGET=30.0
+FOLLOWER_DISABLE_TORQUE_ON_DISCONNECT=false
+FOLLOWER_SAFETY_HOLD_ON_RELATIVE_CLAMP=true
+```
+
+`FOLLOWER_DISABLE_TORQUE_ON_DISCONNECT=false` prevents a Python exception or
+Escape stop from immediately disabling all follower motor torque. This avoids a
+software-triggered drop, but it also means the follower may remain powered after
+the script exits. Keep one hand near the power/E-stop, support the arm before
+disconnecting power, and do not leave the powered arm unattended.
+
+Before each episode, place the leader and follower in similar non-singular
+poses: avoid fully stretched elbow poses, wrist-flip extremes, and postures
+where the load hangs far from the shoulder. Keep the banana and bottle task
+workspace inside the comfortable middle area of the arm instead of at the edge
+of reach.
+
 To temporarily enable the leader gripper motor without applying gravity
 feedforward torque to it, include `gripper` in `gravity_comp_enabled_joints`
 but keep `gravity_comp_torque_joints` limited to the arm joints:

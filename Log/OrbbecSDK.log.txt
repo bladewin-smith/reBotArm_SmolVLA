@@ -2813,3 +2813,1613 @@
 [08/13 12:15:42.546172][info][9121][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
 [08/13 12:15:42.547507][info][9124][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.992006fps
 [08/13 12:15:44.270561][info][9178][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.992006fps
+[08/13 13:53:21.943514][info][4676][HostTimestampProvider.cpp:36] Update clock type to: realtime(0)
+[08/13 13:53:22.230220][info][4676][LinuxUsbPal.cpp:334] Create PollingDeviceWatcher!
+[08/13 13:53:22.230324][info][4676][DeviceManager.cpp:25] Current found device(s): (2)
+[08/13 13:53:22.230330][info][4676][DeviceManager.cpp:33] 	- Name: Gemini 305, PID: 0x0840, SN/ID: CV2TC5100075, Connection: USB3.2
+[08/13 13:53:22.230332][info][4676][DeviceManager.cpp:33] 	- Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N, Connection: USB3.2
+[08/13 13:53:22.230337][info][4676][DeviceManager.cpp:463] Enable net device enumeration: true
+[08/13 13:53:23.234764][info][4676][DeviceManager.cpp:25] Current device(s) list: (2)
+[08/13 13:53:23.234799][info][4676][DeviceManager.cpp:33] 	- Name: Gemini 305, PID: 0x0840, SN/ID: CV2TC5100075, Connection: USB3.2
+[08/13 13:53:23.234801][info][4676][DeviceManager.cpp:33] 	- Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N, Connection: USB3.2
+[08/13 13:53:23.241176][info][4676][G305Device.cpp:616] UVCAutoRebootOnFault=true for device: Gemini 305
+[08/13 13:53:23.250041][info][4676][DeviceBase.cpp:742] key: AppSlot,value:2
+[08/13 13:53:23.250048][info][4676][DeviceBase.cpp:742] key: HwType,value:S1
+[08/13 13:53:23.250050][info][4676][DeviceBase.cpp:742] key: HwVer,value:V1.3
+[08/13 13:53:23.250052][info][4676][DeviceBase.cpp:742] key: IspFwVer,value:20260116
+[08/13 13:53:23.250054][info][4676][DeviceBase.cpp:742] key: IspNeedVer,value:20250920
+[08/13 13:53:23.250055][info][4676][DeviceBase.cpp:742] key: PresetVer,value:0.0.7
+[08/13 13:53:23.468928][info][4676][DeviceManager.cpp:199] Device created successfully! Name: Gemini 305, PID: 0x0840, SN/ID: CV2TC5100075 FW: 1.0.30
+[08/13 13:53:23.469446][info][4676][Pipeline.cpp:54] [CV2TC5100075] Pipeline created with device: {name: Gemini 305, sn: CV2TC5100075}, @0xAAAAE99975A0
+[08/13 13:53:23.509798][info][4676][Pipeline.cpp:228] [CV2TC5100075] Check and set config done!
+[08/13 13:53:23.511244][info][4676][Pipeline.cpp:266] [CV2TC5100075] Try to start streams!
+[08/13 13:53:23.511271][info][4676][VideoSensor.cpp:61] [CV2TC5100075] Try to start stream: {type: Color, format: RGB, width: 640, height: 480, fps: 10}
+[08/13 13:53:23.511301][info][4676][SensorBase.cpp:216] [CV2TC5100075] Stream state changed from STOPPED to STARTING@Color
+[08/13 13:53:23.511314][info][4676][VideoSensor.cpp:130] [CV2TC5100075] Start backend stream: {type: Color, format: YUYV, width: 640, height: 480, fps: 10}
+[08/13 13:53:23.516742][info][4676][Pipeline.cpp:293] [CV2TC5100075] Start streams done!
+[08/13 13:53:23.516751][info][4676][Pipeline.cpp:250] [CV2TC5100075] Pipeline start done!
+[08/13 13:53:24.463113][info][4696][SensorBase.cpp:216] [CV2TC5100075] Stream state changed from STARTING to STREAMING@Color
+[08/13 13:53:29.465085][info][4696][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=10.195922fps
+[08/13 13:53:29.566526][info][4701][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=10.194080fps
+[08/13 13:53:34.468768][info][4696][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.992006fps
+[08/13 13:53:34.569887][info][4701][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 13:53:36.819002][info][4731][HostTimestampProvider.cpp:36] Update clock type to: realtime(0)
+[08/13 13:53:36.905253][info][4731][LinuxUsbPal.cpp:334] Create PollingDeviceWatcher!
+[08/13 13:53:36.905304][info][4731][DeviceManager.cpp:25] Current found device(s): (2)
+[08/13 13:53:36.905311][info][4731][DeviceManager.cpp:33] 	- Name: Gemini 305, PID: 0x0840, SN/ID: CV2TC5100075, Connection: USB3.2
+[08/13 13:53:36.905314][info][4731][DeviceManager.cpp:33] 	- Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N, Connection: USB3.2
+[08/13 13:53:36.905322][info][4731][DeviceManager.cpp:463] Enable net device enumeration: true
+[08/13 13:53:37.909971][info][4731][DeviceManager.cpp:25] Current device(s) list: (2)
+[08/13 13:53:37.910013][info][4731][DeviceManager.cpp:33] 	- Name: Gemini 305, PID: 0x0840, SN/ID: CV2TC5100075, Connection: USB3.2
+[08/13 13:53:37.910015][info][4731][DeviceManager.cpp:33] 	- Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N, Connection: USB3.2
+[08/13 13:53:37.915842][info][4731][G330Device.cpp:630] UVCAutoRebootOnFault=true for device: Gemini 335L
+[08/13 13:53:37.924536][info][4731][DeviceBase.cpp:742] key: AppSlot,value:1
+[08/13 13:53:37.924547][info][4731][DeviceBase.cpp:742] key: HwType,value:L2
+[08/13 13:53:37.924548][info][4731][DeviceBase.cpp:742] key: HwVer,value:V1.0
+[08/13 13:53:37.924549][info][4731][DeviceBase.cpp:742] key: IspFwVer,value:20260620
+[08/13 13:53:37.924551][info][4731][DeviceBase.cpp:742] key: IspNeedVer,value:20250930
+[08/13 13:53:37.924552][info][4731][DeviceBase.cpp:742] key: PresetVer,value:3.0.7
+[08/13 13:53:38.124691][warning][4731][PropertyServer.cpp:55] [CP3L44P0001N] Property not found to register callback, propertyId: 277
+[08/13 13:53:38.126218][warning][4731][PropertyConfigHandler.hpp:53] Unsupported property '223', skipping getting, return nullvalue
+[08/13 13:53:38.194572][warning][4731][PropertyConfigHandler.hpp:94] Exporting property '190' while stream is not active; the value may differ from what will be applied after streaming starts
+[08/13 13:53:38.208850][warning][4731][PresetHandler.cpp:336] Exporting ROI property '1061' while stream is not active; the value may differ from what will be applied after streaming starts
+[08/13 13:53:38.214854][warning][4731][PresetHandler.cpp:710] Exporting disparity search properties while stream is not active; the values may differ from what will be applied after streaming starts
+[08/13 13:53:38.380799][warning][4731][PropertyConfigHandler.hpp:94] Exporting property '189' while stream is not active; the value may differ from what will be applied after streaming starts
+[08/13 13:53:38.393613][warning][4731][PropertyConfigHandler.hpp:53] Unsupported property '277', skipping getting, return nullvalue
+[08/13 13:53:38.396619][warning][4731][PresetHandler.cpp:336] Exporting ROI property '1060' while stream is not active; the value may differ from what will be applied after streaming starts
+[08/13 13:53:38.397223][info][4731][DeviceManager.cpp:199] Device created successfully! Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N FW: 1.8.10
+[08/13 13:53:38.397328][info][4731][Pipeline.cpp:54] [CP3L44P0001N] Pipeline created with device: {name: Gemini 335L, sn: CP3L44P0001N}, @0xAAAAFDF04F40
+[08/13 13:53:39.471483][info][4696][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.996002fps
+[08/13 13:53:39.572377][info][4701][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.996002fps
+[08/13 13:53:41.389705][info][4731][EngineInferEncry.cpp:1038] [EnhanceDepth] TEST Tensor rgb: mode=INPUT, shape=(-1, -1, 3), dtype=UINT8
+[08/13 13:53:41.389736][info][4731][EngineInferEncry.cpp:1038] [EnhanceDepth] TEST Tensor dep: mode=INPUT, shape=(1, 1, -1, -1), dtype=FLOAT
+[08/13 13:53:41.389741][info][4731][EngineInferEncry.cpp:1038] [EnhanceDepth] TEST Tensor pred: mode=OUTPUT, shape=(1, 1, 480, 640), dtype=FLOAT
+[08/13 13:53:41.389746][info][4731][EngineInferEncry.cpp:1038] [EnhanceDepth] TEST Tensor confidence_output: mode=OUTPUT, shape=(1, 1, 480, 640), dtype=FLOAT
+[08/13 13:53:41.389806][info][4731][EngineInferEncry.cpp:1096] [EnhanceDepth] Selected TensorRT optimization profile 0 for rgb=(480, 640, 3), depth=(1, 1, 480, 640)
+[08/13 13:53:41.396686][info][4731][EngineInferEncry.cpp:876] [EnhanceDepth] Configured dynamic TensorRT profile=0, rgb=(480, 640, 3), depth=(1, 1, 480, 640), pred=(1, 1, 480, 640), conf=(1, 1, 480, 640)
+[08/13 13:53:41.893466][info][4731][EngineInferEncry.cpp:1096] [EnhanceDepth] Selected TensorRT optimization profile 0 for rgb=(480, 640, 3), depth=(1, 1, 480, 640)
+[08/13 13:53:41.897261][info][4731][EngineInferEncry.cpp:876] [EnhanceDepth] Configured dynamic TensorRT profile=0, rgb=(480, 640, 3), depth=(1, 1, 480, 640), pred=(1, 1, 480, 640), conf=(1, 1, 480, 640)
+[08/13 13:53:42.091336][info][4731][Pipeline.cpp:228] [CP3L44P0001N] Check and set config done!
+[08/13 13:53:42.092745][info][4731][Pipeline.cpp:266] [CP3L44P0001N] Try to start streams!
+[08/13 13:53:42.092766][info][4731][VideoSensor.cpp:61] [CP3L44P0001N] Try to start stream: {type: Color, format: RGB, width: 640, height: 480, fps: 10}
+[08/13 13:53:42.092786][info][4731][SensorBase.cpp:216] [CP3L44P0001N] Stream state changed from STOPPED to STARTING@Color
+[08/13 13:53:42.092797][info][4731][VideoSensor.cpp:130] [CP3L44P0001N] Start backend stream: {type: Color, format: YUYV, width: 640, height: 480, fps: 10}
+[08/13 13:53:42.097024][info][4731][VideoSensor.cpp:61] [CP3L44P0001N] Try to start stream: {type: Depth, format: Y16, width: 640, height: 480, fps: 10}
+[08/13 13:53:42.097044][info][4731][SensorBase.cpp:216] [CP3L44P0001N] Stream state changed from STOPPED to STARTING@Depth
+[08/13 13:53:42.097056][info][4731][VideoSensor.cpp:130] [CP3L44P0001N] Start backend stream: {type: Depth, format: Z16, width: 640, height: 480, fps: 10}
+[08/13 13:53:42.101444][info][4731][Pipeline.cpp:293] [CP3L44P0001N] Start streams done!
+[08/13 13:53:42.101449][info][4731][Pipeline.cpp:250] [CP3L44P0001N] Pipeline start done!
+[08/13 13:53:42.315734][info][4793][SensorBase.cpp:216] [CP3L44P0001N] Stream state changed from STARTING to STREAMING@Depth
+[08/13 13:53:42.729259][info][4791][SensorBase.cpp:216] [CP3L44P0001N] Stream state changed from STARTING to STREAMING@Color
+[08/13 13:53:44.475023][info][4696][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.992006fps
+[08/13 13:53:44.576394][info][4701][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.992006fps
+[08/13 13:53:47.317978][info][4793][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=10.195922fps
+[08/13 13:53:47.419187][info][4795][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=10.210093fps
+[08/13 13:53:47.731875][info][4791][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=10.193884fps
+[08/13 13:53:47.833654][info][4798][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=10.196078fps
+[08/13 13:53:49.478223][info][4696][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:53:49.578802][info][4701][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 13:53:52.321359][info][4793][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 13:53:52.422520][info][4795][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 13:53:52.735255][info][4791][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:53:52.836906][info][4798][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 13:53:54.481598][info][4696][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:53:54.582185][info][4701][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 13:53:57.324674][info][4793][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 13:53:57.426025][info][4795][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.992006fps
+[08/13 13:53:57.738615][info][4791][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:53:57.840005][info][4798][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 13:53:59.485025][info][4696][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.992006fps
+[08/13 13:53:59.585651][info][4701][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 13:54:02.328048][info][4793][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.992006fps
+[08/13 13:54:02.430858][info][4795][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.990009fps
+[08/13 13:54:02.741971][info][4791][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.992006fps
+[08/13 13:54:02.844046][info][4798][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.992006fps
+[08/13 13:54:04.488622][info][4696][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:54:04.589328][info][4701][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.992006fps
+[08/13 13:54:07.331631][info][4793][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 13:54:07.432657][info][4795][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.998000fps
+[08/13 13:54:07.745239][info][4791][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:54:07.846129][info][4798][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.996002fps
+[08/13 13:54:09.491707][info][4696][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:54:09.592490][info][4701][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 13:54:12.334846][info][4793][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.992006fps
+[08/13 13:54:12.435978][info][4795][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.992006fps
+[08/13 13:54:12.748601][info][4791][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:54:12.849760][info][4798][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 13:54:14.495116][info][4696][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.992006fps
+[08/13 13:54:14.596383][info][4701][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.992006fps
+[08/13 13:54:17.338139][info][4793][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 13:54:17.439290][info][4795][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 13:54:17.751950][info][4791][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.992006fps
+[08/13 13:54:17.852643][info][4798][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 13:54:19.498621][info][4696][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:54:19.599619][info][4701][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 13:54:22.341620][info][4793][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 13:54:22.442693][info][4795][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 13:54:22.755460][info][4791][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:54:22.856072][info][4798][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.992006fps
+[08/13 13:54:24.501791][info][4696][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:54:24.602384][info][4701][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 13:54:27.344867][info][4793][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.992006fps
+[08/13 13:54:27.446278][info][4795][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.992006fps
+[08/13 13:54:27.758641][info][4791][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:54:27.860350][info][4798][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.992006fps
+[08/13 13:54:29.505150][info][4696][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.992006fps
+[08/13 13:54:29.606030][info][4701][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.992006fps
+[08/13 13:54:32.348210][info][4793][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 13:54:32.449476][info][4795][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 13:54:32.762174][info][4791][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.992006fps
+[08/13 13:54:32.863239][info][4798][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 13:54:34.508687][info][4696][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:54:34.609276][info][4701][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 13:54:37.351541][info][4793][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 13:54:37.452846][info][4795][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 13:54:37.765398][info][4791][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:54:37.866678][info][4798][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 13:54:39.511937][info][4696][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.992006fps
+[08/13 13:54:39.612778][info][4701][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 13:54:42.354968][info][4793][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 13:54:42.456157][info][4795][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.992006fps
+[08/13 13:54:42.768792][info][4791][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:54:42.870505][info][4798][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.992006fps
+[08/13 13:54:44.515573][info][4696][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:54:44.616408][info][4701][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.992006fps
+[08/13 13:54:47.358573][info][4793][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.992006fps
+[08/13 13:54:47.459793][info][4795][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 13:54:47.772414][info][4791][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.992006fps
+[08/13 13:54:47.874207][info][4798][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 13:54:49.519152][info][4696][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:54:49.620508][info][4701][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.992006fps
+[08/13 13:54:52.362204][info][4793][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 13:54:52.464236][info][4795][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.992006fps
+[08/13 13:54:52.775933][info][4791][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:54:52.876854][info][4798][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 13:54:54.522639][info][4696][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.992006fps
+[08/13 13:54:54.623596][info][4701][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 13:54:57.365675][info][4793][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 13:54:57.466957][info][4795][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 13:54:57.779483][info][4791][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:54:57.881070][info][4798][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.992006fps
+[08/13 13:54:59.526411][info][4696][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:54:59.627061][info][4701][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 13:55:02.369220][info][4793][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.992006fps
+[08/13 13:55:02.470473][info][4795][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 13:55:02.783022][info][4791][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.992006fps
+[08/13 13:55:02.883742][info][4798][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.996002fps
+[08/13 13:55:04.529954][info][4696][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:55:04.630555][info][4701][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 13:55:07.372749][info][4793][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 13:55:07.473887][info][4795][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 13:55:07.786567][info][4791][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:55:07.887332][info][4798][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.992006fps
+[08/13 13:55:09.533490][info][4696][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.992006fps
+[08/13 13:55:09.634203][info][4701][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 13:55:12.376271][info][4793][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 13:55:12.477452][info][4795][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.992006fps
+[08/13 13:55:12.790062][info][4791][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:55:12.890817][info][4798][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 13:55:14.536664][info][4696][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:55:14.637267][info][4701][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 13:55:17.379784][info][4793][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.992006fps
+[08/13 13:55:17.480972][info][4795][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 13:55:17.793586][info][4791][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.992006fps
+[08/13 13:55:17.894326][info][4798][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 13:55:19.540171][info][4696][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:55:19.640786][info][4701][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.992006fps
+[08/13 13:55:22.383345][info][4793][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 13:55:22.484865][info][4795][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.992006fps
+[08/13 13:55:22.797103][info][4791][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:55:22.897821][info][4798][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.992006fps
+[08/13 13:55:24.543669][info][4696][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:55:24.644479][info][4701][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 13:55:27.386765][info][4793][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 13:55:27.488060][info][4795][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 13:55:27.800595][info][4791][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:55:27.901330][info][4798][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 13:55:29.547198][info][4696][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.992006fps
+[08/13 13:55:29.648770][info][4701][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.992006fps
+[08/13 13:55:32.390400][info][4793][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.992006fps
+[08/13 13:55:32.493052][info][4795][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.990009fps
+[08/13 13:55:32.804073][info][4791][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.992006fps
+[08/13 13:55:32.904867][info][4798][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 13:55:34.550675][info][4696][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:55:34.652050][info][4701][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 13:55:37.393729][info][4793][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 13:55:37.494927][info][4795][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.998000fps
+[08/13 13:55:37.807512][info][4791][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:55:37.908308][info][4798][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.992006fps
+[08/13 13:55:39.554123][info][4696][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:55:39.654894][info][4701][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 13:55:42.397171][info][4793][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 13:55:42.498346][info][4795][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.992006fps
+[08/13 13:55:42.810982][info][4791][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:55:42.911712][info][4798][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 13:55:44.557572][info][4696][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.992006fps
+[08/13 13:55:44.658379][info][4701][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.992006fps
+[08/13 13:55:47.400619][info][4793][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.992006fps
+[08/13 13:55:47.501999][info][4795][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 13:55:47.814422][info][4791][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:55:47.915163][info][4798][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 13:55:49.561095][info][4696][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:55:49.661938][info][4701][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 13:55:52.404085][info][4793][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 13:55:52.505284][info][4795][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 13:55:52.817869][info][4791][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.992006fps
+[08/13 13:55:52.918801][info][4798][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.992006fps
+[08/13 13:55:54.564481][info][4696][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:55:54.665301][info][4701][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 13:55:57.407566][info][4793][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 13:55:57.508930][info][4795][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.992006fps
+[08/13 13:55:57.821366][info][4791][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:55:57.922072][info][4798][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 13:55:59.567943][info][4696][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.992006fps
+[08/13 13:55:59.671345][info][4701][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.988014fps
+[08/13 13:56:02.414170][info][4793][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.986020fps
+[08/13 13:56:02.512677][info][4795][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 13:56:02.824803][info][4791][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:56:02.925503][info][4798][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 13:56:04.571388][info][4696][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:56:04.672063][info][4701][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.998000fps
+[08/13 13:56:07.515139][info][4793][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.998040fps
+[08/13 13:56:07.516445][info][4795][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.992006fps
+[08/13 13:56:07.828182][info][4791][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.992006fps
+[08/13 13:56:07.928976][info][4798][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.992006fps
+[08/13 13:56:09.574835][info][4696][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:56:09.675763][info][4701][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 13:56:12.517866][info][4793][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.996002fps
+[08/13 13:56:12.519078][info][4795][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 13:56:12.831636][info][4791][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:56:12.932723][info][4798][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 13:56:14.578360][info][4696][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.992006fps
+[08/13 13:56:14.678782][info][4701][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 13:56:17.521259][info][4793][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.992006fps
+[08/13 13:56:17.522433][info][4795][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 13:56:17.835146][info][4791][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.992006fps
+[08/13 13:56:17.935912][info][4798][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 13:56:19.581775][info][4696][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:56:19.683075][info][4701][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.992006fps
+[08/13 13:56:22.524715][info][4793][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 13:56:22.525876][info][4795][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 13:56:22.838589][info][4791][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:56:22.939313][info][4798][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.992006fps
+[08/13 13:56:24.585182][info][4696][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:56:24.685618][info][4701][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 13:56:27.528097][info][4793][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 13:56:27.529373][info][4795][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.992006fps
+[08/13 13:56:27.841964][info][4791][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:56:27.942693][info][4798][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 13:56:29.588649][info][4696][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.992006fps
+[08/13 13:56:29.689927][info][4701][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.992006fps
+[08/13 13:56:32.531503][info][4793][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.992006fps
+[08/13 13:56:32.532698][info][4795][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 13:56:32.845255][info][4791][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:56:32.945952][info][4798][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 13:56:34.592472][info][4696][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.992006fps
+[08/13 13:56:34.693384][info][4701][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 13:56:37.535213][info][4793][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 13:56:37.537902][info][4795][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.990009fps
+[08/13 13:56:37.848878][info][4791][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.992006fps
+[08/13 13:56:37.949449][info][4798][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 13:56:39.595452][info][4696][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.996002fps
+[08/13 13:56:39.696041][info][4701][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 13:56:42.538507][info][4793][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 13:56:42.539868][info][4795][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.996002fps
+[08/13 13:56:42.852121][info][4791][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:56:42.953090][info][4798][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.992006fps
+[08/13 13:56:44.598787][info][4696][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.992006fps
+[08/13 13:56:44.700236][info][4701][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.992006fps
+[08/13 13:56:47.541698][info][4793][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.992006fps
+[08/13 13:56:47.542837][info][4795][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 13:56:47.855446][info][4791][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:56:47.956210][info][4798][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 13:56:49.602187][info][4696][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:56:49.703625][info][4701][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 13:56:52.545114][info][4793][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 13:56:52.546271][info][4795][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 13:56:52.858830][info][4791][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.992006fps
+[08/13 13:56:52.959581][info][4798][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 13:56:54.605579][info][4696][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:56:54.706977][info][4701][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.992006fps
+[08/13 13:56:57.548687][info][4793][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 13:56:57.549794][info][4795][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.992006fps
+[08/13 13:56:57.862350][info][4791][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:56:57.963083][info][4798][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.992006fps
+[08/13 13:56:59.608872][info][4696][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.992006fps
+[08/13 13:56:59.709504][info][4701][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.996002fps
+[08/13 13:57:02.551876][info][4793][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 13:57:02.553775][info][4795][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 13:57:02.865606][info][4791][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:57:02.966933][info][4798][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.992006fps
+[08/13 13:57:04.612296][info][4696][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:57:04.713725][info][4701][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.992006fps
+[08/13 13:57:07.555270][info][4793][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.992006fps
+[08/13 13:57:07.556473][info][4795][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 13:57:07.868993][info][4791][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.992006fps
+[08/13 13:57:07.969735][info][4798][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.996002fps
+[08/13 13:57:09.615828][info][4696][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:57:09.717165][info][4701][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.992006fps
+[08/13 13:57:12.558664][info][4793][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 13:57:12.559796][info][4795][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 13:57:12.872406][info][4791][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:57:12.973122][info][4798][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.992006fps
+[08/13 13:57:14.619053][info][4696][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:57:14.719704][info][4701][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.996002fps
+[08/13 13:57:17.562055][info][4793][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 13:57:17.563434][info][4795][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.992006fps
+[08/13 13:57:17.875929][info][4791][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:57:17.977479][info][4798][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.992006fps
+[08/13 13:57:19.622585][info][4696][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.992006fps
+[08/13 13:57:19.724067][info][4701][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.992006fps
+[08/13 13:57:22.565525][info][4793][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.992006fps
+[08/13 13:57:22.567618][info][4795][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.992006fps
+[08/13 13:57:22.879217][info][4791][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.992006fps
+[08/13 13:57:22.980369][info][4798][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 13:57:24.625951][info][4696][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:57:24.729661][info][4701][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.988014fps
+[08/13 13:57:27.568830][info][4793][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 13:57:27.570004][info][4795][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.996002fps
+[08/13 13:57:27.882683][info][4791][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:57:27.983355][info][4798][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 13:57:29.629371][info][4696][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.992006fps
+[08/13 13:57:29.730676][info][4701][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.998000fps
+[08/13 13:57:32.572464][info][4793][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.992006fps
+[08/13 13:57:32.574348][info][4795][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.990009fps
+[08/13 13:57:32.886000][info][4791][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:57:32.987346][info][4798][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 13:57:34.632746][info][4696][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:57:34.734087][info][4701][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 13:57:37.575570][info][4793][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 13:57:37.576755][info][4795][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.996002fps
+[08/13 13:57:37.889411][info][4791][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.992006fps
+[08/13 13:57:37.990020][info][4798][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 13:57:39.635976][info][4696][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:57:39.736582][info][4701][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 13:57:42.578963][info][4793][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 13:57:42.581609][info][4795][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.990009fps
+[08/13 13:57:42.892727][info][4791][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:57:42.993363][info][4798][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 13:57:44.639514][info][4696][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.992006fps
+[08/13 13:57:44.740943][info][4701][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.992006fps
+[08/13 13:57:47.582360][info][4793][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 13:57:47.584077][info][4795][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.996002fps
+[08/13 13:57:47.896036][info][4791][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:57:47.996787][info][4798][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.992006fps
+[08/13 13:57:49.642722][info][4696][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:57:49.743354][info][4701][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.996002fps
+[08/13 13:57:52.585731][info][4793][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.992006fps
+[08/13 13:57:52.588417][info][4795][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.992006fps
+[08/13 13:57:52.899539][info][4791][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:57:53.000294][info][4798][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 13:57:54.646128][info][4696][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:57:54.746787][info][4701][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.992006fps
+[08/13 13:57:57.589095][info][4793][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 13:57:57.591392][info][4795][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 13:57:57.902813][info][4791][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.992006fps
+[08/13 13:57:58.003560][info][4798][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 13:57:59.649472][info][4696][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:57:59.750135][info][4701][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 13:58:02.592627][info][4793][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 13:58:02.595264][info][4795][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.992006fps
+[08/13 13:58:02.906337][info][4791][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:58:03.007217][info][4798][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.992006fps
+[08/13 13:58:04.652920][info][4696][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.992006fps
+[08/13 13:58:04.753562][info][4701][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 13:58:07.595819][info][4793][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.992006fps
+[08/13 13:58:07.597001][info][4795][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.996002fps
+[08/13 13:58:07.909776][info][4791][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.992006fps
+[08/13 13:58:08.010432][info][4798][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 13:58:09.656300][info][4696][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:58:09.757049][info][4701][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.992006fps
+[08/13 13:58:12.599184][info][4793][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 13:58:12.600365][info][4795][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 13:58:12.913063][info][4791][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:58:13.013617][info][4798][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 13:58:14.659664][info][4696][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:58:14.760279][info][4701][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 13:58:17.602545][info][4793][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 13:58:17.603685][info][4795][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 13:58:17.916292][info][4791][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:58:18.017056][info][4798][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.992006fps
+[08/13 13:58:19.663019][info][4696][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.992006fps
+[08/13 13:58:19.763642][info][4701][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 13:58:22.605920][info][4793][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.992006fps
+[08/13 13:58:22.607107][info][4795][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.992006fps
+[08/13 13:58:22.919672][info][4791][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:58:23.020753][info][4798][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 13:58:24.666470][info][4696][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:58:24.767032][info][4701][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.992006fps
+[08/13 13:58:27.609314][info][4793][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 13:58:27.610554][info][4795][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 13:58:27.923102][info][4791][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.992006fps
+[08/13 13:58:28.023812][info][4798][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 13:58:29.669897][info][4696][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:58:29.770375][info][4701][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 13:58:32.614129][info][4793][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.990009fps
+[08/13 13:58:32.615338][info][4795][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.990009fps
+[08/13 13:58:32.926454][info][4791][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:58:33.027240][info][4798][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.992006fps
+[08/13 13:58:34.676142][info][4696][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.986020fps
+[08/13 13:58:34.774635][info][4701][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.992006fps
+[08/13 13:58:37.616102][info][4793][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.996002fps
+[08/13 13:58:37.617405][info][4795][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.996002fps
+[08/13 13:58:37.929786][info][4791][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:58:38.030507][info][4798][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 13:58:39.776669][info][4696][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=10.000000fps
+[08/13 13:58:39.777287][info][4701][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 13:58:42.619397][info][4793][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 13:58:42.620743][info][4795][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 13:58:42.933124][info][4791][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.992006fps
+[08/13 13:58:43.033858][info][4798][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 13:58:44.780188][info][4696][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.992006fps
+[08/13 13:58:44.786738][info][4701][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.982033fps
+[08/13 13:58:47.622760][info][4793][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 13:58:47.623911][info][4795][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 13:58:47.936643][info][4791][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:58:48.038042][info][4798][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.992006fps
+[08/13 13:58:49.783309][info][4696][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:58:49.883909][info][4701][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=10.005885fps
+[08/13 13:58:52.626172][info][4793][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 13:58:52.627525][info][4795][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.992006fps
+[08/13 13:58:52.940012][info][4791][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:58:53.041750][info][4798][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.992006fps
+[08/13 13:58:54.786859][info][4696][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:58:54.887725][info][4701][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.992006fps
+[08/13 13:58:57.629557][info][4793][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.992006fps
+[08/13 13:58:57.630720][info][4795][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 13:58:57.943281][info][4791][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:58:58.043978][info][4798][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.996002fps
+[08/13 13:58:59.790293][info][4696][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:58:59.891683][info][4701][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.992006fps
+[08/13 13:59:02.633307][info][4793][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 13:59:02.635865][info][4795][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.990009fps
+[08/13 13:59:02.946964][info][4791][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.992006fps
+[08/13 13:59:03.048100][info][4798][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.992006fps
+[08/13 13:59:04.793871][info][4696][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.992006fps
+[08/13 13:59:04.894801][info][4701][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 13:59:07.636875][info][4793][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 13:59:07.638079][info][4795][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.996002fps
+[08/13 13:59:07.950863][info][4791][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:59:08.051527][info][4798][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 13:59:09.797644][info][4696][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:59:09.898685][info][4701][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 13:59:12.640553][info][4793][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.992006fps
+[08/13 13:59:12.643210][info][4795][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.992006fps
+[08/13 13:59:12.954442][info][4791][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.992006fps
+[08/13 13:59:13.055925][info][4798][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.992006fps
+[08/13 13:59:14.801199][info][4696][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:59:14.901797][info][4701][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 13:59:17.644217][info][4793][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 13:59:17.646921][info][4795][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.992006fps
+[08/13 13:59:17.957894][info][4791][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:59:18.058711][info][4798][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 13:59:19.804851][info][4696][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.992006fps
+[08/13 13:59:19.905434][info][4701][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 13:59:22.647770][info][4793][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 13:59:22.649067][info][4795][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.996002fps
+[08/13 13:59:22.961591][info][4791][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:59:23.062282][info][4798][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 13:59:24.808482][info][4696][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:59:24.909099][info][4701][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.992006fps
+[08/13 13:59:27.651400][info][4793][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.992006fps
+[08/13 13:59:27.652574][info][4795][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 13:59:27.965143][info][4791][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:59:28.065936][info][4798][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 13:59:29.812102][info][4696][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:59:29.912856][info][4701][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 13:59:32.655057][info][4793][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 13:59:32.656386][info][4795][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 13:59:32.968767][info][4791][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.992006fps
+[08/13 13:59:33.069466][info][4798][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 13:59:34.815937][info][4696][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.992006fps
+[08/13 13:59:34.916812][info][4701][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.992006fps
+[08/13 13:59:37.658636][info][4793][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 13:59:37.659875][info][4795][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.992006fps
+[08/13 13:59:37.972419][info][4791][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:59:38.073111][info][4798][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.992006fps
+[08/13 13:59:39.819397][info][4696][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:59:39.920017][info][4701][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 13:59:42.663986][info][4793][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.990009fps
+[08/13 13:59:42.665200][info][4795][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.990009fps
+[08/13 13:59:42.975983][info][4791][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:59:43.076689][info][4798][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 13:59:44.822954][info][4696][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 13:59:44.923521][info][4701][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 14:18:00.592780][info][7942][HostTimestampProvider.cpp:36] Update clock type to: realtime(0)
+[08/13 14:18:00.877933][info][7942][LinuxUsbPal.cpp:334] Create PollingDeviceWatcher!
+[08/13 14:18:00.877978][info][7942][DeviceManager.cpp:25] Current found device(s): (2)
+[08/13 14:18:00.877985][info][7942][DeviceManager.cpp:33] 	- Name: Gemini 305, PID: 0x0840, SN/ID: CV2TC5100075, Connection: USB3.2
+[08/13 14:18:00.877989][info][7942][DeviceManager.cpp:33] 	- Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N, Connection: USB3.2
+[08/13 14:18:00.877995][info][7942][DeviceManager.cpp:463] Enable net device enumeration: true
+[08/13 14:18:01.882897][info][7942][DeviceManager.cpp:25] Current device(s) list: (2)
+[08/13 14:18:01.882938][info][7942][DeviceManager.cpp:33] 	- Name: Gemini 305, PID: 0x0840, SN/ID: CV2TC5100075, Connection: USB3.2
+[08/13 14:18:01.882943][info][7942][DeviceManager.cpp:33] 	- Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N, Connection: USB3.2
+[08/13 14:18:01.888686][info][7942][G305Device.cpp:616] UVCAutoRebootOnFault=true for device: Gemini 305
+[08/13 14:18:01.897904][info][7942][DeviceBase.cpp:742] key: AppSlot,value:2
+[08/13 14:18:01.897910][info][7942][DeviceBase.cpp:742] key: HwType,value:S1
+[08/13 14:18:01.897911][info][7942][DeviceBase.cpp:742] key: HwVer,value:V1.3
+[08/13 14:18:01.897913][info][7942][DeviceBase.cpp:742] key: IspFwVer,value:20260116
+[08/13 14:18:01.897914][info][7942][DeviceBase.cpp:742] key: IspNeedVer,value:20250920
+[08/13 14:18:01.897915][info][7942][DeviceBase.cpp:742] key: PresetVer,value:0.0.7
+[08/13 14:18:02.112900][info][7942][DeviceManager.cpp:199] Device created successfully! Name: Gemini 305, PID: 0x0840, SN/ID: CV2TC5100075 FW: 1.0.30
+[08/13 14:18:02.112974][info][7942][Pipeline.cpp:54] [CV2TC5100075] Pipeline created with device: {name: Gemini 305, sn: CV2TC5100075}, @0xAAAB021715C0
+[08/13 14:18:02.146652][info][7942][Pipeline.cpp:228] [CV2TC5100075] Check and set config done!
+[08/13 14:18:02.148128][info][7942][Pipeline.cpp:266] [CV2TC5100075] Try to start streams!
+[08/13 14:18:02.148153][info][7942][VideoSensor.cpp:61] [CV2TC5100075] Try to start stream: {type: Color, format: RGB, width: 640, height: 480, fps: 10}
+[08/13 14:18:02.148182][info][7942][SensorBase.cpp:216] [CV2TC5100075] Stream state changed from STOPPED to STARTING@Color
+[08/13 14:18:02.148196][info][7942][VideoSensor.cpp:130] [CV2TC5100075] Start backend stream: {type: Color, format: YUYV, width: 640, height: 480, fps: 10}
+[08/13 14:18:02.152979][info][7942][Pipeline.cpp:293] [CV2TC5100075] Start streams done!
+[08/13 14:18:02.152986][info][7942][Pipeline.cpp:250] [CV2TC5100075] Pipeline start done!
+[08/13 14:18:03.100073][info][7963][SensorBase.cpp:216] [CV2TC5100075] Stream state changed from STARTING to STREAMING@Color
+[08/13 14:18:08.102377][info][7963][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=10.195922fps
+[08/13 14:18:08.103725][info][7966][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=10.195922fps
+[08/13 14:18:13.105650][info][7963][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:18:13.106244][info][7966][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.996002fps
+[08/13 14:18:15.655289][info][8013][HostTimestampProvider.cpp:36] Update clock type to: realtime(0)
+[08/13 14:18:15.736034][info][8013][LinuxUsbPal.cpp:334] Create PollingDeviceWatcher!
+[08/13 14:18:15.736065][info][8013][DeviceManager.cpp:25] Current found device(s): (2)
+[08/13 14:18:15.736068][info][8013][DeviceManager.cpp:33] 	- Name: Gemini 305, PID: 0x0840, SN/ID: CV2TC5100075, Connection: USB3.2
+[08/13 14:18:15.736070][info][8013][DeviceManager.cpp:33] 	- Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N, Connection: USB3.2
+[08/13 14:18:15.736074][info][8013][DeviceManager.cpp:463] Enable net device enumeration: true
+[08/13 14:18:16.759953][info][8013][DeviceManager.cpp:25] Current device(s) list: (2)
+[08/13 14:18:16.759995][info][8013][DeviceManager.cpp:33] 	- Name: Gemini 305, PID: 0x0840, SN/ID: CV2TC5100075, Connection: USB3.2
+[08/13 14:18:16.759999][info][8013][DeviceManager.cpp:33] 	- Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N, Connection: USB3.2
+[08/13 14:18:16.768439][info][8013][G330Device.cpp:630] UVCAutoRebootOnFault=true for device: Gemini 335L
+[08/13 14:18:16.776302][info][8013][DeviceBase.cpp:742] key: AppSlot,value:1
+[08/13 14:18:16.776312][info][8013][DeviceBase.cpp:742] key: HwType,value:L2
+[08/13 14:18:16.776313][info][8013][DeviceBase.cpp:742] key: HwVer,value:V1.0
+[08/13 14:18:16.776314][info][8013][DeviceBase.cpp:742] key: IspFwVer,value:20260620
+[08/13 14:18:16.776328][info][8013][DeviceBase.cpp:742] key: IspNeedVer,value:20250930
+[08/13 14:18:16.776329][info][8013][DeviceBase.cpp:742] key: PresetVer,value:3.0.7
+[08/13 14:18:16.973466][warning][8013][PropertyServer.cpp:55] [CP3L44P0001N] Property not found to register callback, propertyId: 277
+[08/13 14:18:16.974388][warning][8013][PropertyConfigHandler.hpp:53] Unsupported property '223', skipping getting, return nullvalue
+[08/13 14:18:17.042107][warning][8013][PropertyConfigHandler.hpp:94] Exporting property '190' while stream is not active; the value may differ from what will be applied after streaming starts
+[08/13 14:18:17.056391][warning][8013][PresetHandler.cpp:336] Exporting ROI property '1061' while stream is not active; the value may differ from what will be applied after streaming starts
+[08/13 14:18:17.062386][warning][8013][PresetHandler.cpp:710] Exporting disparity search properties while stream is not active; the values may differ from what will be applied after streaming starts
+[08/13 14:18:17.214106][warning][8013][PropertyConfigHandler.hpp:94] Exporting property '189' while stream is not active; the value may differ from what will be applied after streaming starts
+[08/13 14:18:17.227000][warning][8013][PropertyConfigHandler.hpp:53] Unsupported property '277', skipping getting, return nullvalue
+[08/13 14:18:17.230012][warning][8013][PresetHandler.cpp:336] Exporting ROI property '1060' while stream is not active; the value may differ from what will be applied after streaming starts
+[08/13 14:18:17.230447][info][8013][DeviceManager.cpp:199] Device created successfully! Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N FW: 1.8.10
+[08/13 14:18:17.230533][info][8013][Pipeline.cpp:54] [CP3L44P0001N] Pipeline created with device: {name: Gemini 335L, sn: CP3L44P0001N}, @0xAAAAED12EF30
+[08/13 14:18:18.109263][info][7963][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:18:18.110565][info][7966][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.992006fps
+[08/13 14:18:18.894697][info][8013][EngineInferEncry.cpp:1038] [EnhanceDepth] TEST Tensor rgb: mode=INPUT, shape=(-1, -1, 3), dtype=UINT8
+[08/13 14:18:18.894728][info][8013][EngineInferEncry.cpp:1038] [EnhanceDepth] TEST Tensor dep: mode=INPUT, shape=(1, 1, -1, -1), dtype=FLOAT
+[08/13 14:18:18.894733][info][8013][EngineInferEncry.cpp:1038] [EnhanceDepth] TEST Tensor pred: mode=OUTPUT, shape=(1, 1, 480, 640), dtype=FLOAT
+[08/13 14:18:18.894738][info][8013][EngineInferEncry.cpp:1038] [EnhanceDepth] TEST Tensor confidence_output: mode=OUTPUT, shape=(1, 1, 480, 640), dtype=FLOAT
+[08/13 14:18:18.894798][info][8013][EngineInferEncry.cpp:1096] [EnhanceDepth] Selected TensorRT optimization profile 0 for rgb=(480, 640, 3), depth=(1, 1, 480, 640)
+[08/13 14:18:18.901700][info][8013][EngineInferEncry.cpp:876] [EnhanceDepth] Configured dynamic TensorRT profile=0, rgb=(480, 640, 3), depth=(1, 1, 480, 640), pred=(1, 1, 480, 640), conf=(1, 1, 480, 640)
+[08/13 14:18:19.278250][info][8013][EngineInferEncry.cpp:1096] [EnhanceDepth] Selected TensorRT optimization profile 0 for rgb=(480, 640, 3), depth=(1, 1, 480, 640)
+[08/13 14:18:19.281969][info][8013][EngineInferEncry.cpp:876] [EnhanceDepth] Configured dynamic TensorRT profile=0, rgb=(480, 640, 3), depth=(1, 1, 480, 640), pred=(1, 1, 480, 640), conf=(1, 1, 480, 640)
+[08/13 14:18:19.483519][info][8013][Pipeline.cpp:228] [CP3L44P0001N] Check and set config done!
+[08/13 14:18:19.485087][info][8013][Pipeline.cpp:266] [CP3L44P0001N] Try to start streams!
+[08/13 14:18:19.485120][info][8013][VideoSensor.cpp:61] [CP3L44P0001N] Try to start stream: {type: Color, format: RGB, width: 640, height: 480, fps: 10}
+[08/13 14:18:19.485152][info][8013][SensorBase.cpp:216] [CP3L44P0001N] Stream state changed from STOPPED to STARTING@Color
+[08/13 14:18:19.485169][info][8013][VideoSensor.cpp:130] [CP3L44P0001N] Start backend stream: {type: Color, format: YUYV, width: 640, height: 480, fps: 10}
+[08/13 14:18:19.489326][info][8013][VideoSensor.cpp:61] [CP3L44P0001N] Try to start stream: {type: Depth, format: Y16, width: 640, height: 480, fps: 10}
+[08/13 14:18:19.489347][info][8013][SensorBase.cpp:216] [CP3L44P0001N] Stream state changed from STOPPED to STARTING@Depth
+[08/13 14:18:19.489359][info][8013][VideoSensor.cpp:130] [CP3L44P0001N] Start backend stream: {type: Depth, format: Z16, width: 640, height: 480, fps: 10}
+[08/13 14:18:19.493606][info][8013][Pipeline.cpp:293] [CP3L44P0001N] Start streams done!
+[08/13 14:18:19.493613][info][8013][Pipeline.cpp:250] [CP3L44P0001N] Pipeline start done!
+[08/13 14:18:19.707437][info][8046][SensorBase.cpp:216] [CP3L44P0001N] Stream state changed from STARTING to STREAMING@Depth
+[08/13 14:18:20.120963][info][8044][SensorBase.cpp:216] [CP3L44P0001N] Stream state changed from STARTING to STREAMING@Color
+[08/13 14:18:23.112546][info][7963][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:18:23.113097][info][7966][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 14:18:24.709561][info][8046][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=10.195922fps
+[08/13 14:18:24.812219][info][8048][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=10.204082fps
+[08/13 14:18:25.123382][info][8044][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=10.195922fps
+[08/13 14:18:25.224085][info][8054][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=10.196078fps
+[08/13 14:18:28.115979][info][7963][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:18:28.116548][info][7966][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 14:18:29.712991][info][8046][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.992006fps
+[08/13 14:18:29.815896][info][8048][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 14:18:30.126811][info][8044][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:18:30.227577][info][8054][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 14:18:33.119402][info][7963][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:18:33.119946][info][7966][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 14:18:34.716421][info][8046][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:18:34.819072][info][8048][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.992006fps
+[08/13 14:18:35.130254][info][8044][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:18:35.230980][info][8054][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 14:18:38.122836][info][7963][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:18:38.123406][info][7966][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.992006fps
+[08/13 14:18:39.719844][info][8046][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:18:39.821065][info][8048][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.998000fps
+[08/13 14:18:40.133659][info][8044][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:18:40.234412][info][8054][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.992006fps
+[08/13 14:18:43.126262][info][7963][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:18:43.126959][info][7966][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 14:18:44.723272][info][8046][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.992006fps
+[08/13 14:18:44.825598][info][8048][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.990009fps
+[08/13 14:18:45.137083][info][8044][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:18:45.237843][info][8054][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 14:18:48.129694][info][7963][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:18:48.130241][info][7966][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 14:18:49.726728][info][8046][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:18:49.829319][info][8048][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.992006fps
+[08/13 14:18:50.140556][info][8044][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:18:50.241274][info][8054][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 14:18:53.133124][info][7963][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:18:53.133690][info][7966][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.992006fps
+[08/13 14:18:54.730147][info][8046][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:18:54.831731][info][8048][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.996002fps
+[08/13 14:18:55.144017][info][8044][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:18:55.245750][info][8054][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.990009fps
+[08/13 14:18:58.136633][info][7963][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:18:58.137452][info][7966][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 14:18:59.733574][info][8046][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.992006fps
+[08/13 14:18:59.835312][info][8048][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 14:19:00.147332][info][8044][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:19:00.248883][info][8054][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 14:19:03.139954][info][7963][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:19:03.140511][info][7966][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 14:19:04.736963][info][8046][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:19:04.839159][info][8048][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.992006fps
+[08/13 14:19:05.150778][info][8044][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:19:05.251767][info][8054][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 14:19:08.143407][info][7963][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:19:08.144021][info][7966][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.992006fps
+[08/13 14:19:09.740377][info][8046][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:19:09.841615][info][8048][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.996002fps
+[08/13 14:19:10.154178][info][8044][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:19:10.255155][info][8054][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 14:19:13.146855][info][7963][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:19:13.147710][info][7966][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 14:19:14.743784][info][8046][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:19:14.845056][info][8048][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.992006fps
+[08/13 14:19:15.157561][info][8044][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:19:15.258340][info][8054][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 14:19:18.150238][info][7963][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:19:18.150906][info][7966][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.992006fps
+[08/13 14:19:19.747223][info][8046][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.992006fps
+[08/13 14:19:19.849196][info][8048][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.992006fps
+[08/13 14:19:20.160992][info][8044][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:19:20.261764][info][8054][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 14:19:23.153651][info][7963][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:19:23.154201][info][7966][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 14:19:24.750747][info][8046][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:19:24.852096][info][8048][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 14:19:25.164556][info][8044][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:19:25.265846][info][8054][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.992006fps
+[08/13 14:19:28.157067][info][7963][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:19:28.157618][info][7966][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 14:19:29.753996][info][8046][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:19:29.855289][info][8048][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 14:19:30.167823][info][8044][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:19:30.268592][info][8054][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 14:19:33.160696][info][7963][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:19:33.162005][info][7966][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.992006fps
+[08/13 14:19:34.757400][info][8046][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.992006fps
+[08/13 14:19:34.858580][info][8048][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 14:19:35.171233][info][8044][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:19:35.272822][info][8054][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.992006fps
+[08/13 14:19:38.164228][info][7963][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:19:38.165529][info][7966][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.992006fps
+[08/13 14:19:39.760822][info][8046][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:19:39.862972][info][8048][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.992006fps
+[08/13 14:19:40.174663][info][8044][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:19:40.275754][info][8054][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 14:19:43.167316][info][7963][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:19:43.167883][info][7966][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.996002fps
+[08/13 14:19:44.764240][info][8046][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:19:44.865470][info][8048][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 14:19:45.178046][info][8044][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:19:45.278776][info][8054][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 14:19:48.170739][info][7963][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:19:48.171298][info][7966][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 14:19:49.767807][info][8046][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.992006fps
+[08/13 14:19:49.868940][info][8048][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 14:19:50.181473][info][8044][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:19:50.283875][info][8054][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.990009fps
+[08/13 14:19:53.174215][info][7963][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:19:53.174789][info][7966][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.992006fps
+[08/13 14:19:54.771068][info][8046][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:19:54.872345][info][8048][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 14:19:55.184882][info][8044][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:19:55.285613][info][8054][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.996002fps
+[08/13 14:19:58.180030][info][7963][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.988014fps
+[08/13 14:19:58.180610][info][7966][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.988014fps
+[08/13 14:19:59.774486][info][8046][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:19:59.877730][info][8048][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.988014fps
+[08/13 14:20:00.188305][info][8044][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:20:00.289135][info][8054][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 14:20:03.181042][info][7963][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.998000fps
+[08/13 14:20:03.281627][info][7966][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=10.000000fps
+[08/13 14:20:04.782799][info][8046][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.982033fps
+[08/13 14:20:04.879150][info][8048][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.998000fps
+[08/13 14:20:05.191699][info][8044][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:20:05.292432][info][8054][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 14:20:08.184445][info][7963][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:20:08.285176][info][7966][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.992006fps
+[08/13 14:20:09.881480][info][8046][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=10.003923fps
+[08/13 14:20:09.884214][info][8048][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.990009fps
+[08/13 14:20:10.195244][info][8044][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:20:10.296550][info][8054][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.992006fps
+[08/13 14:20:13.187856][info][7963][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:20:13.288536][info][7966][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 14:20:14.884737][info][8046][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:20:14.885891][info][8048][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.996002fps
+[08/13 14:20:15.198521][info][8044][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:20:15.299240][info][8054][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 14:20:18.191284][info][7963][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:20:18.291884][info][7966][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 14:20:19.888309][info][8046][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.992006fps
+[08/13 14:20:19.889635][info][8048][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 14:20:20.201918][info][8044][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:20:20.302664][info][8054][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 14:20:23.194640][info][7963][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:20:23.295229][info][7966][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.992006fps
+[08/13 14:20:24.891583][info][8046][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:20:24.892962][info][8048][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 14:20:25.205314][info][8044][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:20:25.306082][info][8054][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.992006fps
+[08/13 14:20:28.198059][info][7963][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:20:28.298621][info][7966][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 14:20:29.894985][info][8046][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:20:29.896289][info][8048][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.992006fps
+[08/13 14:20:30.208775][info][8044][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:20:30.309455][info][8054][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 14:20:33.201611][info][7963][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:20:33.302821][info][7966][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.992006fps
+[08/13 14:20:34.898528][info][8046][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.992006fps
+[08/13 14:20:34.899847][info][8048][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 14:20:35.212255][info][8044][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:20:35.313165][info][8054][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 14:20:38.204893][info][7963][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:20:38.305506][info][7966][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 14:20:39.901901][info][8046][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:20:39.903781][info][8048][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.992006fps
+[08/13 14:20:40.215548][info][8044][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:20:40.316900][info][8054][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.992006fps
+[08/13 14:20:43.208336][info][7963][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:20:43.309821][info][7966][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.992006fps
+[08/13 14:20:44.905342][info][8046][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:20:44.907898][info][8048][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.992006fps
+[08/13 14:20:45.218930][info][8044][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:20:45.319698][info][8054][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 14:20:48.211709][info][7963][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:20:48.312420][info][7966][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.996002fps
+[08/13 14:20:49.908780][info][8046][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.992006fps
+[08/13 14:20:49.911526][info][8048][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.992006fps
+[08/13 14:20:50.222342][info][8044][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:20:50.323109][info][8054][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 14:20:53.215162][info][7963][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:20:53.315740][info][7966][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.992006fps
+[08/13 14:20:54.911999][info][8046][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:20:54.913426][info][8048][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.998000fps
+[08/13 14:20:55.225767][info][8044][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:20:55.326543][info][8054][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 14:20:58.218519][info][7963][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:20:58.319174][info][7966][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 14:20:59.915430][info][8046][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:20:59.916655][info][8048][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 14:21:00.229310][info][8044][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:21:00.330832][info][8054][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.990009fps
+[08/13 14:21:03.222179][info][7963][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:21:03.323407][info][7966][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.992006fps
+[08/13 14:21:04.919380][info][8046][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.992006fps
+[08/13 14:21:04.920736][info][8048][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.992006fps
+[08/13 14:21:05.232567][info][8044][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:21:05.333254][info][8054][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.996002fps
+[08/13 14:21:08.225354][info][7963][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:21:08.325954][info][7966][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 14:21:09.922234][info][8046][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:21:09.923392][info][8048][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 14:21:10.235977][info][8044][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:21:10.336699][info][8054][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 14:21:13.228773][info][7963][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:21:13.329356][info][7966][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 14:21:14.925667][info][8046][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:21:14.927143][info][8048][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.992006fps
+[08/13 14:21:15.239424][info][8044][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:21:15.340097][info][8054][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.992006fps
+[08/13 14:21:18.232407][info][7963][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:21:18.332827][info][7966][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 14:21:19.929071][info][8046][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:21:19.930309][info][8048][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 14:21:20.242819][info][8044][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:21:20.343568][info][8054][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 14:21:23.235633][info][7963][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:21:23.338039][info][7966][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.990009fps
+[08/13 14:21:24.932485][info][8046][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.992006fps
+[08/13 14:21:24.933715][info][8048][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 14:21:25.246209][info][8044][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:21:25.346969][info][8054][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 14:21:28.239044][info][7963][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:21:28.339600][info][7966][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.996002fps
+[08/13 14:21:29.935887][info][8046][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:21:29.937278][info][8048][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.992006fps
+[08/13 14:21:30.249773][info][8044][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:21:30.351324][info][8054][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.990009fps
+[08/13 14:21:33.242431][info][7963][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:21:33.343008][info][7966][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 14:21:34.939266][info][8046][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:21:34.940513][info][8048][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 14:21:35.253116][info][8044][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:21:35.354730][info][8054][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 14:21:38.245837][info][7963][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:21:38.347074][info][7966][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.992006fps
+[08/13 14:21:39.942946][info][8046][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.992006fps
+[08/13 14:21:39.944701][info][8048][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.992006fps
+[08/13 14:21:40.256564][info][8044][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:21:40.357852][info][8054][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 14:21:43.249289][info][7963][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:21:43.350459][info][7966][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 14:21:44.946084][info][8046][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:21:44.947273][info][8048][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.996002fps
+[08/13 14:21:45.259824][info][8044][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:21:45.361519][info][8054][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 14:21:48.252943][info][7963][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:21:48.354115][info][7966][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.992006fps
+[08/13 14:21:49.949689][info][8046][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.992006fps
+[08/13 14:21:49.952578][info][8048][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.990009fps
+[08/13 14:21:50.263386][info][8044][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:21:50.364766][info][8054][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.992006fps
+[08/13 14:21:53.256179][info][7963][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:21:53.356813][info][7966][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 14:21:54.952945][info][8046][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:21:54.954134][info][8048][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.996002fps
+[08/13 14:21:55.266641][info][8044][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:21:55.367572][info][8054][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.996002fps
+[08/13 14:21:58.259622][info][7963][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:21:58.360942][info][7966][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.992006fps
+[08/13 14:21:59.956346][info][8046][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:21:59.959013][info][8048][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.990009fps
+[08/13 14:22:00.270142][info][8044][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:22:00.371750][info][8054][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.992006fps
+[08/13 14:22:03.263032][info][7963][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:22:03.364267][info][7966][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 14:22:04.959827][info][8046][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:22:04.961073][info][8048][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.996002fps
+[08/13 14:22:05.273546][info][8044][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:22:05.374344][info][8054][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 14:22:08.266381][info][7963][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:22:08.367920][info][7966][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 14:22:09.963110][info][8046][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.992006fps
+[08/13 14:22:09.964301][info][8048][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 14:22:10.277060][info][8044][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:22:10.377790][info][8054][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 14:22:13.269929][info][7963][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:22:13.371422][info][7966][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.992006fps
+[08/13 14:22:14.966635][info][8046][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:22:14.967778][info][8048][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 14:22:15.280279][info][8044][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:22:15.381038][info][8054][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 14:22:18.273317][info][7963][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:22:18.374520][info][7966][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 14:22:19.969975][info][8046][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:22:19.971139][info][8048][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 14:22:20.283661][info][8044][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:22:20.384433][info][8054][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.992006fps
+[08/13 14:22:23.276695][info][7963][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:22:23.377980][info][7966][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 14:22:24.973378][info][8046][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.992006fps
+[08/13 14:22:24.976163][info][8048][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.990009fps
+[08/13 14:22:25.287218][info][8044][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:22:25.389066][info][8054][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.992006fps
+[08/13 14:22:28.279977][info][7963][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:22:28.380564][info][7966][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 14:22:29.976730][info][8046][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:22:29.977868][info][8048][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.996002fps
+[08/13 14:22:30.290452][info][8044][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:22:30.391690][info][8054][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 14:22:33.283537][info][7963][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:22:33.384100][info][7966][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 14:22:34.980278][info][8046][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:22:34.981432][info][8048][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 14:22:35.294034][info][8044][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:22:35.395428][info][8054][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 14:22:38.286956][info][7963][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:22:38.387540][info][7966][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.992006fps
+[08/13 14:22:39.983708][info][8046][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.992006fps
+[08/13 14:22:39.984912][info][8048][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.992006fps
+[08/13 14:22:40.297415][info][8044][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:22:40.398857][info][8054][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.992006fps
+[08/13 14:22:43.290356][info][7963][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:22:43.390962][info][7966][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 14:22:44.986955][info][8046][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:22:44.988100][info][8048][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 14:22:45.300678][info][8044][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:22:45.401427][info][8054][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.996002fps
+[08/13 14:22:48.293618][info][7963][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:22:48.394190][info][7966][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 14:22:49.990362][info][8046][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:22:49.991529][info][8048][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 14:22:50.304083][info][8044][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:22:50.404862][info][8054][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.992006fps
+[08/13 14:22:53.297038][info][7963][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:22:53.397611][info][7966][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 14:22:54.993817][info][8046][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:22:54.995607][info][8048][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.992006fps
+[08/13 14:22:55.307658][info][8044][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:22:55.408431][info][8054][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 14:22:58.300726][info][7963][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:22:58.401577][info][7966][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.992006fps
+[08/13 14:22:59.997157][info][8046][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.992006fps
+[08/13 14:22:59.998358][info][8048][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 14:23:00.310895][info][8044][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:23:00.411593][info][8054][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 14:23:03.304619][info][7963][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:23:03.404519][info][7966][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 14:23:05.000572][info][8046][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:23:05.001782][info][8048][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 14:23:05.314338][info][8044][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:23:05.415465][info][8054][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.992006fps
+[08/13 14:23:08.307313][info][7963][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:23:08.408063][info][7966][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.992006fps
+[08/13 14:23:10.003972][info][8046][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:23:10.005183][info][8048][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.992006fps
+[08/13 14:23:10.317763][info][8044][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:23:10.418479][info][8054][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 14:23:13.310760][info][7963][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:23:13.411292][info][7966][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 14:23:15.007377][info][8046][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.992006fps
+[08/13 14:23:15.008682][info][8048][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 14:23:15.321126][info][8044][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:23:15.421921][info][8054][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 14:23:18.314107][info][7963][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:23:18.414697][info][7966][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 14:23:20.010956][info][8046][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:23:20.014006][info][8048][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.990009fps
+[08/13 14:23:20.324703][info][8044][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:23:20.426113][info][8054][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.992006fps
+[08/13 14:23:23.317735][info][7963][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:23:23.418881][info][7966][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.992006fps
+[08/13 14:23:25.014187][info][8046][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:23:25.015378][info][8048][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.996002fps
+[08/13 14:23:25.327939][info][8044][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:23:25.428620][info][8054][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 14:23:28.321001][info][7963][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:23:28.422535][info][7966][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.992006fps
+[08/13 14:23:30.017737][info][8046][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.992006fps
+[08/13 14:23:30.020526][info][8048][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.990009fps
+[08/13 14:23:30.331326][info][8044][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:23:30.432253][info][8054][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 14:23:33.324401][info][7963][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:23:33.424957][info][7966][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.996002fps
+[08/13 14:23:35.021002][info][8046][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:23:35.022208][info][8048][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.998000fps
+[08/13 14:23:35.334804][info][8044][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:23:35.435774][info][8054][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.992006fps
+[08/13 14:23:38.327752][info][7963][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:23:38.428371][info][7966][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 14:23:40.024565][info][8046][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:23:40.025776][info][8048][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.992006fps
+[08/13 14:23:40.338145][info][8044][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:23:40.438894][info][8054][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 14:23:43.331181][info][7963][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:23:43.431732][info][7966][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.992006fps
+[08/13 14:23:45.028124][info][8046][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.992006fps
+[08/13 14:23:45.030874][info][8048][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.990009fps
+[08/13 14:23:45.341583][info][8044][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:23:45.443003][info][8054][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.992006fps
+[08/13 14:23:48.334691][info][7963][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:23:48.436123][info][7966][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.992006fps
+[08/13 14:23:50.031293][info][8046][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:23:50.033770][info][8048][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.996002fps
+[08/13 14:23:50.345084][info][8044][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:23:50.446487][info][8054][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 14:23:53.338113][info][7963][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:23:53.438577][info][7966][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.996002fps
+[08/13 14:23:55.034633][info][8046][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:23:55.037430][info][8048][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.992006fps
+[08/13 14:23:55.348540][info][8044][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:23:55.450077][info][8054][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.992006fps
+[08/13 14:23:58.341424][info][7963][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:23:58.441998][info][7966][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.992006fps
+[08/13 14:24:00.038160][info][8046][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.992006fps
+[08/13 14:24:00.040791][info][8048][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 14:24:00.351749][info][8044][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:24:00.452500][info][8054][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.996002fps
+[08/13 14:24:03.344993][info][7963][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:24:03.446272][info][7966][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.992006fps
+[08/13 14:24:05.041592][info][8046][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:24:05.044381][info][8048][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.992006fps
+[08/13 14:24:05.355326][info][8044][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:24:05.456905][info][8054][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.992006fps
+[08/13 14:24:08.348441][info][7963][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:24:08.449903][info][7966][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 14:24:10.044820][info][8046][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:24:10.046002][info][8048][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.998000fps
+[08/13 14:24:10.358585][info][8044][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:24:10.459340][info][8054][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 14:24:13.351652][info][7963][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:24:13.452210][info][7966][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.996002fps
+[08/13 14:24:15.048243][info][8046][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:24:15.049540][info][8048][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.992006fps
+[08/13 14:24:15.361974][info][8044][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:24:15.462673][info][8054][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 14:24:18.355244][info][7963][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:24:18.456066][info][7966][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.992006fps
+[08/13 14:24:20.051638][info][8046][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.992006fps
+[08/13 14:24:20.052845][info][8048][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 14:24:20.365392][info][8044][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:24:20.466103][info][8054][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 14:24:23.358794][info][7963][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:24:23.459215][info][7966][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 14:24:25.055079][info][8046][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:24:25.056468][info][8048][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.992006fps
+[08/13 14:24:25.368845][info][8044][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:24:25.469768][info][8054][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.992006fps
+[08/13 14:24:28.361924][info][7963][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:24:28.462862][info][7966][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.992006fps
+[08/13 14:24:30.060310][info][8046][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.990009fps
+[08/13 14:24:30.061617][info][8048][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.990009fps
+[08/13 14:24:30.372308][info][8044][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:24:30.473110][info][8054][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 14:24:33.365540][info][7963][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:24:33.465986][info][7966][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 14:24:35.061918][info][8046][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.996002fps
+[08/13 14:24:35.063098][info][8048][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.998000fps
+[08/13 14:24:35.375751][info][8044][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:24:35.476600][info][8054][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 14:24:38.368896][info][7963][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:24:38.469476][info][7966][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 14:24:40.065519][info][8046][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:24:40.067631][info][8048][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.992006fps
+[08/13 14:24:40.379289][info][8044][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:24:40.480147][info][8054][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.992006fps
+[08/13 14:24:43.372501][info][7963][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:24:43.473091][info][7966][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.992006fps
+[08/13 14:24:45.069013][info][8046][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:24:45.070189][info][8048][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 14:24:45.382867][info][8044][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:24:45.483683][info][8054][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 14:24:48.376295][info][7963][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:24:48.477186][info][7966][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 14:24:50.072681][info][8046][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.992006fps
+[08/13 14:24:50.075169][info][8048][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.992006fps
+[08/13 14:24:50.386322][info][8044][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:24:50.487336][info][8054][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 14:24:53.379846][info][7963][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:24:53.480467][info][7966][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 14:24:55.076094][info][8046][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:24:55.077370][info][8048][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.996002fps
+[08/13 14:24:55.389822][info][8044][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:24:55.491094][info][8054][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.992006fps
+[08/13 14:24:58.383419][info][7963][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:24:58.483973][info][7966][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.992006fps
+[08/13 14:25:00.079644][info][8046][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:25:00.081107][info][8048][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.992006fps
+[08/13 14:25:00.393352][info][8044][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:25:00.494146][info][8054][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 14:25:03.386940][info][7963][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:25:03.487517][info][7966][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 14:25:05.083151][info][8046][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.992006fps
+[08/13 14:25:05.084354][info][8048][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 14:25:05.396977][info][8044][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:25:05.497889][info][8054][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 14:25:08.390555][info][7963][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:25:08.491069][info][7966][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 14:25:10.090022][info][8046][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.988014fps
+[08/13 14:25:10.091415][info][8048][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.986020fps
+[08/13 14:25:10.400616][info][8044][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:25:10.501216][info][8054][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 14:25:13.393729][info][7963][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:25:13.494287][info][7966][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 14:25:15.190295][info][8046][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=10.000000fps
+[08/13 14:25:15.191529][info][8048][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=10.000000fps
+[08/13 14:25:15.403993][info][8044][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:25:15.504698][info][8054][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.992006fps
+[08/13 14:29:56.468214][info][10452][HostTimestampProvider.cpp:36] Update clock type to: realtime(0)
+[08/13 14:29:56.748527][info][10452][LinuxUsbPal.cpp:334] Create PollingDeviceWatcher!
+[08/13 14:29:56.748554][info][10452][DeviceManager.cpp:25] Current found device(s): (2)
+[08/13 14:29:56.748557][info][10452][DeviceManager.cpp:33] 	- Name: Gemini 305, PID: 0x0840, SN/ID: CV2TC5100075, Connection: USB3.2
+[08/13 14:29:56.748559][info][10452][DeviceManager.cpp:33] 	- Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N, Connection: USB3.2
+[08/13 14:29:56.748563][info][10452][DeviceManager.cpp:463] Enable net device enumeration: true
+[08/13 14:29:57.752840][info][10452][DeviceManager.cpp:25] Current device(s) list: (2)
+[08/13 14:29:57.752878][info][10452][DeviceManager.cpp:33] 	- Name: Gemini 305, PID: 0x0840, SN/ID: CV2TC5100075, Connection: USB3.2
+[08/13 14:29:57.752881][info][10452][DeviceManager.cpp:33] 	- Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N, Connection: USB3.2
+[08/13 14:29:57.758774][info][10452][G305Device.cpp:616] UVCAutoRebootOnFault=true for device: Gemini 305
+[08/13 14:29:57.767877][info][10452][DeviceBase.cpp:742] key: AppSlot,value:2
+[08/13 14:29:57.767884][info][10452][DeviceBase.cpp:742] key: HwType,value:S1
+[08/13 14:29:57.767886][info][10452][DeviceBase.cpp:742] key: HwVer,value:V1.3
+[08/13 14:29:57.767888][info][10452][DeviceBase.cpp:742] key: IspFwVer,value:20260116
+[08/13 14:29:57.767889][info][10452][DeviceBase.cpp:742] key: IspNeedVer,value:20250920
+[08/13 14:29:57.767891][info][10452][DeviceBase.cpp:742] key: PresetVer,value:0.0.7
+[08/13 14:29:57.982598][info][10452][DeviceManager.cpp:199] Device created successfully! Name: Gemini 305, PID: 0x0840, SN/ID: CV2TC5100075 FW: 1.0.30
+[08/13 14:29:57.982685][info][10452][Pipeline.cpp:54] [CV2TC5100075] Pipeline created with device: {name: Gemini 305, sn: CV2TC5100075}, @0xAAAB006115C0
+[08/13 14:29:58.019008][info][10452][Pipeline.cpp:228] [CV2TC5100075] Check and set config done!
+[08/13 14:29:58.020489][info][10452][Pipeline.cpp:266] [CV2TC5100075] Try to start streams!
+[08/13 14:29:58.020515][info][10452][VideoSensor.cpp:61] [CV2TC5100075] Try to start stream: {type: Color, format: RGB, width: 640, height: 480, fps: 10}
+[08/13 14:29:58.020545][info][10452][SensorBase.cpp:216] [CV2TC5100075] Stream state changed from STOPPED to STARTING@Color
+[08/13 14:29:58.020558][info][10452][VideoSensor.cpp:130] [CV2TC5100075] Start backend stream: {type: Color, format: YUYV, width: 640, height: 480, fps: 10}
+[08/13 14:29:58.025663][info][10452][Pipeline.cpp:293] [CV2TC5100075] Start streams done!
+[08/13 14:29:58.025671][info][10452][Pipeline.cpp:250] [CV2TC5100075] Pipeline start done!
+[08/13 14:29:58.972021][info][10474][SensorBase.cpp:216] [CV2TC5100075] Stream state changed from STARTING to STREAMING@Color
+[08/13 14:30:03.974687][info][10474][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=10.193884fps
+[08/13 14:30:03.976085][info][10477][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=10.195922fps
+[08/13 14:30:08.977989][info][10474][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:30:08.979311][info][10477][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 14:30:11.526548][info][10504][HostTimestampProvider.cpp:36] Update clock type to: realtime(0)
+[08/13 14:30:11.608996][info][10504][LinuxUsbPal.cpp:334] Create PollingDeviceWatcher!
+[08/13 14:30:11.609033][info][10504][DeviceManager.cpp:25] Current found device(s): (2)
+[08/13 14:30:11.609037][info][10504][DeviceManager.cpp:33] 	- Name: Gemini 305, PID: 0x0840, SN/ID: CV2TC5100075, Connection: USB3.2
+[08/13 14:30:11.609039][info][10504][DeviceManager.cpp:33] 	- Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N, Connection: USB3.2
+[08/13 14:30:11.609043][info][10504][DeviceManager.cpp:463] Enable net device enumeration: true
+[08/13 14:30:12.614033][info][10504][DeviceManager.cpp:25] Current device(s) list: (2)
+[08/13 14:30:12.614077][info][10504][DeviceManager.cpp:33] 	- Name: Gemini 305, PID: 0x0840, SN/ID: CV2TC5100075, Connection: USB3.2
+[08/13 14:30:12.614082][info][10504][DeviceManager.cpp:33] 	- Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N, Connection: USB3.2
+[08/13 14:30:12.619521][info][10504][G330Device.cpp:630] UVCAutoRebootOnFault=true for device: Gemini 335L
+[08/13 14:30:12.627652][info][10504][DeviceBase.cpp:742] key: AppSlot,value:1
+[08/13 14:30:12.627663][info][10504][DeviceBase.cpp:742] key: HwType,value:L2
+[08/13 14:30:12.627664][info][10504][DeviceBase.cpp:742] key: HwVer,value:V1.0
+[08/13 14:30:12.627666][info][10504][DeviceBase.cpp:742] key: IspFwVer,value:20260620
+[08/13 14:30:12.627667][info][10504][DeviceBase.cpp:742] key: IspNeedVer,value:20250930
+[08/13 14:30:12.627669][info][10504][DeviceBase.cpp:742] key: PresetVer,value:3.0.7
+[08/13 14:30:12.825788][warning][10504][PropertyServer.cpp:55] [CP3L44P0001N] Property not found to register callback, propertyId: 277
+[08/13 14:30:12.826671][warning][10504][PropertyConfigHandler.hpp:53] Unsupported property '223', skipping getting, return nullvalue
+[08/13 14:30:12.906167][warning][10504][PropertyConfigHandler.hpp:94] Exporting property '190' while stream is not active; the value may differ from what will be applied after streaming starts
+[08/13 14:30:12.920471][warning][10504][PresetHandler.cpp:336] Exporting ROI property '1061' while stream is not active; the value may differ from what will be applied after streaming starts
+[08/13 14:30:12.926461][warning][10504][PresetHandler.cpp:710] Exporting disparity search properties while stream is not active; the values may differ from what will be applied after streaming starts
+[08/13 14:30:13.097307][warning][10504][PropertyConfigHandler.hpp:94] Exporting property '189' while stream is not active; the value may differ from what will be applied after streaming starts
+[08/13 14:30:13.110090][warning][10504][PropertyConfigHandler.hpp:53] Unsupported property '277', skipping getting, return nullvalue
+[08/13 14:30:13.113110][warning][10504][PresetHandler.cpp:336] Exporting ROI property '1060' while stream is not active; the value may differ from what will be applied after streaming starts
+[08/13 14:30:13.113718][info][10504][DeviceManager.cpp:199] Device created successfully! Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N FW: 1.8.10
+[08/13 14:30:13.113818][info][10504][Pipeline.cpp:54] [CP3L44P0001N] Pipeline created with device: {name: Gemini 335L, sn: CP3L44P0001N}, @0xAAAAC46F4F30
+[08/13 14:30:13.981700][info][10474][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:30:13.983190][info][10477][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.992006fps
+[08/13 14:30:14.867104][info][10504][EngineInferEncry.cpp:1038] [EnhanceDepth] TEST Tensor rgb: mode=INPUT, shape=(-1, -1, 3), dtype=UINT8
+[08/13 14:30:14.867136][info][10504][EngineInferEncry.cpp:1038] [EnhanceDepth] TEST Tensor dep: mode=INPUT, shape=(1, 1, -1, -1), dtype=FLOAT
+[08/13 14:30:14.867141][info][10504][EngineInferEncry.cpp:1038] [EnhanceDepth] TEST Tensor pred: mode=OUTPUT, shape=(1, 1, 480, 640), dtype=FLOAT
+[08/13 14:30:14.867145][info][10504][EngineInferEncry.cpp:1038] [EnhanceDepth] TEST Tensor confidence_output: mode=OUTPUT, shape=(1, 1, 480, 640), dtype=FLOAT
+[08/13 14:30:14.867205][info][10504][EngineInferEncry.cpp:1096] [EnhanceDepth] Selected TensorRT optimization profile 0 for rgb=(480, 640, 3), depth=(1, 1, 480, 640)
+[08/13 14:30:14.874058][info][10504][EngineInferEncry.cpp:876] [EnhanceDepth] Configured dynamic TensorRT profile=0, rgb=(480, 640, 3), depth=(1, 1, 480, 640), pred=(1, 1, 480, 640), conf=(1, 1, 480, 640)
+[08/13 14:30:15.269585][info][10504][EngineInferEncry.cpp:1096] [EnhanceDepth] Selected TensorRT optimization profile 0 for rgb=(480, 640, 3), depth=(1, 1, 480, 640)
+[08/13 14:30:15.273310][info][10504][EngineInferEncry.cpp:876] [EnhanceDepth] Configured dynamic TensorRT profile=0, rgb=(480, 640, 3), depth=(1, 1, 480, 640), pred=(1, 1, 480, 640), conf=(1, 1, 480, 640)
+[08/13 14:30:15.475293][info][10504][Pipeline.cpp:228] [CP3L44P0001N] Check and set config done!
+[08/13 14:30:15.476800][info][10504][Pipeline.cpp:266] [CP3L44P0001N] Try to start streams!
+[08/13 14:30:15.476822][info][10504][VideoSensor.cpp:61] [CP3L44P0001N] Try to start stream: {type: Color, format: RGB, width: 640, height: 480, fps: 10}
+[08/13 14:30:15.476845][info][10504][SensorBase.cpp:216] [CP3L44P0001N] Stream state changed from STOPPED to STARTING@Color
+[08/13 14:30:15.476856][info][10504][VideoSensor.cpp:130] [CP3L44P0001N] Start backend stream: {type: Color, format: YUYV, width: 640, height: 480, fps: 10}
+[08/13 14:30:15.480911][info][10504][VideoSensor.cpp:61] [CP3L44P0001N] Try to start stream: {type: Depth, format: Y16, width: 640, height: 480, fps: 10}
+[08/13 14:30:15.480934][info][10504][SensorBase.cpp:216] [CP3L44P0001N] Stream state changed from STOPPED to STARTING@Depth
+[08/13 14:30:15.480947][info][10504][VideoSensor.cpp:130] [CP3L44P0001N] Start backend stream: {type: Depth, format: Z16, width: 640, height: 480, fps: 10}
+[08/13 14:30:15.485341][info][10504][Pipeline.cpp:293] [CP3L44P0001N] Start streams done!
+[08/13 14:30:15.485351][info][10504][Pipeline.cpp:250] [CP3L44P0001N] Pipeline start done!
+[08/13 14:30:15.699150][info][10536][SensorBase.cpp:216] [CP3L44P0001N] Stream state changed from STARTING to STREAMING@Depth
+[08/13 14:30:16.112944][info][10534][SensorBase.cpp:216] [CP3L44P0001N] Stream state changed from STARTING to STREAMING@Color
+[08/13 14:30:18.985219][info][10474][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:30:18.986543][info][10477][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 14:30:20.701925][info][10536][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=10.195922fps
+[08/13 14:30:20.804904][info][10538][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=10.202080fps
+[08/13 14:30:21.115814][info][10534][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=10.193884fps
+[08/13 14:30:21.116720][info][10544][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=10.197961fps
+[08/13 14:30:23.988583][info][10474][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:30:23.989923][info][10477][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 14:30:25.705666][info][10536][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.992006fps
+[08/13 14:30:25.806790][info][10538][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.996002fps
+[08/13 14:30:26.119425][info][10534][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:30:26.121066][info][10544][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.992006fps
+[08/13 14:30:28.992073][info][10474][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:30:28.993387][info][10477][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 14:30:30.708971][info][10536][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:30:30.810145][info][10538][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 14:30:31.122733][info][10534][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:30:31.124098][info][10544][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 14:30:33.995580][info][10474][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:30:33.997101][info][10477][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.992006fps
+[08/13 14:30:35.712466][info][10536][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:30:35.814685][info][10538][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.990009fps
+[08/13 14:30:36.126250][info][10534][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:30:36.127838][info][10544][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.992006fps
+[08/13 14:30:38.999061][info][10474][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:30:39.000165][info][10477][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 14:30:40.715864][info][10536][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:30:40.818552][info][10538][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 14:30:41.129646][info][10534][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:30:41.130347][info][10544][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.996002fps
+[08/13 14:30:44.002431][info][10474][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:30:44.003119][info][10477][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 14:30:45.719422][info][10536][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.992006fps
+[08/13 14:30:45.820677][info][10538][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.996002fps
+[08/13 14:30:46.133290][info][10534][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:30:46.134027][info][10544][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.992006fps
+[08/13 14:30:49.005958][info][10474][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:30:49.006519][info][10477][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 14:30:50.722809][info][10536][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:30:50.823986][info][10538][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 14:30:51.136660][info][10534][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:30:51.137747][info][10544][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 14:30:54.009468][info][10474][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:30:54.010025][info][10477][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 14:30:55.726391][info][10536][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.992006fps
+[08/13 14:30:55.827866][info][10538][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.992006fps
+[08/13 14:30:56.140208][info][10534][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:30:56.141591][info][10544][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.992006fps
+[08/13 14:30:59.012940][info][10474][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:30:59.013495][info][10477][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.992006fps
+[08/13 14:31:00.729776][info][10536][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:31:00.831009][info][10538][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 14:31:01.143675][info][10534][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:31:01.144388][info][10544][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.996002fps
+[08/13 14:31:04.016611][info][10474][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:31:04.017325][info][10477][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 14:31:05.733365][info][10536][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:31:05.834946][info][10538][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.992006fps
+[08/13 14:31:06.147136][info][10534][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:31:06.148207][info][10544][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.992006fps
+[08/13 14:31:09.020078][info][10474][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:31:09.021539][info][10477][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.992006fps
+[08/13 14:31:10.736736][info][10536][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:31:10.838337][info][10538][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 14:31:11.150545][info][10534][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:31:11.151273][info][10544][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 14:31:14.023396][info][10474][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:31:14.023960][info][10477][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 14:31:15.740213][info][10536][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.992006fps
+[08/13 14:31:15.841472][info][10538][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 14:31:16.154052][info][10534][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:31:16.154741][info][10544][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 14:31:19.026920][info][10474][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:31:19.027486][info][10477][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 14:31:20.743711][info][10536][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:31:20.845014][info][10538][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 14:31:21.157506][info][10534][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:31:21.158187][info][10544][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.992006fps
+[08/13 14:31:24.030400][info][10474][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:31:24.030957][info][10477][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 14:31:25.747185][info][10536][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:31:25.848454][info][10538][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.992006fps
+[08/13 14:31:26.161030][info][10534][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:31:26.161748][info][10544][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 14:31:29.033872][info][10474][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:31:29.034420][info][10477][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.992006fps
+[08/13 14:31:30.750721][info][10536][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.992006fps
+[08/13 14:31:30.852378][info][10538][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 14:31:31.164487][info][10534][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:31:31.165168][info][10544][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 14:31:34.037368][info][10474][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:31:34.037915][info][10477][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 14:31:35.754154][info][10536][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:31:35.855359][info][10538][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 14:31:36.168008][info][10534][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:31:36.168696][info][10544][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.992006fps
+[08/13 14:31:39.040871][info][10474][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:31:39.041455][info][10477][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 14:31:40.757615][info][10536][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:31:40.858887][info][10538][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.992006fps
+[08/13 14:31:41.171460][info][10534][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:31:41.172162][info][10544][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 14:31:44.044370][info][10474][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:31:44.044932][info][10477][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.992006fps
+[08/13 14:31:45.761112][info][10536][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.992006fps
+[08/13 14:31:45.862376][info][10538][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 14:31:46.174940][info][10534][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:31:46.175642][info][10544][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 14:31:49.047920][info][10474][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:31:49.048512][info][10477][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 14:31:50.764595][info][10536][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:31:50.865758][info][10538][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 14:31:51.178417][info][10534][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:31:51.179069][info][10544][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 14:31:54.051339][info][10474][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:31:54.051886][info][10477][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 14:31:55.768064][info][10536][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:31:55.869317][info][10538][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.992006fps
+[08/13 14:31:56.181878][info][10534][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:31:56.182535][info][10544][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.992006fps
+[08/13 14:31:59.054848][info][10474][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:31:59.055454][info][10477][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.992006fps
+[08/13 14:32:00.771561][info][10536][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.992006fps
+[08/13 14:32:00.872777][info][10538][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 14:32:01.185392][info][10534][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:32:01.186100][info][10544][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 14:32:04.058323][info][10474][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:32:04.058882][info][10477][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 14:32:05.775070][info][10536][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:32:05.876370][info][10538][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 14:32:06.188872][info][10534][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:32:06.189712][info][10544][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.992006fps
+[08/13 14:32:09.066018][info][10474][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.984026fps
+[08/13 14:32:09.066605][info][10477][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.986020fps
+[08/13 14:32:10.778530][info][10536][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:32:10.882467][info][10538][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.988014fps
+[08/13 14:32:11.196272][info][10534][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.986020fps
+[08/13 14:32:11.197052][info][10544][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.986020fps
+[08/13 14:32:14.071243][info][10474][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.990009fps
+[08/13 14:32:14.071824][info][10477][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.990009fps
+[08/13 14:32:15.782006][info][10536][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.992006fps
+[08/13 14:32:15.883171][info][10538][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.998000fps
+[08/13 14:32:16.295857][info][10534][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=10.001961fps
+[08/13 14:32:16.296577][info][10544][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=10.001961fps
+[08/13 14:32:19.172543][info][10474][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.998040fps
+[08/13 14:32:19.173201][info][10477][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.996079fps
+[08/13 14:32:20.785511][info][10536][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:32:20.887037][info][10538][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 14:32:21.299395][info][10534][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:32:21.300602][info][10544][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.992006fps
+[08/13 14:32:24.272692][info][10474][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=10.000000fps
+[08/13 14:32:24.273751][info][10477][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=10.000000fps
+[08/13 14:32:25.788904][info][10536][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:32:25.890183][info][10538][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 14:32:26.302940][info][10534][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:32:26.303631][info][10544][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 14:32:29.275864][info][10474][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:32:29.276427][info][10477][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 14:32:30.792398][info][10536][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.992006fps
+[08/13 14:32:30.893551][info][10538][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.992006fps
+[08/13 14:32:31.306286][info][10534][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:32:31.307134][info][10544][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 14:32:34.279353][info][10474][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:32:34.279924][info][10477][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 14:32:35.795865][info][10536][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:32:35.897222][info][10538][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 14:32:36.309731][info][10534][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:32:36.310610][info][10544][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.992006fps
+[08/13 14:32:39.282833][info][10474][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:32:39.283391][info][10477][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 14:32:40.799374][info][10536][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:32:40.901440][info][10538][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.992006fps
+[08/13 14:32:41.313191][info][10534][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:32:41.313914][info][10544][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 14:32:44.286340][info][10474][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:32:44.286900][info][10477][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.992006fps
+[08/13 14:32:45.802928][info][10536][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.992006fps
+[08/13 14:32:45.905309][info][10538][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.992006fps
+[08/13 14:32:46.316765][info][10534][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:32:46.317486][info][10544][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 14:32:49.289902][info][10474][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:32:49.290837][info][10477][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 14:32:50.806307][info][10536][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:32:50.909129][info][10538][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.992006fps
+[08/13 14:32:51.320248][info][10534][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:32:51.321019][info][10544][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.992006fps
+[08/13 14:32:54.293408][info][10474][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:32:54.294538][info][10477][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.992006fps
+[08/13 14:32:55.809784][info][10536][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:32:55.912010][info][10538][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.996002fps
+[08/13 14:32:56.323628][info][10534][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:32:56.324380][info][10544][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 14:32:59.296929][info][10474][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:32:59.298162][info][10477][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 14:33:00.813212][info][10536][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:33:00.916162][info][10538][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.992006fps
+[08/13 14:33:01.327234][info][10534][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:33:01.328626][info][10544][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.992006fps
+[08/13 14:33:04.300500][info][10474][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:33:04.301101][info][10477][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 14:33:05.816671][info][10536][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.992006fps
+[08/13 14:33:05.917835][info][10538][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.996002fps
+[08/13 14:33:06.330631][info][10534][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:33:06.331796][info][10544][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 14:33:09.303730][info][10474][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:33:09.304300][info][10477][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 14:33:10.820194][info][10536][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:33:10.921506][info][10538][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 14:33:11.334137][info][10534][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:33:11.334876][info][10544][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 14:33:14.307206][info][10474][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:33:14.308582][info][10477][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.992006fps
+[08/13 14:33:15.823611][info][10536][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:33:15.926325][info][10538][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.990009fps
+[08/13 14:33:16.337788][info][10534][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:33:16.339358][info][10544][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.992006fps
+[08/13 14:33:19.310691][info][10474][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:33:19.312021][info][10477][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.992006fps
+[08/13 14:33:20.827138][info][10536][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.992006fps
+[08/13 14:33:20.928431][info][10538][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.996002fps
+[08/13 14:33:21.340929][info][10534][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:33:21.341620][info][10544][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.996002fps
+[08/13 14:33:24.314369][info][10474][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:33:24.315931][info][10477][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 14:33:25.830656][info][10536][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:33:25.933469][info][10538][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.990009fps
+[08/13 14:33:26.344577][info][10534][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:33:26.346305][info][10544][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.990009fps
+[08/13 14:33:29.317622][info][10474][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:33:29.318212][info][10477][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 14:33:30.833985][info][10536][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:33:30.935230][info][10538][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.996002fps
+[08/13 14:33:31.347893][info][10534][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:33:31.348576][info][10544][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.996002fps
+[08/13 14:33:34.321067][info][10474][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:33:34.321612][info][10477][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 14:33:35.837538][info][10536][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.992006fps
+[08/13 14:33:35.938659][info][10538][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 14:33:36.351322][info][10534][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:33:36.351972][info][10544][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 14:33:39.324592][info][10474][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:33:39.325159][info][10477][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 14:33:40.840923][info][10536][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:33:40.942195][info][10538][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 14:33:41.355296][info][10534][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:33:41.356073][info][10544][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.992006fps
+[08/13 14:33:44.328060][info][10474][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:33:44.328634][info][10477][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.992006fps
+[08/13 14:33:45.844438][info][10536][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:33:45.945815][info][10538][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.992006fps
+[08/13 14:33:46.358341][info][10534][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:33:46.359030][info][10544][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 14:33:49.331927][info][10474][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:33:49.332613][info][10477][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 14:33:50.847858][info][10536][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.992006fps
+[08/13 14:33:50.949171][info][10538][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 14:33:51.364095][info][10534][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.988014fps
+[08/13 14:33:51.364809][info][10544][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.988014fps
+[08/13 14:33:54.335056][info][10474][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:33:54.335645][info][10477][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 14:33:55.851315][info][10536][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:33:55.952590][info][10538][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 14:33:56.365236][info][10534][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.998000fps
+[08/13 14:33:56.465926][info][10544][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=10.000000fps
+[08/13 14:33:59.338761][info][10474][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:33:59.339377][info][10477][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.992006fps
+[08/13 14:34:00.854859][info][10536][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:34:00.955966][info][10538][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 14:34:01.368711][info][10534][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:34:01.469452][info][10544][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.992006fps
+[08/13 14:34:04.342104][info][10474][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:34:04.343475][info][10477][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.992006fps
+[08/13 14:34:05.858254][info][10536][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.992006fps
+[08/13 14:34:05.959544][info][10538][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.992006fps
+[08/13 14:34:06.372257][info][10534][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:34:06.472985][info][10544][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 14:34:09.345530][info][10474][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:34:09.346813][info][10477][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 14:34:10.861834][info][10536][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:34:10.964728][info][10538][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.990009fps
+[08/13 14:34:11.375751][info][10534][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:34:11.476830][info][10544][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.992006fps
+[08/13 14:34:14.348909][info][10474][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:34:14.349702][info][10477][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 14:34:15.865155][info][10536][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:34:15.966356][info][10538][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.998000fps
+[08/13 14:34:16.379029][info][10534][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:34:16.479824][info][10544][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 14:34:19.352339][info][10474][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:34:19.352892][info][10477][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 14:34:20.868742][info][10536][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.992006fps
+[08/13 14:34:20.970218][info][10538][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.992006fps
+[08/13 14:34:21.382597][info][10534][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:34:21.483177][info][10544][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 14:34:24.355830][info][10474][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:34:24.356392][info][10477][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 14:34:25.872095][info][10536][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:34:25.974899][info][10538][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.990009fps
+[08/13 14:34:26.386084][info][10534][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:34:26.486771][info][10544][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 14:34:29.359447][info][10474][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:34:29.360762][info][10477][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.992006fps
+[08/13 14:34:30.875698][info][10536][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:34:30.978692][info][10538][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 14:34:31.389536][info][10534][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:34:31.491044][info][10544][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.990009fps
+[08/13 14:34:34.362952][info][10474][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:34:34.364286][info][10477][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.992006fps
+[08/13 14:34:35.879220][info][10536][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.992006fps
+[08/13 14:34:35.982001][info][10538][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 14:34:36.392879][info][10534][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:34:36.493602][info][10544][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.996002fps
+[08/13 14:34:39.366230][info][10474][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:34:39.366810][info][10477][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.996002fps
+[08/13 14:34:40.882588][info][10536][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:34:40.985390][info][10538][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.992006fps
+[08/13 14:34:41.396343][info][10534][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:34:41.497071][info][10544][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 14:34:44.369664][info][10474][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:34:44.370211][info][10477][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 14:34:45.885916][info][10536][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:34:45.988660][info][10538][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 14:34:46.399900][info][10534][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:34:46.500680][info][10544][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.992006fps
+[08/13 14:34:49.373172][info][10474][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:34:49.373711][info][10477][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.992006fps
+[08/13 14:34:50.889407][info][10536][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:34:50.990786][info][10538][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.996002fps
+[08/13 14:34:51.403386][info][10534][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:34:51.504980][info][10544][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.992006fps
+[08/13 14:34:54.376813][info][10474][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:34:54.378423][info][10477][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.992006fps
+[08/13 14:34:55.892845][info][10536][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.992006fps
+[08/13 14:34:55.994242][info][10538][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 14:34:56.406818][info][10534][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:34:56.507708][info][10544][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 14:34:59.380157][info][10474][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:34:59.380846][info][10477][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 14:35:00.896458][info][10536][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:35:00.999108][info][10538][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.990009fps
+[08/13 14:35:01.410166][info][10534][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:35:01.510865][info][10544][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 14:35:04.383647][info][10474][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:35:04.384462][info][10477][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 14:35:05.899746][info][10536][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:35:06.002043][info][10538][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 14:35:06.413607][info][10534][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:35:06.514278][info][10544][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 14:35:09.387050][info][10474][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:35:09.387618][info][10477][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 14:35:10.903332][info][10536][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.992006fps
+[08/13 14:35:11.004614][info][10538][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.996002fps
+[08/13 14:35:11.417260][info][10534][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:35:11.517808][info][10544][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 14:35:14.390722][info][10474][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:35:14.391485][info][10477][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.992006fps
+[08/13 14:35:15.906691][info][10536][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:35:16.008103][info][10538][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 14:35:16.420605][info][10534][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:35:16.521305][info][10544][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.992006fps
+[08/13 14:35:19.394043][info][10474][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:35:19.394670][info][10477][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 14:35:20.911547][info][10536][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.990009fps
+[08/13 14:35:21.011347][info][10538][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 14:35:21.424006][info][10534][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:35:21.524784][info][10544][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 14:35:24.397461][info][10474][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:35:24.398047][info][10477][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 14:35:25.913574][info][10536][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.996002fps
+[08/13 14:35:26.016188][info][10538][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.990009fps
+[08/13 14:35:26.427569][info][10534][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:35:26.528463][info][10544][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 14:35:29.401029][info][10474][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:35:29.402128][info][10477][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.992006fps
+[08/13 14:35:30.917058][info][10536][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:35:31.020390][info][10538][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.992006fps
+[08/13 14:35:31.431012][info][10534][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:35:31.531732][info][10544][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.992006fps
+[08/13 14:35:34.404497][info][10474][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:35:34.405523][info][10477][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 14:35:35.920698][info][10536][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:35:36.023380][info][10538][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 14:35:36.434462][info][10534][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:35:36.536119][info][10544][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.992006fps
+[08/13 14:35:39.407988][info][10474][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:35:39.409364][info][10477][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.992006fps
+[08/13 14:35:40.924080][info][10536][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.992006fps
+[08/13 14:35:41.026791][info][10538][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 14:35:41.437936][info][10534][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:35:41.539231][info][10544][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 14:35:44.411267][info][10474][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:35:44.411834][info][10477][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.996002fps
+[08/13 14:35:45.927384][info][10536][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:35:46.028678][info][10538][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.996002fps
+[08/13 14:35:46.441265][info][10534][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:35:46.541939][info][10544][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.996002fps
+[08/13 14:35:49.414744][info][10474][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:35:49.415290][info][10477][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.992006fps
+[08/13 14:35:50.930841][info][10536][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:35:51.032070][info][10538][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 14:35:51.444711][info][10534][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:35:51.545674][info][10544][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.992006fps
+[08/13 14:35:54.418205][info][10474][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:35:54.418771][info][10477][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 14:35:55.934431][info][10536][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.992006fps
+[08/13 14:35:56.035559][info][10538][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.992006fps
+[08/13 14:35:56.448287][info][10534][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:35:56.549188][info][10544][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 14:35:59.421675][info][10474][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:35:59.422289][info][10477][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 14:36:00.937866][info][10536][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:36:01.039811][info][10538][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.992006fps
+[08/13 14:36:01.451629][info][10534][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:36:01.553280][info][10544][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.992006fps
+[08/13 14:36:04.425142][info][10474][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:36:04.425711][info][10477][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.992006fps
+[08/13 14:36:05.941353][info][10536][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:36:06.042814][info][10538][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 14:36:06.455075][info][10534][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:36:06.555741][info][10544][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 14:36:09.428605][info][10474][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:36:09.429216][info][10477][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 14:36:10.944893][info][10536][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.992006fps
+[08/13 14:36:11.046453][info][10538][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/13 14:36:11.458517][info][10534][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:36:11.559247][info][10544][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 14:36:14.432061][info][10474][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:36:14.432634][info][10477][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 14:36:15.949063][info][10536][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.992006fps
+[08/13 14:36:16.050226][info][10538][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.992006fps
+[08/13 14:36:16.461996][info][10534][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.992006fps
+[08/13 14:36:16.562682][info][10544][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/13 14:36:19.435557][info][10474][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:36:19.436133][info][10477][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.992006fps
+[08/13 14:36:20.951557][info][10536][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.996002fps
+[08/13 14:36:21.052862][info][10538][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.996002fps
+[08/13 14:36:21.465454][info][10534][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:36:21.566145][info][10544][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.992006fps
+[08/13 14:36:24.439010][info][10474][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:36:24.439627][info][10477][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/13 14:36:25.955002][info][10536][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/13 14:36:26.056355][info][10538][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.992006fps
+[08/13 14:36:26.468868][info][10534][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/13 14:36:26.569617][info][10544][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps

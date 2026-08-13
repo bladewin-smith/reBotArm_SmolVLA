@@ -50,6 +50,15 @@ class RebotB601FollowerConfigBase:
     can_data_bitrate: int = 5000000
     disable_torque_on_disconnect: bool = True
     max_relative_target: float | dict[str, float] | None = 15.0
+    safety_hold_on_relative_clamp: bool = True
+    safety_hold_clamp_joint_count: int = 2
+    safety_hold_clamp_ratio: float = 1.2
+    safety_hold_single_joint_ratio: float = 3.0
+    safety_hold_log_interval_s: float = 1.0
+    safety_hold_position_kp_scale: float = 0.65
+    safety_hold_joints: list[str] = field(
+        default_factory=lambda: ["joint_1", "joint_2", "joint_3", "joint_4", "joint_5", "joint_6"]
+    )
     gripper_action_scale: float = 1.0
     gripper_action_offset: float = 0.0
     gripper_leader_close_pos: float | None = 5.0
