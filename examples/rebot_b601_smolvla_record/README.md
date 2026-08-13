@@ -11,7 +11,7 @@ The setup is:
 - follower: reBot Arm B601-DM
 - leader: reBot Arm B601-DM in gravity compensation mode
 - top camera: Orbbec Gemini 335L RGB + LingBot EnhancedDepthFilter depth + depth visualization image
-- wrist camera: Orbbec Gemini 305 RGB only
+- wrist camera: Orbbec Gemini 305 RGB only through the OrbbecSDK bridge
 
 For SmolVLA, the useful visual streams are:
 
@@ -73,7 +73,7 @@ Use the same neutral zero pose for the leader and follower.
 ```shell
 lerobot-calibrate \
   --robot.type=rebot_b601_follower \
-  --robot.port=/dev/ttyACM0 \
+  --robot.port=/dev/ttyACM1 \
   --robot.transport=motorbridge \
   --robot.id=b601_follower
 
@@ -291,15 +291,20 @@ reduce these two values:
 --teleop.gravity_comp_gripper_torque_limit=0.10
 ```
 
-If the follower gripper still does not open far enough, scale only the follower
-gripper target instead of forcing the leader gripper farther:
+The tuned defaults already use endpoint mapping for the gripper, so the
+following scale/offset options are only useful if you deliberately clear the
+four endpoint parameters and go back to direct scaling.
+
+If the follower gripper still does not open far enough in direct-scaling mode,
+scale only the follower gripper target instead of forcing the leader gripper
+farther:
 
 ```shell
 --robot.gripper_action_scale=1.5
 ```
 
-If the follower gripper still lags behind, keep the arm safety limit but give
-the gripper its own relative limit and gains:
+If the follower gripper still lags behind in direct-scaling mode, keep the arm
+safety limit but give the gripper its own relative limit and gains:
 
 ```shell
 --robot.gripper_action_scale=2.0 \
@@ -366,21 +371,65 @@ same range during teleoperation:
 
 ## Record
 
+Recommended script:
+
+```shell
+bash examples/rebot_b601_smolvla_record/record_b601_smolvla_rgbd.sh
+```
+
+Before running it, edit the `User settings` block at the top of
+`record_b601_smolvla_rgbd.sh`, especially `DATASET_ROOT`, `TOP_SERIAL`,
+`WRIST_SERIAL`, `ORBBEC_BRIDGE`, and `LINGBOT_MODEL`. The script writes the
+dataset locally by default and does not push to the Hub. Run with `--help` only
+when you want temporary command line overrides.
+
+With the Gemini 335L RGB + depth + EnhancedDepthFilter stream and the Gemini
+305 wrist RGB stream running together at 640x480, the Jetson Orin NX test setup
+has shown an effective visual rate of about 10 Hz. Keep the dataset FPS aligned
+with that measured throughput unless you lower the camera resolution, disable
+EnhancedDepthFilter, or otherwise verify a faster stable rate.
+
+`TOP_SERIAL` must be the OrbbecSDK serial number of the Gemini 335L, not a
+`/dev/video*` path. If the bridge reports available serials such as
+`CV2TC5100075, CP3L44P0001N`, test each serial once and keep the one belonging
+to the top Gemini 335L. `WRIST_SERIAL` should be the Gemini 305 serial. Avoid
+using OpenCV `/dev/video*` nodes for Orbbec RGB-D cameras unless you have
+verified the node is a normal decoded color stream; some nodes expose raw
+depth/IR/metadata and appear as green speckle images when interpreted as RGB.
+
+Equivalent expanded command:
+
 ```shell
 lerobot-record \
   --robot.type=rebot_b601_follower \
-  --robot.port=/dev/ttyACM0 \
+  --robot.port=/dev/ttyACM1 \
   --robot.transport=motorbridge \
   --robot.id=b601_follower \
-  --robot.max_relative_target=8.0 \
   --robot.cameras='{
+    wrist: {
+      type: orbbec,
+      serial_number: "GEMINI305_SERIAL",
+      bridge_binary: "/home/r/ws/rebot_lerobot/lerobot/src/lerobot/cameras/orbbec/cpp/build/orbbec_rgbd_bridge",
+      width: 640,
+      height: 480,
+      fps: 10,
+      warmup_s: 15,
+      timeout_ms: 15000,
+      record_color: true,
+      use_depth: false,
+      align_depth_to_color: false,
+      record_depth: false,
+      record_depth_viz: false
+    },
     top: {
       type: orbbec,
       serial_number: "GEMINI335L_SERIAL",
       bridge_binary: "/home/r/ws/rebot_lerobot/lerobot/src/lerobot/cameras/orbbec/cpp/build/orbbec_rgbd_bridge",
       width: 640,
       height: 480,
-      fps: 30,
+      fps: 10,
+      warmup_s: 25,
+      timeout_ms: 25000,
       record_color: true,
       use_depth: true,
       record_depth: true,
@@ -390,23 +439,12 @@ lerobot-record \
       depth_viz_min_mm: 250,
       depth_viz_max_mm: 1800,
       align_depth_to_color: true,
+      align_depth_to_color_mode: "sw",
       use_enhanced_depth_filter: true,
       enhanced_depth_filter_name: "EnhancedDepthFilter",
       enhanced_depth_model_path: "/home/r/ws/OrbbecSDK_v2/extensions/LingBot-Depth/model.sm4",
       enhanced_depth_confidence_key: "confidence_threshold",
-      enhanced_depth_confidence_threshold: 51,
-      enhanced_depth_license_check_command: [
-        "/home/r/ws/OrbbecSDK_v2/tools/LicenseTool",
-        "check",
-        "{serial_number}"
-      ]
-    },
-    wrist: {
-      type: opencv,
-      index_or_path: 0,
-      width: 640,
-      height: 480,
-      fps: 30
+      enhanced_depth_confidence_threshold: 51
     }
   }' \
   --teleop.type=rebot_b601_leader \
@@ -415,24 +453,41 @@ lerobot-record \
   --teleop.id=b601_leader \
   --teleop.manual_control_mode=gravity_comp \
   --dataset.repo_id="${HF_USER}/rebot_b601_banana_bottle_rgbd" \
-  --dataset.fps=30 \
+  --dataset.fps=10 \
   --dataset.num_episodes=50 \
   --dataset.episode_time_s=45 \
   --dataset.reset_time_s=20 \
   --dataset.single_task="Arrange the banana model and the transparent plastic cola bottle back to their assigned places on the desktop" \
-  --display_data=true
+  --display_data=false
 ```
 
-If the wrist Gemini 305 must also be read through OrbbecSDK instead of OpenCV,
-replace the `wrist` camera block with another `type: orbbec` block and set
-`record_depth: false` and `record_depth_viz: false`.
+The wrist Gemini 305 is read through OrbbecSDK instead of OpenCV because the
+camera exposes multiple `/dev/video*` nodes. Some of those nodes are not normal
+decoded RGB streams and can look like green speckle images if OpenCV interprets
+the raw data as BGR.
 
 ## Train SmolVLA
+
+Recommended script:
+
+```shell
+bash examples/rebot_b601_smolvla_record/train_smolvla_local.sh
+```
+
+Before running it, edit the `User settings` block at the top of
+`train_smolvla_local.sh`, especially `DATASET_ROOT`, `DATASET_REPO_ID`, and
+`OUTPUT_DIR`.
+
+For RTX 4090 24GB, start with `--batch-size 32 --use-amp true`. If CUDA memory
+is tight, lower `--batch-size` to 16.
+
+Equivalent expanded command:
 
 ```shell
 lerobot-train \
   --policy.path=lerobot/smolvla_base \
   --dataset.repo_id="${HF_USER}/rebot_b601_banana_bottle_rgbd" \
+  --dataset.root=/home/r/datasets/rebot_b601_banana_bottle_rgbd \
   --batch_size=32 \
   --steps=80000
 ```
@@ -447,8 +502,8 @@ The Orbbec LingBot EnhancedDepthFilter must run inside the Orbbec C++ bridge,
 before depth bytes are sent to Python. This keeps data collection, training,
 and edge inference on the same visual distribution.
 
-Use the `model.sm4`, extension libraries, and license files from the same
-OrbbecSDK release. The bridge creates the SDK private filter with:
+Use the `model.sm4`, extension libraries, and device-stored license from the
+same OrbbecSDK release. The bridge creates the SDK private filter with:
 
 ```text
 FilterFactory::createPrivateFilter("EnhancedDepthFilter", model.sm4)
@@ -458,10 +513,16 @@ and applies it to the synchronized color+depth `FrameSet` before Python sees
 the frame. If the SDK, extension, model, TensorRT/CUDA runtime, or license is
 not valid, recording stops instead of falling back to raw depth.
 
-Configure `enhanced_depth_license_check_command` with the exact check/verify
-command from Orbbec LicenseTool. The placeholders `{serial_number}` and
-`{model_path}` are expanded before the command runs. If LicenseTool exits with
-a non-zero code, recording stops before the camera bridge starts.
+If the LingBot-Depth license has already been written into the camera, leave
+`enhanced_depth_license_check_command` unset. OrbbecSDK reads and validates the
+device license when the C++ bridge creates and runs `EnhancedDepthFilter`.
+
+If your SDK release also provides an external LicenseTool and you want an
+extra preflight check before starting the bridge, configure
+`enhanced_depth_license_check_command` with the exact check/verify command. The
+placeholders `{serial_number}` and `{model_path}` are expanded before the
+command runs. If LicenseTool exits with a non-zero code, recording stops before
+the camera bridge starts.
 
 If your SDK release uses a different private filter name or config schema key,
 override `enhanced_depth_filter_name` or `enhanced_depth_confidence_key` in the

@@ -43,6 +43,7 @@ class OrbbecCameraConfig(CameraConfig):
 
     # Optional switches for the C++ bridge.
     align_depth_to_color: bool = True
+    align_depth_to_color_mode: str = "sw"
 
     # Orbbec LingBot EnhancedDepthFilter. This requires a supported Gemini 330
     # series camera, Jetson Linux ARM64, CUDA/TensorRT runtimes, a valid
@@ -92,6 +93,9 @@ class OrbbecCameraConfig(CameraConfig):
 
         if self.depth_viz_min_mm >= self.depth_viz_max_mm:
             raise ValueError("`depth_viz_min_mm` must be smaller than `depth_viz_max_mm`.")
+
+        if self.align_depth_to_color_mode not in {"sw", "software", "hw", "hardware"}:
+            raise ValueError("`align_depth_to_color_mode` must be 'sw', 'software', 'hw', or 'hardware'.")
 
         if self.use_lingbo_filter:
             self.use_enhanced_depth_filter = True

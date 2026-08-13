@@ -1,0 +1,34 @@
+[08/12 18:41:01.497717][info][14407][HostTimestampProvider.cpp:36] Update clock type to: realtime(0)
+[08/12 18:41:01.712349][info][14407][LinuxUsbPal.cpp:334] Create PollingDeviceWatcher!
+[08/12 18:41:01.712379][info][14407][DeviceManager.cpp:25] Current found device(s): (1)
+[08/12 18:41:01.712383][info][14407][DeviceManager.cpp:33] 	- Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N, Connection: USB3.2
+[08/12 18:41:01.712388][info][14407][DeviceManager.cpp:463] Enable net device enumeration: true
+[08/12 18:41:02.736766][info][14407][DeviceManager.cpp:25] Current device(s) list: (1)
+[08/12 18:41:02.736806][info][14407][DeviceManager.cpp:33] 	- Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N, Connection: USB3.2
+[08/12 18:46:39.595771][info][14894][HostTimestampProvider.cpp:36] Update clock type to: realtime(0)
+[08/12 18:46:39.974568][info][14894][LinuxUsbPal.cpp:334] Create PollingDeviceWatcher!
+[08/12 18:46:39.974608][info][14894][DeviceManager.cpp:25] Current found device(s): (2)
+[08/12 18:46:39.974614][info][14894][DeviceManager.cpp:33] 	- Name: Gemini 305, PID: 0x0840, SN/ID: CV2TC5100075, Connection: USB3.2
+[08/12 18:46:39.974618][info][14894][DeviceManager.cpp:33] 	- Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N, Connection: USB3.2
+[08/12 18:46:39.974625][info][14894][DeviceManager.cpp:463] Enable net device enumeration: true
+[08/12 18:46:40.979489][info][14894][DeviceManager.cpp:25] Current device(s) list: (2)
+[08/12 18:46:40.979530][info][14894][DeviceManager.cpp:33] 	- Name: Gemini 305, PID: 0x0840, SN/ID: CV2TC5100075, Connection: USB3.2
+[08/12 18:46:40.979534][info][14894][DeviceManager.cpp:33] 	- Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N, Connection: USB3.2
+[08/12 18:48:50.326549][info][15166][HostTimestampProvider.cpp:36] Update clock type to: realtime(0)
+[08/12 18:48:50.706661][info][15166][LinuxUsbPal.cpp:334] Create PollingDeviceWatcher!
+[08/12 18:48:50.706699][info][15166][DeviceManager.cpp:25] Current found device(s): (2)
+[08/12 18:48:50.706704][info][15166][DeviceManager.cpp:33] 	- Name: Gemini 305, PID: 0x0840, SN/ID: CV2TC5100075, Connection: USB3.2
+[08/12 18:48:50.706707][info][15166][DeviceManager.cpp:33] 	- Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N, Connection: USB3.2
+[08/12 18:48:50.706712][info][15166][DeviceManager.cpp:463] Enable net device enumeration: true
+[08/12 18:48:51.711172][info][15166][DeviceManager.cpp:25] Current device(s) list: (2)
+[08/12 18:48:51.711211][info][15166][DeviceManager.cpp:33] 	- Name: Gemini 305, PID: 0x0840, SN/ID: CV2TC5100075, Connection: USB3.2
+[08/12 18:48:51.711213][info][15166][DeviceManager.cpp:33] 	- Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N, Connection: USB3.2
+[08/12 18:50:53.511308][info][15593][HostTimestampProvider.cpp:36] Update clock type to: realtime(0)
+[08/12 18:50:53.794440][info][15593][LinuxUsbPal.cpp:334] Create PollingDeviceWatcher!
+[08/12 18:50:53.794483][info][15593][DeviceManager.cpp:25] Current found device(s): (2)
+[08/12 18:50:53.794490][info][15593][DeviceManager.cpp:33] 	- Name: Gemini 305, PID: 0x0840, SN/ID: CV2TC5100075, Connection: USB3.2
+[08/12 18:50:53.794494][info][15593][DeviceManager.cpp:33] 	- Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N, Connection: USB3.2
+[08/12 18:50:53.794500][info][15593][DeviceManager.cpp:463] Enable net device enumeration: true
+[08/12 18:50:54.798848][info][15593][DeviceManager.cpp:25] Current device(s) list: (2)
+[08/12 18:50:54.798885][info][15593][DeviceManager.cpp:33] 	- Name: Gemini 305, PID: 0x0840, SN/ID: CV2TC5100075, Connection: USB3.2
+[08/12 18:50:54.798888][info][15593][DeviceManager.cpp:33] 	- Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N, Connection: USB3.2

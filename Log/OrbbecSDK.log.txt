@@ -1,0 +1,1438 @@
+[08/12 16:53:44.602802][info][31993][HostTimestampProvider.cpp:36] Update clock type to: realtime(0)
+[08/12 16:53:44.893617][info][31993][LinuxUsbPal.cpp:334] Create PollingDeviceWatcher!
+[08/12 16:53:44.893714][info][31993][DeviceManager.cpp:25] Current found device(s): (2)
+[08/12 16:53:44.893720][info][31993][DeviceManager.cpp:33] 	- Name: Gemini 305, PID: 0x0840, SN/ID: CV2TC5100075, Connection: USB3.2
+[08/12 16:53:44.893723][info][31993][DeviceManager.cpp:33] 	- Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N, Connection: USB3.2
+[08/12 16:53:44.893728][info][31993][DeviceManager.cpp:463] Enable net device enumeration: true
+[08/12 16:53:45.898607][info][31993][DeviceManager.cpp:25] Current device(s) list: (2)
+[08/12 16:53:45.898642][info][31993][DeviceManager.cpp:33] 	- Name: Gemini 305, PID: 0x0840, SN/ID: CV2TC5100075, Connection: USB3.2
+[08/12 16:53:45.898648][info][31993][DeviceManager.cpp:33] 	- Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N, Connection: USB3.2
+[08/12 16:53:45.898804][warning][31993][ObException.cpp:25] A recoverable_exception has occurred!
+ - where: Device.cpp(309)
+ - msg: Device not found by serial number: /dev/video0
+ - type: INVALID_VALUE
+ - status: 100
+[08/12 16:53:45.904084][info][31993][G305Device.cpp:616] UVCAutoRebootOnFault=true for device: Gemini 305
+[08/12 16:53:45.911723][info][31993][DeviceBase.cpp:742] key: AppSlot,value:2
+[08/12 16:53:45.911727][info][31993][DeviceBase.cpp:742] key: HwType,value:S1
+[08/12 16:53:45.911728][info][31993][DeviceBase.cpp:742] key: HwVer,value:V1.3
+[08/12 16:53:45.911729][info][31993][DeviceBase.cpp:742] key: IspFwVer,value:20260116
+[08/12 16:53:45.911730][info][31993][DeviceBase.cpp:742] key: IspNeedVer,value:20250920
+[08/12 16:53:45.911731][info][31993][DeviceBase.cpp:742] key: PresetVer,value:0.0.7
+[08/12 16:53:46.122260][warning][31993][ObException.cpp:31] A unrecoverable_exception has occurred!
+ - where: ObLibuvcDevicePort.cpp(306)
+ - msg: getXu IO error: XU response channel returned LIBUSB_ERROR_IO (-1)
+ - type: IO
+ - status: 1007
+[08/12 16:53:46.229764][info][31993][DeviceManager.cpp:199] Device created successfully! Name: Gemini 305, PID: 0x0840, SN/ID: CV2TC5100075 FW: 1.0.30
+[08/12 16:53:46.251420][info][31993][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[08/12 16:53:46.251436][info][31993][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[08/12 16:53:46.284559][info][31993][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[08/12 16:53:46.284575][info][31993][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[08/12 16:53:46.293784][info][31993][G330Device.cpp:630] UVCAutoRebootOnFault=true for device: Gemini 335L
+[08/12 16:53:46.301937][info][31993][DeviceBase.cpp:742] key: AppSlot,value:1
+[08/12 16:53:46.301950][info][31993][DeviceBase.cpp:742] key: HwType,value:L2
+[08/12 16:53:46.301951][info][31993][DeviceBase.cpp:742] key: HwVer,value:V1.0
+[08/12 16:53:46.301952][info][31993][DeviceBase.cpp:742] key: IspFwVer,value:20260620
+[08/12 16:53:46.301954][info][31993][DeviceBase.cpp:742] key: IspNeedVer,value:20250930
+[08/12 16:53:46.301955][info][31993][DeviceBase.cpp:742] key: PresetVer,value:3.0.7
+[08/12 16:53:46.500083][warning][31993][PropertyServer.cpp:55] [CP3L44P0001N] Property not found to register callback, propertyId: 277
+[08/12 16:53:46.501142][warning][31993][PropertyConfigHandler.hpp:53] Unsupported property '223', skipping getting, return nullvalue
+[08/12 16:53:46.555427][warning][31993][PropertyConfigHandler.hpp:94] Exporting property '190' while stream is not active; the value may differ from what will be applied after streaming starts
+[08/12 16:53:46.570019][warning][31993][PresetHandler.cpp:336] Exporting ROI property '1061' while stream is not active; the value may differ from what will be applied after streaming starts
+[08/12 16:53:46.575979][warning][31993][PresetHandler.cpp:710] Exporting disparity search properties while stream is not active; the values may differ from what will be applied after streaming starts
+[08/12 16:53:46.709399][warning][31993][PropertyConfigHandler.hpp:94] Exporting property '189' while stream is not active; the value may differ from what will be applied after streaming starts
+[08/12 16:53:46.723471][warning][31993][PropertyConfigHandler.hpp:53] Unsupported property '277', skipping getting, return nullvalue
+[08/12 16:53:46.726482][warning][31993][PresetHandler.cpp:336] Exporting ROI property '1060' while stream is not active; the value may differ from what will be applied after streaming starts
+[08/12 16:53:46.726890][info][31993][DeviceManager.cpp:199] Device created successfully! Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N FW: 1.8.10
+[08/12 16:53:46.727196][info][31993][SensorBase.cpp:53] [CP3L44P0001N] SensorBase is destroyed
+[08/12 16:53:46.747528][info][31993][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[08/12 16:53:46.747543][info][31993][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[08/12 16:53:46.747722][info][31993][SensorBase.cpp:53] [CP3L44P0001N] SensorBase is destroyed
+[08/12 16:53:46.771065][info][31993][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[08/12 16:53:46.771082][info][31993][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[08/12 17:10:47.264390][info][5466][HostTimestampProvider.cpp:36] Update clock type to: realtime(0)
+[08/12 17:10:47.555074][info][5466][LinuxUsbPal.cpp:334] Create PollingDeviceWatcher!
+[08/12 17:10:47.555184][info][5466][DeviceManager.cpp:25] Current found device(s): (2)
+[08/12 17:10:47.555190][info][5466][DeviceManager.cpp:33] 	- Name: Gemini 305, PID: 0x0840, SN/ID: CV2TC5100075, Connection: USB3.2
+[08/12 17:10:47.555192][info][5466][DeviceManager.cpp:33] 	- Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N, Connection: USB3.2
+[08/12 17:10:47.555197][info][5466][DeviceManager.cpp:463] Enable net device enumeration: true
+[08/12 17:10:48.559966][info][5466][DeviceManager.cpp:25] Current device(s) list: (2)
+[08/12 17:10:48.560001][info][5466][DeviceManager.cpp:33] 	- Name: Gemini 305, PID: 0x0840, SN/ID: CV2TC5100075, Connection: USB3.2
+[08/12 17:10:48.560003][info][5466][DeviceManager.cpp:33] 	- Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N, Connection: USB3.2
+[08/12 17:10:48.565957][info][5466][G330Device.cpp:630] UVCAutoRebootOnFault=true for device: Gemini 335L
+[08/12 17:10:48.573743][info][5466][DeviceBase.cpp:742] key: AppSlot,value:1
+[08/12 17:10:48.573753][info][5466][DeviceBase.cpp:742] key: HwType,value:L2
+[08/12 17:10:48.573754][info][5466][DeviceBase.cpp:742] key: HwVer,value:V1.0
+[08/12 17:10:48.573755][info][5466][DeviceBase.cpp:742] key: IspFwVer,value:20260620
+[08/12 17:10:48.573756][info][5466][DeviceBase.cpp:742] key: IspNeedVer,value:20250930
+[08/12 17:10:48.573757][info][5466][DeviceBase.cpp:742] key: PresetVer,value:3.0.7
+[08/12 17:10:48.773544][warning][5466][PropertyServer.cpp:55] [CP3L44P0001N] Property not found to register callback, propertyId: 277
+[08/12 17:10:48.774805][warning][5466][PropertyConfigHandler.hpp:53] Unsupported property '223', skipping getting, return nullvalue
+[08/12 17:10:48.825655][warning][5466][PropertyConfigHandler.hpp:94] Exporting property '190' while stream is not active; the value may differ from what will be applied after streaming starts
+[08/12 17:10:48.839993][warning][5466][PresetHandler.cpp:336] Exporting ROI property '1061' while stream is not active; the value may differ from what will be applied after streaming starts
+[08/12 17:10:48.846094][warning][5466][PresetHandler.cpp:710] Exporting disparity search properties while stream is not active; the values may differ from what will be applied after streaming starts
+[08/12 17:10:48.974025][warning][5466][PropertyConfigHandler.hpp:94] Exporting property '189' while stream is not active; the value may differ from what will be applied after streaming starts
+[08/12 17:10:48.986931][warning][5466][PropertyConfigHandler.hpp:53] Unsupported property '277', skipping getting, return nullvalue
+[08/12 17:10:48.989968][warning][5466][PresetHandler.cpp:336] Exporting ROI property '1060' while stream is not active; the value may differ from what will be applied after streaming starts
+[08/12 17:10:48.990375][info][5466][DeviceManager.cpp:199] Device created successfully! Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N FW: 1.8.10
+[08/12 17:10:48.990832][info][5466][Pipeline.cpp:54] [CP3L44P0001N] Pipeline created with device: {name: Gemini 335L, sn: CP3L44P0001N}, @0xAAAAFC289B00
+[08/12 17:10:48.991543][info][5466][Pipeline.cpp:228] [CP3L44P0001N] Check and set config done!
+[08/12 17:10:48.991647][warning][5466][ObException.cpp:25] A recoverable_exception has occurred!
+ - where: FrameProcessor.cpp(249)
+ - msg: Current stream profile is not support hardware d2c process
+ - type: INVALID_VALUE
+ - status: 100
+[08/12 17:10:48.993526][info][5466][Pipeline.cpp:65] [CP3L44P0001N] Pipeline destroyed! @0xAAAAFC289B00
+[08/12 17:10:48.993803][info][5466][SensorBase.cpp:53] [CP3L44P0001N] SensorBase is destroyed
+[08/12 17:10:49.012313][info][5466][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[08/12 17:10:49.012339][info][5466][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[08/12 17:10:49.012530][info][5466][SensorBase.cpp:53] [CP3L44P0001N] SensorBase is destroyed
+[08/12 17:10:49.039771][info][5466][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[08/12 17:10:49.039784][info][5466][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[08/12 17:25:36.689033][info][6802][HostTimestampProvider.cpp:36] Update clock type to: realtime(0)
+[08/12 17:25:36.973095][info][6802][LinuxUsbPal.cpp:334] Create PollingDeviceWatcher!
+[08/12 17:25:36.973127][info][6802][DeviceManager.cpp:25] Current found device(s): (2)
+[08/12 17:25:36.973130][info][6802][DeviceManager.cpp:33] 	- Name: Gemini 305, PID: 0x0840, SN/ID: CV2TC5100075, Connection: USB3.2
+[08/12 17:25:36.973132][info][6802][DeviceManager.cpp:33] 	- Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N, Connection: USB3.2
+[08/12 17:25:36.973136][info][6802][DeviceManager.cpp:463] Enable net device enumeration: true
+[08/12 17:25:37.991675][info][6802][DeviceManager.cpp:25] Current device(s) list: (2)
+[08/12 17:25:37.991714][info][6802][DeviceManager.cpp:33] 	- Name: Gemini 305, PID: 0x0840, SN/ID: CV2TC5100075, Connection: USB3.2
+[08/12 17:25:37.991716][info][6802][DeviceManager.cpp:33] 	- Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N, Connection: USB3.2
+[08/12 17:25:38.004652][info][6802][G330Device.cpp:630] UVCAutoRebootOnFault=true for device: Gemini 335L
+[08/12 17:25:38.013604][info][6802][DeviceBase.cpp:742] key: AppSlot,value:1
+[08/12 17:25:38.013614][info][6802][DeviceBase.cpp:742] key: HwType,value:L2
+[08/12 17:25:38.013615][info][6802][DeviceBase.cpp:742] key: HwVer,value:V1.0
+[08/12 17:25:38.013616][info][6802][DeviceBase.cpp:742] key: IspFwVer,value:20260620
+[08/12 17:25:38.013617][info][6802][DeviceBase.cpp:742] key: IspNeedVer,value:20250930
+[08/12 17:25:38.013618][info][6802][DeviceBase.cpp:742] key: PresetVer,value:3.0.7
+[08/12 17:25:38.210880][warning][6802][PropertyServer.cpp:55] [CP3L44P0001N] Property not found to register callback, propertyId: 277
+[08/12 17:25:38.211413][warning][6802][PropertyConfigHandler.hpp:53] Unsupported property '223', skipping getting, return nullvalue
+[08/12 17:25:38.275167][warning][6802][PropertyConfigHandler.hpp:94] Exporting property '190' while stream is not active; the value may differ from what will be applied after streaming starts
+[08/12 17:25:38.289500][warning][6802][PresetHandler.cpp:336] Exporting ROI property '1061' while stream is not active; the value may differ from what will be applied after streaming starts
+[08/12 17:25:38.295548][warning][6802][PresetHandler.cpp:710] Exporting disparity search properties while stream is not active; the values may differ from what will be applied after streaming starts
+[08/12 17:25:38.444099][warning][6802][PropertyConfigHandler.hpp:94] Exporting property '189' while stream is not active; the value may differ from what will be applied after streaming starts
+[08/12 17:25:38.457202][warning][6802][PropertyConfigHandler.hpp:53] Unsupported property '277', skipping getting, return nullvalue
+[08/12 17:25:38.460499][warning][6802][PresetHandler.cpp:336] Exporting ROI property '1060' while stream is not active; the value may differ from what will be applied after streaming starts
+[08/12 17:25:38.461049][info][6802][DeviceManager.cpp:199] Device created successfully! Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N FW: 1.8.10
+[08/12 17:25:38.461146][info][6802][Pipeline.cpp:54] [CP3L44P0001N] Pipeline created with device: {name: Gemini 335L, sn: CP3L44P0001N}, @0xAAAB1802BE50
+[08/12 17:25:38.461804][info][6802][Pipeline.cpp:228] [CP3L44P0001N] Check and set config done!
+[08/12 17:25:38.463360][info][6802][Pipeline.cpp:266] [CP3L44P0001N] Try to start streams!
+[08/12 17:25:38.463398][info][6802][VideoSensor.cpp:61] [CP3L44P0001N] Try to start stream: {type: Color, format: RGB, width: 640, height: 480, fps: 30}
+[08/12 17:25:38.463425][info][6802][SensorBase.cpp:216] [CP3L44P0001N] Stream state changed from STOPPED to STARTING@Color
+[08/12 17:25:38.463440][info][6802][VideoSensor.cpp:130] [CP3L44P0001N] Start backend stream: {type: Color, format: YUYV, width: 640, height: 480, fps: 30}
+[08/12 17:25:38.467727][info][6802][VideoSensor.cpp:61] [CP3L44P0001N] Try to start stream: {type: Depth, format: Y16, width: 640, height: 480, fps: 30}
+[08/12 17:25:38.467762][info][6802][SensorBase.cpp:216] [CP3L44P0001N] Stream state changed from STOPPED to STARTING@Depth
+[08/12 17:25:38.467776][info][6802][VideoSensor.cpp:130] [CP3L44P0001N] Start backend stream: {type: Depth, format: Z16, width: 640, height: 480, fps: 30}
+[08/12 17:25:38.472069][info][6802][Pipeline.cpp:293] [CP3L44P0001N] Start streams done!
+[08/12 17:25:38.472078][info][6802][Pipeline.cpp:250] [CP3L44P0001N] Pipeline start done!
+[08/12 17:25:38.552495][info][6858][SensorBase.cpp:216] [CP3L44P0001N] Stream state changed from STARTING to STREAMING@Depth
+[08/12 17:25:39.000023][info][6856][SensorBase.cpp:216] [CP3L44P0001N] Stream state changed from STARTING to STREAMING@Color
+[08/12 17:25:39.003345][warning][6864][Pipeline.cpp:324] [CP3L44P0001N] Output frameset queue is full, drop oldest frameset!
+[08/12 17:25:39.003633][warning][6802][ObException.cpp:31] A unrecoverable_exception has occurred!
+ - where: PrivFilterCppWrapper.cpp(108)
+ - msg: filter has not been activated with a device
+ - type: WRONG_API_CALL_SEQUENCE
+ - status: 108
+[08/12 17:25:39.003848][info][6802][Pipeline.cpp:367] [CP3L44P0001N] Try to stop pipeline!
+[08/12 17:25:39.003854][info][6802][Pipeline.cpp:343] [CP3L44P0001N] Try to stop streams!
+[08/12 17:25:39.003881][info][6802][SensorBase.cpp:216] [CP3L44P0001N] Stream state changed from STREAMING to STOPPING@Depth
+[08/12 17:25:39.017559][info][6802][SensorBase.cpp:216] [CP3L44P0001N] Stream state changed from STOPPING to STOPPED@Depth
+[08/12 17:25:39.017741][info][6802][Pipeline.cpp:357] [CP3L44P0001N] Sensor stream stopped, sensorType=Depth
+[08/12 17:25:39.017768][info][6802][SensorBase.cpp:216] [CP3L44P0001N] Stream state changed from STREAMING to STOPPING@Color
+[08/12 17:25:39.065650][info][6802][SensorBase.cpp:216] [CP3L44P0001N] Stream state changed from STOPPING to STOPPED@Color
+[08/12 17:25:39.065984][info][6802][Pipeline.cpp:357] [CP3L44P0001N] Sensor stream stopped, sensorType=Color
+[08/12 17:25:39.065989][info][6802][Pipeline.cpp:363] [CP3L44P0001N] Stop streams done!
+[08/12 17:25:39.067493][info][6802][Pipeline.cpp:393] [CP3L44P0001N] Stop pipeline done!
+[08/12 17:25:39.067500][info][6802][Pipeline.cpp:65] [CP3L44P0001N] Pipeline destroyed! @0xAAAB1802BE50
+[08/12 17:25:39.067807][info][6802][SensorBase.cpp:53] [CP3L44P0001N] SensorBase is destroyed
+[08/12 17:25:39.079772][info][6802][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[08/12 17:25:39.079788][info][6802][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[08/12 17:25:39.079964][info][6802][SensorBase.cpp:53] [CP3L44P0001N] SensorBase is destroyed
+[08/12 17:25:39.098674][info][6802][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[08/12 17:25:39.098690][info][6802][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[08/12 17:25:39.101238][warning][6865][Pipeline.cpp:324] [CP3L44P0001N] Output frameset queue is full, drop oldest frameset! [**1 logs in 97ms, last: 17:25:39.003448**]
+[08/12 17:31:59.855824][info][7392][HostTimestampProvider.cpp:36] Update clock type to: realtime(0)
+[08/12 17:32:00.141230][info][7392][LinuxUsbPal.cpp:334] Create PollingDeviceWatcher!
+[08/12 17:32:00.141283][info][7392][DeviceManager.cpp:25] Current found device(s): (2)
+[08/12 17:32:00.141288][info][7392][DeviceManager.cpp:33] 	- Name: Gemini 305, PID: 0x0840, SN/ID: CV2TC5100075, Connection: USB3.2
+[08/12 17:32:00.141290][info][7392][DeviceManager.cpp:33] 	- Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N, Connection: USB3.2
+[08/12 17:32:00.141295][info][7392][DeviceManager.cpp:463] Enable net device enumeration: true
+[08/12 17:32:01.146011][info][7392][DeviceManager.cpp:25] Current device(s) list: (2)
+[08/12 17:32:01.146048][info][7392][DeviceManager.cpp:33] 	- Name: Gemini 305, PID: 0x0840, SN/ID: CV2TC5100075, Connection: USB3.2
+[08/12 17:32:01.146050][info][7392][DeviceManager.cpp:33] 	- Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N, Connection: USB3.2
+[08/12 17:32:01.151042][info][7392][G330Device.cpp:630] UVCAutoRebootOnFault=true for device: Gemini 335L
+[08/12 17:32:01.159071][info][7392][DeviceBase.cpp:742] key: AppSlot,value:1
+[08/12 17:32:01.159082][info][7392][DeviceBase.cpp:742] key: HwType,value:L2
+[08/12 17:32:01.159083][info][7392][DeviceBase.cpp:742] key: HwVer,value:V1.0
+[08/12 17:32:01.159085][info][7392][DeviceBase.cpp:742] key: IspFwVer,value:20260620
+[08/12 17:32:01.159086][info][7392][DeviceBase.cpp:742] key: IspNeedVer,value:20250930
+[08/12 17:32:01.159086][info][7392][DeviceBase.cpp:742] key: PresetVer,value:3.0.7
+[08/12 17:32:01.356408][warning][7392][PropertyServer.cpp:55] [CP3L44P0001N] Property not found to register callback, propertyId: 277
+[08/12 17:32:01.357395][warning][7392][PropertyConfigHandler.hpp:53] Unsupported property '223', skipping getting, return nullvalue
+[08/12 17:32:01.412890][warning][7392][PropertyConfigHandler.hpp:94] Exporting property '190' while stream is not active; the value may differ from what will be applied after streaming starts
+[08/12 17:32:01.427157][warning][7392][PresetHandler.cpp:336] Exporting ROI property '1061' while stream is not active; the value may differ from what will be applied after streaming starts
+[08/12 17:32:01.433307][warning][7392][PresetHandler.cpp:710] Exporting disparity search properties while stream is not active; the values may differ from what will be applied after streaming starts
+[08/12 17:32:01.582602][warning][7392][PropertyConfigHandler.hpp:94] Exporting property '189' while stream is not active; the value may differ from what will be applied after streaming starts
+[08/12 17:32:01.595434][warning][7392][PropertyConfigHandler.hpp:53] Unsupported property '277', skipping getting, return nullvalue
+[08/12 17:32:01.598419][warning][7392][PresetHandler.cpp:336] Exporting ROI property '1060' while stream is not active; the value may differ from what will be applied after streaming starts
+[08/12 17:32:01.598866][info][7392][DeviceManager.cpp:199] Device created successfully! Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N FW: 1.8.10
+[08/12 17:32:01.598956][info][7392][Pipeline.cpp:54] [CP3L44P0001N] Pipeline created with device: {name: Gemini 335L, sn: CP3L44P0001N}, @0xAAAAED66FBA0
+[08/12 17:32:04.740101][info][7392][EngineInferEncry.cpp:1038] [EnhanceDepth] TEST Tensor rgb: mode=INPUT, shape=(-1, -1, 3), dtype=UINT8
+[08/12 17:32:04.740133][info][7392][EngineInferEncry.cpp:1038] [EnhanceDepth] TEST Tensor dep: mode=INPUT, shape=(1, 1, -1, -1), dtype=FLOAT
+[08/12 17:32:04.740139][info][7392][EngineInferEncry.cpp:1038] [EnhanceDepth] TEST Tensor pred: mode=OUTPUT, shape=(1, 1, 480, 640), dtype=FLOAT
+[08/12 17:32:04.740144][info][7392][EngineInferEncry.cpp:1038] [EnhanceDepth] TEST Tensor confidence_output: mode=OUTPUT, shape=(1, 1, 480, 640), dtype=FLOAT
+[08/12 17:32:04.740214][info][7392][EngineInferEncry.cpp:1096] [EnhanceDepth] Selected TensorRT optimization profile 0 for rgb=(480, 640, 3), depth=(1, 1, 480, 640)
+[08/12 17:32:04.747677][info][7392][EngineInferEncry.cpp:876] [EnhanceDepth] Configured dynamic TensorRT profile=0, rgb=(480, 640, 3), depth=(1, 1, 480, 640), pred=(1, 1, 480, 640), conf=(1, 1, 480, 640)
+[08/12 17:32:05.156375][info][7392][EngineInferEncry.cpp:1096] [EnhanceDepth] Selected TensorRT optimization profile 0 for rgb=(480, 640, 3), depth=(1, 1, 480, 640)
+[08/12 17:32:05.160019][info][7392][EngineInferEncry.cpp:876] [EnhanceDepth] Configured dynamic TensorRT profile=0, rgb=(480, 640, 3), depth=(1, 1, 480, 640), pred=(1, 1, 480, 640), conf=(1, 1, 480, 640)
+[08/12 17:32:05.345787][info][7392][Pipeline.cpp:228] [CP3L44P0001N] Check and set config done!
+[08/12 17:32:05.347484][info][7392][Pipeline.cpp:266] [CP3L44P0001N] Try to start streams!
+[08/12 17:32:05.347530][info][7392][VideoSensor.cpp:61] [CP3L44P0001N] Try to start stream: {type: Color, format: RGB, width: 640, height: 480, fps: 30}
+[08/12 17:32:05.347555][info][7392][SensorBase.cpp:216] [CP3L44P0001N] Stream state changed from STOPPED to STARTING@Color
+[08/12 17:32:05.347567][info][7392][VideoSensor.cpp:130] [CP3L44P0001N] Start backend stream: {type: Color, format: YUYV, width: 640, height: 480, fps: 30}
+[08/12 17:32:05.351452][info][7392][VideoSensor.cpp:61] [CP3L44P0001N] Try to start stream: {type: Depth, format: Y16, width: 640, height: 480, fps: 30}
+[08/12 17:32:05.351471][info][7392][SensorBase.cpp:216] [CP3L44P0001N] Stream state changed from STOPPED to STARTING@Depth
+[08/12 17:32:05.351482][info][7392][VideoSensor.cpp:130] [CP3L44P0001N] Start backend stream: {type: Depth, format: Z16, width: 640, height: 480, fps: 30}
+[08/12 17:32:05.358472][info][7392][Pipeline.cpp:293] [CP3L44P0001N] Start streams done!
+[08/12 17:32:05.358477][info][7392][Pipeline.cpp:250] [CP3L44P0001N] Pipeline start done!
+[08/12 17:32:05.470063][info][7471][SensorBase.cpp:216] [CP3L44P0001N] Stream state changed from STARTING to STREAMING@Depth
+[08/12 17:38:26.767774][info][7987][HostTimestampProvider.cpp:36] Update clock type to: realtime(0)
+[08/12 17:38:27.060754][info][7987][LinuxUsbPal.cpp:334] Create PollingDeviceWatcher!
+[08/12 17:38:27.060808][info][7987][DeviceManager.cpp:25] Current found device(s): (2)
+[08/12 17:38:27.060813][info][7987][DeviceManager.cpp:33] 	- Name: Gemini 305, PID: 0x0840, SN/ID: CV2TC5100075, Connection: USB3.2
+[08/12 17:38:27.060815][info][7987][DeviceManager.cpp:33] 	- Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N, Connection: USB3.2
+[08/12 17:38:27.060820][info][7987][DeviceManager.cpp:463] Enable net device enumeration: true
+[08/12 17:38:28.066180][info][7987][DeviceManager.cpp:25] Current device(s) list: (2)
+[08/12 17:38:28.066217][info][7987][DeviceManager.cpp:33] 	- Name: Gemini 305, PID: 0x0840, SN/ID: CV2TC5100075, Connection: USB3.2
+[08/12 17:38:28.066220][info][7987][DeviceManager.cpp:33] 	- Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N, Connection: USB3.2
+[08/12 17:38:28.071651][info][7987][G330Device.cpp:630] UVCAutoRebootOnFault=true for device: Gemini 335L
+[08/12 17:38:28.080239][info][7987][DeviceBase.cpp:742] key: AppSlot,value:1
+[08/12 17:38:28.080252][info][7987][DeviceBase.cpp:742] key: HwType,value:L2
+[08/12 17:38:28.080254][info][7987][DeviceBase.cpp:742] key: HwVer,value:V1.0
+[08/12 17:38:28.080255][info][7987][DeviceBase.cpp:742] key: IspFwVer,value:20260620
+[08/12 17:38:28.080256][info][7987][DeviceBase.cpp:742] key: IspNeedVer,value:20250930
+[08/12 17:38:28.080258][info][7987][DeviceBase.cpp:742] key: PresetVer,value:3.0.7
+[08/12 17:38:28.278451][warning][7987][PropertyServer.cpp:55] [CP3L44P0001N] Property not found to register callback, propertyId: 277
+[08/12 17:38:28.279056][warning][7987][PropertyConfigHandler.hpp:53] Unsupported property '223', skipping getting, return nullvalue
+[08/12 17:38:28.334528][warning][7987][PropertyConfigHandler.hpp:94] Exporting property '190' while stream is not active; the value may differ from what will be applied after streaming starts
+[08/12 17:38:28.349026][warning][7987][PresetHandler.cpp:336] Exporting ROI property '1061' while stream is not active; the value may differ from what will be applied after streaming starts
+[08/12 17:38:28.355030][warning][7987][PresetHandler.cpp:710] Exporting disparity search properties while stream is not active; the values may differ from what will be applied after streaming starts
+[08/12 17:38:28.514225][warning][7987][PropertyConfigHandler.hpp:94] Exporting property '189' while stream is not active; the value may differ from what will be applied after streaming starts
+[08/12 17:38:28.529018][warning][7987][PropertyConfigHandler.hpp:53] Unsupported property '277', skipping getting, return nullvalue
+[08/12 17:38:28.532028][warning][7987][PresetHandler.cpp:336] Exporting ROI property '1060' while stream is not active; the value may differ from what will be applied after streaming starts
+[08/12 17:38:28.532608][info][7987][DeviceManager.cpp:199] Device created successfully! Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N FW: 1.8.10
+[08/12 17:38:28.532754][info][7987][Pipeline.cpp:54] [CP3L44P0001N] Pipeline created with device: {name: Gemini 335L, sn: CP3L44P0001N}, @0xAAAB15078B50
+[08/12 17:38:30.464697][info][7987][EngineInferEncry.cpp:1038] [EnhanceDepth] TEST Tensor rgb: mode=INPUT, shape=(-1, -1, 3), dtype=UINT8
+[08/12 17:38:30.464732][info][7987][EngineInferEncry.cpp:1038] [EnhanceDepth] TEST Tensor dep: mode=INPUT, shape=(1, 1, -1, -1), dtype=FLOAT
+[08/12 17:38:30.464738][info][7987][EngineInferEncry.cpp:1038] [EnhanceDepth] TEST Tensor pred: mode=OUTPUT, shape=(1, 1, 480, 640), dtype=FLOAT
+[08/12 17:38:30.464742][info][7987][EngineInferEncry.cpp:1038] [EnhanceDepth] TEST Tensor confidence_output: mode=OUTPUT, shape=(1, 1, 480, 640), dtype=FLOAT
+[08/12 17:38:30.464807][info][7987][EngineInferEncry.cpp:1096] [EnhanceDepth] Selected TensorRT optimization profile 0 for rgb=(480, 640, 3), depth=(1, 1, 480, 640)
+[08/12 17:38:30.472092][info][7987][EngineInferEncry.cpp:876] [EnhanceDepth] Configured dynamic TensorRT profile=0, rgb=(480, 640, 3), depth=(1, 1, 480, 640), pred=(1, 1, 480, 640), conf=(1, 1, 480, 640)
+[08/12 17:38:30.870847][info][7987][EngineInferEncry.cpp:1096] [EnhanceDepth] Selected TensorRT optimization profile 0 for rgb=(480, 640, 3), depth=(1, 1, 480, 640)
+[08/12 17:38:30.874531][info][7987][EngineInferEncry.cpp:876] [EnhanceDepth] Configured dynamic TensorRT profile=0, rgb=(480, 640, 3), depth=(1, 1, 480, 640), pred=(1, 1, 480, 640), conf=(1, 1, 480, 640)
+[08/12 17:38:31.062514][info][7987][Pipeline.cpp:228] [CP3L44P0001N] Check and set config done!
+[08/12 17:38:31.063960][info][7987][Pipeline.cpp:266] [CP3L44P0001N] Try to start streams!
+[08/12 17:38:31.063993][info][7987][VideoSensor.cpp:61] [CP3L44P0001N] Try to start stream: {type: Color, format: RGB, width: 640, height: 480, fps: 30}
+[08/12 17:38:31.064016][info][7987][SensorBase.cpp:216] [CP3L44P0001N] Stream state changed from STOPPED to STARTING@Color
+[08/12 17:38:31.064033][info][7987][VideoSensor.cpp:130] [CP3L44P0001N] Start backend stream: {type: Color, format: YUYV, width: 640, height: 480, fps: 30}
+[08/12 17:38:31.068352][info][7987][VideoSensor.cpp:61] [CP3L44P0001N] Try to start stream: {type: Depth, format: Y16, width: 640, height: 480, fps: 30}
+[08/12 17:38:31.068387][info][7987][SensorBase.cpp:216] [CP3L44P0001N] Stream state changed from STOPPED to STARTING@Depth
+[08/12 17:38:31.068400][info][7987][VideoSensor.cpp:130] [CP3L44P0001N] Start backend stream: {type: Depth, format: Z16, width: 640, height: 480, fps: 30}
+[08/12 17:38:31.072236][info][7987][Pipeline.cpp:293] [CP3L44P0001N] Start streams done!
+[08/12 17:38:31.072243][info][7987][Pipeline.cpp:250] [CP3L44P0001N] Pipeline start done!
+[08/12 17:38:31.152833][info][8021][SensorBase.cpp:216] [CP3L44P0001N] Stream state changed from STARTING to STREAMING@Depth
+[08/12 17:38:31.600811][info][8019][SensorBase.cpp:216] [CP3L44P0001N] Stream state changed from STARTING to STREAMING@Color
+[08/12 17:38:32.101300][warning][8026][Pipeline.cpp:324] [CP3L44P0001N] Output frameset queue is full, drop oldest frameset!
+[08/12 17:38:35.104471][warning][8026][Pipeline.cpp:324] [CP3L44P0001N] Output frameset queue is full, drop oldest frameset! [**57 logs in 3003ms**]
+[08/12 17:38:36.158181][info][8021][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=30.169830fps
+[08/12 17:38:36.192413][info][8023][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=30.206676fps
+[08/12 17:38:36.605633][info][8019][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=30.169830fps
+[08/12 17:38:36.606353][info][8026][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=30.193962fps
+[08/12 17:42:33.104793][info][8417][HostTimestampProvider.cpp:36] Update clock type to: realtime(0)
+[08/12 17:42:33.398103][info][8417][LinuxUsbPal.cpp:334] Create PollingDeviceWatcher!
+[08/12 17:42:33.398147][info][8417][DeviceManager.cpp:25] Current found device(s): (2)
+[08/12 17:42:33.398153][info][8417][DeviceManager.cpp:33] 	- Name: Gemini 305, PID: 0x0840, SN/ID: CV2TC5100075, Connection: USB3.2
+[08/12 17:42:33.398156][info][8417][DeviceManager.cpp:33] 	- Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N, Connection: USB3.2
+[08/12 17:42:33.398163][info][8417][DeviceManager.cpp:463] Enable net device enumeration: true
+[08/12 17:42:34.402365][info][8417][DeviceManager.cpp:25] Current device(s) list: (2)
+[08/12 17:42:34.402401][info][8417][DeviceManager.cpp:33] 	- Name: Gemini 305, PID: 0x0840, SN/ID: CV2TC5100075, Connection: USB3.2
+[08/12 17:42:34.402403][info][8417][DeviceManager.cpp:33] 	- Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N, Connection: USB3.2
+[08/12 17:42:34.410618][info][8417][G330Device.cpp:630] UVCAutoRebootOnFault=true for device: Gemini 335L
+[08/12 17:42:34.419879][info][8417][DeviceBase.cpp:742] key: AppSlot,value:1
+[08/12 17:42:34.419893][info][8417][DeviceBase.cpp:742] key: HwType,value:L2
+[08/12 17:42:34.419895][info][8417][DeviceBase.cpp:742] key: HwVer,value:V1.0
+[08/12 17:42:34.419896][info][8417][DeviceBase.cpp:742] key: IspFwVer,value:20260620
+[08/12 17:42:34.419898][info][8417][DeviceBase.cpp:742] key: IspNeedVer,value:20250930
+[08/12 17:42:34.419899][info][8417][DeviceBase.cpp:742] key: PresetVer,value:3.0.7
+[08/12 17:42:34.619371][warning][8417][PropertyServer.cpp:55] [CP3L44P0001N] Property not found to register callback, propertyId: 277
+[08/12 17:42:34.620305][warning][8417][PropertyConfigHandler.hpp:53] Unsupported property '223', skipping getting, return nullvalue
+[08/12 17:42:34.687668][warning][8417][PropertyConfigHandler.hpp:94] Exporting property '190' while stream is not active; the value may differ from what will be applied after streaming starts
+[08/12 17:42:34.703042][warning][8417][PresetHandler.cpp:336] Exporting ROI property '1061' while stream is not active; the value may differ from what will be applied after streaming starts
+[08/12 17:42:34.709022][warning][8417][PresetHandler.cpp:710] Exporting disparity search properties while stream is not active; the values may differ from what will be applied after streaming starts
+[08/12 17:42:34.841075][warning][8417][PropertyConfigHandler.hpp:94] Exporting property '189' while stream is not active; the value may differ from what will be applied after streaming starts
+[08/12 17:42:34.853883][warning][8417][PropertyConfigHandler.hpp:53] Unsupported property '277', skipping getting, return nullvalue
+[08/12 17:42:34.856894][warning][8417][PresetHandler.cpp:336] Exporting ROI property '1060' while stream is not active; the value may differ from what will be applied after streaming starts
+[08/12 17:42:34.857292][info][8417][DeviceManager.cpp:199] Device created successfully! Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N FW: 1.8.10
+[08/12 17:42:34.857384][info][8417][Pipeline.cpp:54] [CP3L44P0001N] Pipeline created with device: {name: Gemini 335L, sn: CP3L44P0001N}, @0xAAAAF4216B40
+[08/12 17:42:36.723246][info][8417][EngineInferEncry.cpp:1038] [EnhanceDepth] TEST Tensor rgb: mode=INPUT, shape=(-1, -1, 3), dtype=UINT8
+[08/12 17:42:36.723279][info][8417][EngineInferEncry.cpp:1038] [EnhanceDepth] TEST Tensor dep: mode=INPUT, shape=(1, 1, -1, -1), dtype=FLOAT
+[08/12 17:42:36.723284][info][8417][EngineInferEncry.cpp:1038] [EnhanceDepth] TEST Tensor pred: mode=OUTPUT, shape=(1, 1, 480, 640), dtype=FLOAT
+[08/12 17:42:36.723288][info][8417][EngineInferEncry.cpp:1038] [EnhanceDepth] TEST Tensor confidence_output: mode=OUTPUT, shape=(1, 1, 480, 640), dtype=FLOAT
+[08/12 17:42:36.723352][info][8417][EngineInferEncry.cpp:1096] [EnhanceDepth] Selected TensorRT optimization profile 0 for rgb=(480, 640, 3), depth=(1, 1, 480, 640)
+[08/12 17:42:36.730226][info][8417][EngineInferEncry.cpp:876] [EnhanceDepth] Configured dynamic TensorRT profile=0, rgb=(480, 640, 3), depth=(1, 1, 480, 640), pred=(1, 1, 480, 640), conf=(1, 1, 480, 640)
+[08/12 17:42:37.108185][info][8417][EngineInferEncry.cpp:1096] [EnhanceDepth] Selected TensorRT optimization profile 0 for rgb=(480, 640, 3), depth=(1, 1, 480, 640)
+[08/12 17:42:37.111938][info][8417][EngineInferEncry.cpp:876] [EnhanceDepth] Configured dynamic TensorRT profile=0, rgb=(480, 640, 3), depth=(1, 1, 480, 640), pred=(1, 1, 480, 640), conf=(1, 1, 480, 640)
+[08/12 17:42:37.296649][info][8417][Pipeline.cpp:228] [CP3L44P0001N] Check and set config done!
+[08/12 17:42:37.298247][info][8417][Pipeline.cpp:266] [CP3L44P0001N] Try to start streams!
+[08/12 17:42:37.298282][info][8417][VideoSensor.cpp:61] [CP3L44P0001N] Try to start stream: {type: Color, format: RGB, width: 640, height: 480, fps: 30}
+[08/12 17:42:37.298305][info][8417][SensorBase.cpp:216] [CP3L44P0001N] Stream state changed from STOPPED to STARTING@Color
+[08/12 17:42:37.298315][info][8417][VideoSensor.cpp:130] [CP3L44P0001N] Start backend stream: {type: Color, format: YUYV, width: 640, height: 480, fps: 30}
+[08/12 17:42:37.302873][info][8417][VideoSensor.cpp:61] [CP3L44P0001N] Try to start stream: {type: Depth, format: Y16, width: 640, height: 480, fps: 30}
+[08/12 17:42:37.302911][info][8417][SensorBase.cpp:216] [CP3L44P0001N] Stream state changed from STOPPED to STARTING@Depth
+[08/12 17:42:37.302923][info][8417][VideoSensor.cpp:130] [CP3L44P0001N] Start backend stream: {type: Depth, format: Z16, width: 640, height: 480, fps: 30}
+[08/12 17:42:37.306927][info][8417][Pipeline.cpp:293] [CP3L44P0001N] Start streams done!
+[08/12 17:42:37.306938][info][8417][Pipeline.cpp:250] [CP3L44P0001N] Pipeline start done!
+[08/12 17:42:37.387037][info][8446][SensorBase.cpp:216] [CP3L44P0001N] Stream state changed from STARTING to STREAMING@Depth
+[08/12 17:42:37.834437][info][8444][SensorBase.cpp:216] [CP3L44P0001N] Stream state changed from STARTING to STREAMING@Color
+[08/12 17:42:38.335349][warning][8451][Pipeline.cpp:324] [CP3L44P0001N] Output frameset queue is full, drop oldest frameset!
+[08/12 17:42:41.338523][warning][8451][Pipeline.cpp:324] [CP3L44P0001N] Output frameset queue is full, drop oldest frameset! [**57 logs in 3003ms**]
+[08/12 17:42:42.392022][info][8446][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=30.169830fps
+[08/12 17:42:42.426642][info][8448][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=30.212681fps
+[08/12 17:42:42.839930][info][8444][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=30.169830fps
+[08/12 17:42:42.840666][info][8451][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=30.175858fps
+[08/12 17:45:58.156543][info][8811][HostTimestampProvider.cpp:36] Update clock type to: realtime(0)
+[08/12 17:45:58.430043][info][8811][LinuxUsbPal.cpp:334] Create PollingDeviceWatcher!
+[08/12 17:45:58.430083][info][8811][DeviceManager.cpp:25] Current found device(s): (2)
+[08/12 17:45:58.430089][info][8811][DeviceManager.cpp:33] 	- Name: Gemini 305, PID: 0x0840, SN/ID: CV2TC5100075, Connection: USB3.2
+[08/12 17:45:58.430090][info][8811][DeviceManager.cpp:33] 	- Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N, Connection: USB3.2
+[08/12 17:45:58.430095][info][8811][DeviceManager.cpp:463] Enable net device enumeration: true
+[08/12 17:45:59.455540][info][8811][DeviceManager.cpp:25] Current device(s) list: (2)
+[08/12 17:45:59.455581][info][8811][DeviceManager.cpp:33] 	- Name: Gemini 305, PID: 0x0840, SN/ID: CV2TC5100075, Connection: USB3.2
+[08/12 17:45:59.455583][info][8811][DeviceManager.cpp:33] 	- Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N, Connection: USB3.2
+[08/12 17:45:59.465472][info][8811][G330Device.cpp:630] UVCAutoRebootOnFault=true for device: Gemini 335L
+[08/12 17:45:59.473520][info][8811][DeviceBase.cpp:742] key: AppSlot,value:1
+[08/12 17:45:59.473531][info][8811][DeviceBase.cpp:742] key: HwType,value:L2
+[08/12 17:45:59.473532][info][8811][DeviceBase.cpp:742] key: HwVer,value:V1.0
+[08/12 17:45:59.473534][info][8811][DeviceBase.cpp:742] key: IspFwVer,value:20260620
+[08/12 17:45:59.473535][info][8811][DeviceBase.cpp:742] key: IspNeedVer,value:20250930
+[08/12 17:45:59.473536][info][8811][DeviceBase.cpp:742] key: PresetVer,value:3.0.7
+[08/12 17:45:59.671346][warning][8811][PropertyServer.cpp:55] [CP3L44P0001N] Property not found to register callback, propertyId: 277
+[08/12 17:45:59.672266][warning][8811][PropertyConfigHandler.hpp:53] Unsupported property '223', skipping getting, return nullvalue
+[08/12 17:45:59.739338][warning][8811][PropertyConfigHandler.hpp:94] Exporting property '190' while stream is not active; the value may differ from what will be applied after streaming starts
+[08/12 17:45:59.753626][warning][8811][PresetHandler.cpp:336] Exporting ROI property '1061' while stream is not active; the value may differ from what will be applied after streaming starts
+[08/12 17:45:59.759740][warning][8811][PresetHandler.cpp:710] Exporting disparity search properties while stream is not active; the values may differ from what will be applied after streaming starts
+[08/12 17:45:59.910572][warning][8811][PropertyConfigHandler.hpp:94] Exporting property '189' while stream is not active; the value may differ from what will be applied after streaming starts
+[08/12 17:45:59.923376][warning][8811][PropertyConfigHandler.hpp:53] Unsupported property '277', skipping getting, return nullvalue
+[08/12 17:45:59.926507][warning][8811][PresetHandler.cpp:336] Exporting ROI property '1060' while stream is not active; the value may differ from what will be applied after streaming starts
+[08/12 17:45:59.927045][info][8811][DeviceManager.cpp:199] Device created successfully! Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N FW: 1.8.10
+[08/12 17:45:59.927149][info][8811][Pipeline.cpp:54] [CP3L44P0001N] Pipeline created with device: {name: Gemini 335L, sn: CP3L44P0001N}, @0xAAAADC263B60
+[08/12 17:46:01.847502][info][8811][EngineInferEncry.cpp:1038] [EnhanceDepth] TEST Tensor rgb: mode=INPUT, shape=(-1, -1, 3), dtype=UINT8
+[08/12 17:46:01.847532][info][8811][EngineInferEncry.cpp:1038] [EnhanceDepth] TEST Tensor dep: mode=INPUT, shape=(1, 1, -1, -1), dtype=FLOAT
+[08/12 17:46:01.847537][info][8811][EngineInferEncry.cpp:1038] [EnhanceDepth] TEST Tensor pred: mode=OUTPUT, shape=(1, 1, 480, 640), dtype=FLOAT
+[08/12 17:46:01.847541][info][8811][EngineInferEncry.cpp:1038] [EnhanceDepth] TEST Tensor confidence_output: mode=OUTPUT, shape=(1, 1, 480, 640), dtype=FLOAT
+[08/12 17:46:01.847599][info][8811][EngineInferEncry.cpp:1096] [EnhanceDepth] Selected TensorRT optimization profile 0 for rgb=(480, 640, 3), depth=(1, 1, 480, 640)
+[08/12 17:46:01.854424][info][8811][EngineInferEncry.cpp:876] [EnhanceDepth] Configured dynamic TensorRT profile=0, rgb=(480, 640, 3), depth=(1, 1, 480, 640), pred=(1, 1, 480, 640), conf=(1, 1, 480, 640)
+[08/12 17:46:02.246513][info][8811][EngineInferEncry.cpp:1096] [EnhanceDepth] Selected TensorRT optimization profile 0 for rgb=(480, 640, 3), depth=(1, 1, 480, 640)
+[08/12 17:46:02.250490][info][8811][EngineInferEncry.cpp:876] [EnhanceDepth] Configured dynamic TensorRT profile=0, rgb=(480, 640, 3), depth=(1, 1, 480, 640), pred=(1, 1, 480, 640), conf=(1, 1, 480, 640)
+[08/12 17:46:02.434092][info][8811][Pipeline.cpp:228] [CP3L44P0001N] Check and set config done!
+[08/12 17:46:02.435582][info][8811][Pipeline.cpp:266] [CP3L44P0001N] Try to start streams!
+[08/12 17:46:02.435616][info][8811][VideoSensor.cpp:61] [CP3L44P0001N] Try to start stream: {type: Color, format: RGB, width: 640, height: 480, fps: 30}
+[08/12 17:46:02.435639][info][8811][SensorBase.cpp:216] [CP3L44P0001N] Stream state changed from STOPPED to STARTING@Color
+[08/12 17:46:02.435650][info][8811][VideoSensor.cpp:130] [CP3L44P0001N] Start backend stream: {type: Color, format: YUYV, width: 640, height: 480, fps: 30}
+[08/12 17:46:02.439518][info][8811][VideoSensor.cpp:61] [CP3L44P0001N] Try to start stream: {type: Depth, format: Y16, width: 640, height: 480, fps: 30}
+[08/12 17:46:02.439547][info][8811][SensorBase.cpp:216] [CP3L44P0001N] Stream state changed from STOPPED to STARTING@Depth
+[08/12 17:46:02.439558][info][8811][VideoSensor.cpp:130] [CP3L44P0001N] Start backend stream: {type: Depth, format: Z16, width: 640, height: 480, fps: 30}
+[08/12 17:46:02.446869][info][8811][Pipeline.cpp:293] [CP3L44P0001N] Start streams done!
+[08/12 17:46:02.446878][info][8811][Pipeline.cpp:250] [CP3L44P0001N] Pipeline start done!
+[08/12 17:46:02.523794][info][8851][SensorBase.cpp:216] [CP3L44P0001N] Stream state changed from STARTING to STREAMING@Depth
+[08/12 17:46:02.972069][info][8849][SensorBase.cpp:216] [CP3L44P0001N] Stream state changed from STARTING to STREAMING@Color
+[08/12 17:46:03.472403][warning][8856][Pipeline.cpp:324] [CP3L44P0001N] Output frameset queue is full, drop oldest frameset!
+[08/12 17:46:06.475448][warning][8856][Pipeline.cpp:324] [CP3L44P0001N] Output frameset queue is full, drop oldest frameset! [**58 logs in 3003ms**]
+[08/12 17:46:07.528875][info][8851][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=30.169830fps
+[08/12 17:46:07.563462][info][8853][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=30.206676fps
+[08/12 17:46:07.976642][info][8849][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=30.175858fps
+[08/12 17:46:07.977491][info][8856][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=30.187925fps
+[08/12 17:58:19.740930][info][9623][HostTimestampProvider.cpp:36] Update clock type to: realtime(0)
+[08/12 17:58:20.017272][info][9623][LinuxUsbPal.cpp:334] Create PollingDeviceWatcher!
+[08/12 17:58:20.017357][info][9623][DeviceManager.cpp:25] Current found device(s): (2)
+[08/12 17:58:20.017362][info][9623][DeviceManager.cpp:33] 	- Name: Gemini 305, PID: 0x0840, SN/ID: CV2TC5100075, Connection: USB3.2
+[08/12 17:58:20.017363][info][9623][DeviceManager.cpp:33] 	- Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N, Connection: USB3.2
+[08/12 17:58:20.017368][info][9623][DeviceManager.cpp:463] Enable net device enumeration: true
+[08/12 17:58:21.032589][info][9623][DeviceManager.cpp:25] Current device(s) list: (2)
+[08/12 17:58:21.032625][info][9623][DeviceManager.cpp:33] 	- Name: Gemini 305, PID: 0x0840, SN/ID: CV2TC5100075, Connection: USB3.2
+[08/12 17:58:21.032627][info][9623][DeviceManager.cpp:33] 	- Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N, Connection: USB3.2
+[08/12 17:58:21.038294][info][9623][G330Device.cpp:630] UVCAutoRebootOnFault=true for device: Gemini 335L
+[08/12 17:58:21.046289][info][9623][DeviceBase.cpp:742] key: AppSlot,value:1
+[08/12 17:58:21.046298][info][9623][DeviceBase.cpp:742] key: HwType,value:L2
+[08/12 17:58:21.046300][info][9623][DeviceBase.cpp:742] key: HwVer,value:V1.0
+[08/12 17:58:21.046301][info][9623][DeviceBase.cpp:742] key: IspFwVer,value:20260620
+[08/12 17:58:21.046302][info][9623][DeviceBase.cpp:742] key: IspNeedVer,value:20250930
+[08/12 17:58:21.046304][info][9623][DeviceBase.cpp:742] key: PresetVer,value:3.0.7
+[08/12 17:58:21.244355][warning][9623][PropertyServer.cpp:55] [CP3L44P0001N] Property not found to register callback, propertyId: 277
+[08/12 17:58:21.244849][warning][9623][PropertyConfigHandler.hpp:53] Unsupported property '223', skipping getting, return nullvalue
+[08/12 17:58:21.305685][warning][9623][PropertyConfigHandler.hpp:94] Exporting property '190' while stream is not active; the value may differ from what will be applied after streaming starts
+[08/12 17:58:21.321305][warning][9623][PresetHandler.cpp:336] Exporting ROI property '1061' while stream is not active; the value may differ from what will be applied after streaming starts
+[08/12 17:58:21.327366][warning][9623][PresetHandler.cpp:710] Exporting disparity search properties while stream is not active; the values may differ from what will be applied after streaming starts
+[08/12 17:58:21.471994][warning][9623][PropertyConfigHandler.hpp:94] Exporting property '189' while stream is not active; the value may differ from what will be applied after streaming starts
+[08/12 17:58:21.484893][warning][9623][PropertyConfigHandler.hpp:53] Unsupported property '277', skipping getting, return nullvalue
+[08/12 17:58:21.487894][warning][9623][PresetHandler.cpp:336] Exporting ROI property '1060' while stream is not active; the value may differ from what will be applied after streaming starts
+[08/12 17:58:21.488302][info][9623][DeviceManager.cpp:199] Device created successfully! Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N FW: 1.8.10
+[08/12 17:58:21.488390][info][9623][Pipeline.cpp:54] [CP3L44P0001N] Pipeline created with device: {name: Gemini 335L, sn: CP3L44P0001N}, @0xAAAB03181B50
+[08/12 17:58:23.420594][info][9623][EngineInferEncry.cpp:1038] [EnhanceDepth] TEST Tensor rgb: mode=INPUT, shape=(-1, -1, 3), dtype=UINT8
+[08/12 17:58:23.420626][info][9623][EngineInferEncry.cpp:1038] [EnhanceDepth] TEST Tensor dep: mode=INPUT, shape=(1, 1, -1, -1), dtype=FLOAT
+[08/12 17:58:23.420630][info][9623][EngineInferEncry.cpp:1038] [EnhanceDepth] TEST Tensor pred: mode=OUTPUT, shape=(1, 1, 480, 640), dtype=FLOAT
+[08/12 17:58:23.420634][info][9623][EngineInferEncry.cpp:1038] [EnhanceDepth] TEST Tensor confidence_output: mode=OUTPUT, shape=(1, 1, 480, 640), dtype=FLOAT
+[08/12 17:58:23.420697][info][9623][EngineInferEncry.cpp:1096] [EnhanceDepth] Selected TensorRT optimization profile 0 for rgb=(480, 640, 3), depth=(1, 1, 480, 640)
+[08/12 17:58:23.427591][info][9623][EngineInferEncry.cpp:876] [EnhanceDepth] Configured dynamic TensorRT profile=0, rgb=(480, 640, 3), depth=(1, 1, 480, 640), pred=(1, 1, 480, 640), conf=(1, 1, 480, 640)
+[08/12 17:58:23.817926][info][9623][EngineInferEncry.cpp:1096] [EnhanceDepth] Selected TensorRT optimization profile 0 for rgb=(480, 640, 3), depth=(1, 1, 480, 640)
+[08/12 17:58:23.821582][info][9623][EngineInferEncry.cpp:876] [EnhanceDepth] Configured dynamic TensorRT profile=0, rgb=(480, 640, 3), depth=(1, 1, 480, 640), pred=(1, 1, 480, 640), conf=(1, 1, 480, 640)
+[08/12 17:58:24.010743][info][9623][Pipeline.cpp:228] [CP3L44P0001N] Check and set config done!
+[08/12 17:58:24.012298][info][9623][Pipeline.cpp:266] [CP3L44P0001N] Try to start streams!
+[08/12 17:58:24.012341][info][9623][VideoSensor.cpp:61] [CP3L44P0001N] Try to start stream: {type: Color, format: RGB, width: 640, height: 480, fps: 30}
+[08/12 17:58:24.012363][info][9623][SensorBase.cpp:216] [CP3L44P0001N] Stream state changed from STOPPED to STARTING@Color
+[08/12 17:58:24.012376][info][9623][VideoSensor.cpp:130] [CP3L44P0001N] Start backend stream: {type: Color, format: YUYV, width: 640, height: 480, fps: 30}
+[08/12 17:58:24.016553][info][9623][VideoSensor.cpp:61] [CP3L44P0001N] Try to start stream: {type: Depth, format: Y16, width: 640, height: 480, fps: 30}
+[08/12 17:58:24.016588][info][9623][SensorBase.cpp:216] [CP3L44P0001N] Stream state changed from STOPPED to STARTING@Depth
+[08/12 17:58:24.016602][info][9623][VideoSensor.cpp:130] [CP3L44P0001N] Start backend stream: {type: Depth, format: Z16, width: 640, height: 480, fps: 30}
+[08/12 17:58:24.020495][info][9623][Pipeline.cpp:293] [CP3L44P0001N] Start streams done!
+[08/12 17:58:24.020501][info][9623][Pipeline.cpp:250] [CP3L44P0001N] Pipeline start done!
+[08/12 17:58:24.100982][info][9664][SensorBase.cpp:216] [CP3L44P0001N] Stream state changed from STARTING to STREAMING@Depth
+[08/12 17:58:24.548960][info][9662][SensorBase.cpp:216] [CP3L44P0001N] Stream state changed from STARTING to STREAMING@Color
+[08/12 17:58:25.049297][warning][9669][Pipeline.cpp:324] [CP3L44P0001N] Output frameset queue is full, drop oldest frameset!
+[08/12 17:58:28.085708][warning][9669][Pipeline.cpp:324] [CP3L44P0001N] Output frameset queue is full, drop oldest frameset! [**58 logs in 3036ms**]
+[08/12 17:58:29.105835][info][9664][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=30.175858fps
+[08/12 17:58:29.140448][info][9666][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=30.206676fps
+[08/12 17:58:29.553552][info][9662][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=30.169830fps
+[08/12 17:58:29.587638][info][9669][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=30.194677fps
+[08/12 17:58:29.817043][info][9684][HostTimestampProvider.cpp:36] Update clock type to: realtime(0)
+[08/12 17:58:29.827778][info][9684][LinuxUsbPal.cpp:334] Create PollingDeviceWatcher!
+[08/12 17:58:29.827806][info][9684][DeviceManager.cpp:25] Current found device(s): (2)
+[08/12 17:58:29.827810][info][9684][DeviceManager.cpp:33] 	- Name: Gemini 305, PID: 0x0840, SN/ID: CV2TC5100075, Connection: USB3.2
+[08/12 17:58:29.827811][info][9684][DeviceManager.cpp:33] 	- Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N, Connection: USB3.2
+[08/12 17:58:29.827815][info][9684][DeviceManager.cpp:463] Enable net device enumeration: true
+[08/12 17:58:30.843846][info][9684][DeviceManager.cpp:25] Current device(s) list: (2)
+[08/12 17:58:30.843875][info][9684][DeviceManager.cpp:33] 	- Name: Gemini 305, PID: 0x0840, SN/ID: CV2TC5100075, Connection: USB3.2
+[08/12 17:58:30.843877][info][9684][DeviceManager.cpp:33] 	- Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N, Connection: USB3.2
+[08/12 17:58:30.848010][info][9684][G305Device.cpp:616] UVCAutoRebootOnFault=true for device: Gemini 305
+[08/12 17:58:30.855568][info][9684][DeviceBase.cpp:742] key: AppSlot,value:2
+[08/12 17:58:30.855574][info][9684][DeviceBase.cpp:742] key: HwType,value:S1
+[08/12 17:58:30.855575][info][9684][DeviceBase.cpp:742] key: HwVer,value:V1.3
+[08/12 17:58:30.855576][info][9684][DeviceBase.cpp:742] key: IspFwVer,value:20260116
+[08/12 17:58:30.855577][info][9684][DeviceBase.cpp:742] key: IspNeedVer,value:20250920
+[08/12 17:58:30.855578][info][9684][DeviceBase.cpp:742] key: PresetVer,value:0.0.7
+[08/12 17:58:31.068508][info][9684][DeviceManager.cpp:199] Device created successfully! Name: Gemini 305, PID: 0x0840, SN/ID: CV2TC5100075 FW: 1.0.30
+[08/12 17:58:31.068584][info][9684][Pipeline.cpp:54] [CV2TC5100075] Pipeline created with device: {name: Gemini 305, sn: CV2TC5100075}, @0xAAAAC3CCA690
+[08/12 17:58:31.099110][info][9684][Pipeline.cpp:65] [CV2TC5100075] Pipeline destroyed! @0xAAAAC3CCA690
+[08/12 17:58:31.099289][info][9684][SensorBase.cpp:53] [CV2TC5100075] SensorBase is destroyed
+[08/12 17:58:31.121823][info][9684][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[08/12 17:58:31.121838][info][9684][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[08/12 17:58:31.153348][info][9684][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[08/12 17:58:31.153363][info][9684][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[08/12 17:58:34.093177][warning][9669][Pipeline.cpp:324] [CP3L44P0001N] Output frameset queue is full, drop oldest frameset! [**135 logs in 6007ms**]
+[08/12 18:05:11.437243][info][10256][HostTimestampProvider.cpp:36] Update clock type to: realtime(0)
+[08/12 18:05:11.713332][info][10256][LinuxUsbPal.cpp:334] Create PollingDeviceWatcher!
+[08/12 18:05:11.713371][info][10256][DeviceManager.cpp:25] Current found device(s): (2)
+[08/12 18:05:11.713374][info][10256][DeviceManager.cpp:33] 	- Name: Gemini 305, PID: 0x0840, SN/ID: CV2TC5100075, Connection: USB3.2
+[08/12 18:05:11.713376][info][10256][DeviceManager.cpp:33] 	- Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N, Connection: USB3.2
+[08/12 18:05:11.713380][info][10256][DeviceManager.cpp:463] Enable net device enumeration: true
+[08/12 18:05:12.717697][info][10256][DeviceManager.cpp:25] Current device(s) list: (2)
+[08/12 18:05:12.717729][info][10256][DeviceManager.cpp:33] 	- Name: Gemini 305, PID: 0x0840, SN/ID: CV2TC5100075, Connection: USB3.2
+[08/12 18:05:12.717731][info][10256][DeviceManager.cpp:33] 	- Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N, Connection: USB3.2
+[08/12 18:05:12.730356][info][10256][G330Device.cpp:630] UVCAutoRebootOnFault=true for device: Gemini 335L
+[08/12 18:05:12.738504][info][10256][DeviceBase.cpp:742] key: AppSlot,value:1
+[08/12 18:05:12.738516][info][10256][DeviceBase.cpp:742] key: HwType,value:L2
+[08/12 18:05:12.738518][info][10256][DeviceBase.cpp:742] key: HwVer,value:V1.0
+[08/12 18:05:12.738520][info][10256][DeviceBase.cpp:742] key: IspFwVer,value:20260620
+[08/12 18:05:12.738521][info][10256][DeviceBase.cpp:742] key: IspNeedVer,value:20250930
+[08/12 18:05:12.738523][info][10256][DeviceBase.cpp:742] key: PresetVer,value:3.0.7
+[08/12 18:05:12.936523][warning][10256][PropertyServer.cpp:55] [CP3L44P0001N] Property not found to register callback, propertyId: 277
+[08/12 18:05:12.937467][warning][10256][PropertyConfigHandler.hpp:53] Unsupported property '223', skipping getting, return nullvalue
+[08/12 18:05:13.007007][warning][10256][PropertyConfigHandler.hpp:94] Exporting property '190' while stream is not active; the value may differ from what will be applied after streaming starts
+[08/12 18:05:13.021590][warning][10256][PresetHandler.cpp:336] Exporting ROI property '1061' while stream is not active; the value may differ from what will be applied after streaming starts
+[08/12 18:05:13.027735][warning][10256][PresetHandler.cpp:710] Exporting disparity search properties while stream is not active; the values may differ from what will be applied after streaming starts
+[08/12 18:05:13.193886][warning][10256][PropertyConfigHandler.hpp:94] Exporting property '189' while stream is not active; the value may differ from what will be applied after streaming starts
+[08/12 18:05:13.206678][warning][10256][PropertyConfigHandler.hpp:53] Unsupported property '277', skipping getting, return nullvalue
+[08/12 18:05:13.209684][warning][10256][PresetHandler.cpp:336] Exporting ROI property '1060' while stream is not active; the value may differ from what will be applied after streaming starts
+[08/12 18:05:13.210252][info][10256][DeviceManager.cpp:199] Device created successfully! Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N FW: 1.8.10
+[08/12 18:05:13.210354][info][10256][Pipeline.cpp:54] [CP3L44P0001N] Pipeline created with device: {name: Gemini 335L, sn: CP3L44P0001N}, @0xAAAAE910CB80
+[08/12 18:05:15.206956][info][10256][EngineInferEncry.cpp:1038] [EnhanceDepth] TEST Tensor rgb: mode=INPUT, shape=(-1, -1, 3), dtype=UINT8
+[08/12 18:05:15.206987][info][10256][EngineInferEncry.cpp:1038] [EnhanceDepth] TEST Tensor dep: mode=INPUT, shape=(1, 1, -1, -1), dtype=FLOAT
+[08/12 18:05:15.206993][info][10256][EngineInferEncry.cpp:1038] [EnhanceDepth] TEST Tensor pred: mode=OUTPUT, shape=(1, 1, 480, 640), dtype=FLOAT
+[08/12 18:05:15.206997][info][10256][EngineInferEncry.cpp:1038] [EnhanceDepth] TEST Tensor confidence_output: mode=OUTPUT, shape=(1, 1, 480, 640), dtype=FLOAT
+[08/12 18:05:15.207061][info][10256][EngineInferEncry.cpp:1096] [EnhanceDepth] Selected TensorRT optimization profile 0 for rgb=(480, 640, 3), depth=(1, 1, 480, 640)
+[08/12 18:05:15.214362][info][10256][EngineInferEncry.cpp:876] [EnhanceDepth] Configured dynamic TensorRT profile=0, rgb=(480, 640, 3), depth=(1, 1, 480, 640), pred=(1, 1, 480, 640), conf=(1, 1, 480, 640)
+[08/12 18:05:15.644773][info][10256][EngineInferEncry.cpp:1096] [EnhanceDepth] Selected TensorRT optimization profile 0 for rgb=(480, 640, 3), depth=(1, 1, 480, 640)
+[08/12 18:05:15.648467][info][10256][EngineInferEncry.cpp:876] [EnhanceDepth] Configured dynamic TensorRT profile=0, rgb=(480, 640, 3), depth=(1, 1, 480, 640), pred=(1, 1, 480, 640), conf=(1, 1, 480, 640)
+[08/12 18:05:15.840165][info][10256][Pipeline.cpp:228] [CP3L44P0001N] Check and set config done!
+[08/12 18:05:15.841604][info][10256][Pipeline.cpp:266] [CP3L44P0001N] Try to start streams!
+[08/12 18:05:15.841642][info][10256][VideoSensor.cpp:61] [CP3L44P0001N] Try to start stream: {type: Color, format: RGB, width: 640, height: 480, fps: 30}
+[08/12 18:05:15.841665][info][10256][SensorBase.cpp:216] [CP3L44P0001N] Stream state changed from STOPPED to STARTING@Color
+[08/12 18:05:15.841676][info][10256][VideoSensor.cpp:130] [CP3L44P0001N] Start backend stream: {type: Color, format: YUYV, width: 640, height: 480, fps: 30}
+[08/12 18:05:15.845701][info][10256][VideoSensor.cpp:61] [CP3L44P0001N] Try to start stream: {type: Depth, format: Y16, width: 640, height: 480, fps: 30}
+[08/12 18:05:15.845729][info][10256][SensorBase.cpp:216] [CP3L44P0001N] Stream state changed from STOPPED to STARTING@Depth
+[08/12 18:05:15.845741][info][10256][VideoSensor.cpp:130] [CP3L44P0001N] Start backend stream: {type: Depth, format: Z16, width: 640, height: 480, fps: 30}
+[08/12 18:05:15.850087][info][10256][Pipeline.cpp:293] [CP3L44P0001N] Start streams done!
+[08/12 18:05:15.850096][info][10256][Pipeline.cpp:250] [CP3L44P0001N] Pipeline start done!
+[08/12 18:05:15.933533][info][10313][SensorBase.cpp:216] [CP3L44P0001N] Stream state changed from STARTING to STREAMING@Depth
+[08/12 18:05:16.378650][info][10311][SensorBase.cpp:216] [CP3L44P0001N] Stream state changed from STARTING to STREAMING@Color
+[08/12 18:05:16.880516][warning][10326][Pipeline.cpp:324] [CP3L44P0001N] Output frameset queue is full, drop oldest frameset!
+[08/12 18:05:19.914309][warning][10333][Pipeline.cpp:324] [CP3L44P0001N] Output frameset queue is full, drop oldest frameset! [**57 logs in 3033ms, last: 18:05:19.849168**]
+[08/12 18:05:20.935964][info][10313][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=30.181892fps
+[08/12 18:05:20.970500][info][10315][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=30.230709fps
+[08/12 18:05:21.383722][info][10311][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=30.169830fps
+[08/12 18:05:21.384396][info][10326][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=30.187925fps
+[08/12 18:05:21.458628][info][10373][HostTimestampProvider.cpp:36] Update clock type to: realtime(0)
+[08/12 18:05:21.470171][info][10373][LinuxUsbPal.cpp:334] Create PollingDeviceWatcher!
+[08/12 18:05:21.470197][info][10373][DeviceManager.cpp:25] Current found device(s): (2)
+[08/12 18:05:21.470201][info][10373][DeviceManager.cpp:33] 	- Name: Gemini 305, PID: 0x0840, SN/ID: CV2TC5100075, Connection: USB3.2
+[08/12 18:05:21.470202][info][10373][DeviceManager.cpp:33] 	- Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N, Connection: USB3.2
+[08/12 18:05:21.470206][info][10373][DeviceManager.cpp:463] Enable net device enumeration: true
+[08/12 18:05:22.474068][info][10373][DeviceManager.cpp:25] Current device(s) list: (2)
+[08/12 18:05:22.474106][info][10373][DeviceManager.cpp:33] 	- Name: Gemini 305, PID: 0x0840, SN/ID: CV2TC5100075, Connection: USB3.2
+[08/12 18:05:22.474108][info][10373][DeviceManager.cpp:33] 	- Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N, Connection: USB3.2
+[08/12 18:05:22.487293][info][10373][G305Device.cpp:616] UVCAutoRebootOnFault=true for device: Gemini 305
+[08/12 18:05:22.494850][info][10373][DeviceBase.cpp:742] key: AppSlot,value:2
+[08/12 18:05:22.494859][info][10373][DeviceBase.cpp:742] key: HwType,value:S1
+[08/12 18:05:22.494860][info][10373][DeviceBase.cpp:742] key: HwVer,value:V1.3
+[08/12 18:05:22.494873][info][10373][DeviceBase.cpp:742] key: IspFwVer,value:20260116
+[08/12 18:05:22.494875][info][10373][DeviceBase.cpp:742] key: IspNeedVer,value:20250920
+[08/12 18:05:22.494876][info][10373][DeviceBase.cpp:742] key: PresetVer,value:0.0.7
+[08/12 18:05:22.710056][info][10373][DeviceManager.cpp:199] Device created successfully! Name: Gemini 305, PID: 0x0840, SN/ID: CV2TC5100075 FW: 1.0.30
+[08/12 18:05:22.710116][info][10373][Pipeline.cpp:54] [CV2TC5100075] Pipeline created with device: {name: Gemini 305, sn: CV2TC5100075}, @0xAAAADAB47F80
+[08/12 18:05:22.733171][info][10373][Pipeline.cpp:228] [CV2TC5100075] Check and set config done!
+[08/12 18:05:22.734716][info][10373][Pipeline.cpp:266] [CV2TC5100075] Try to start streams!
+[08/12 18:05:22.734864][info][10373][VideoSensor.cpp:61] [CV2TC5100075] Try to start stream: {type: Color, format: RGB, width: 640, height: 480, fps: 30}
+[08/12 18:05:22.734891][info][10373][SensorBase.cpp:216] [CV2TC5100075] Stream state changed from STOPPED to STARTING@Color
+[08/12 18:05:22.734900][info][10373][VideoSensor.cpp:130] [CV2TC5100075] Start backend stream: {type: Color, format: YUYV, width: 640, height: 480, fps: 30}
+[08/12 18:05:22.739294][info][10373][Pipeline.cpp:293] [CV2TC5100075] Start streams done!
+[08/12 18:05:22.739305][info][10373][Pipeline.cpp:250] [CV2TC5100075] Pipeline start done!
+[08/12 18:05:23.739414][warning][10373][Pipeline.cpp:335] [CV2TC5100075] Wait for frame timeout, you can try to increase the wait time! current timeout=1000
+[08/12 18:05:24.309327][error][10396][ObLibuvcDevicePort.cpp:281] setXu failed, error code=-1
+[08/12 18:09:19.517003][info][10777][HostTimestampProvider.cpp:36] Update clock type to: realtime(0)
+[08/12 18:09:19.797824][info][10777][LinuxUsbPal.cpp:334] Create PollingDeviceWatcher!
+[08/12 18:09:19.797859][info][10777][DeviceManager.cpp:25] Current found device(s): (2)
+[08/12 18:09:19.797864][info][10777][DeviceManager.cpp:33] 	- Name: Gemini 305, PID: 0x0840, SN/ID: CV2TC5100075, Connection: USB3.2
+[08/12 18:09:19.797866][info][10777][DeviceManager.cpp:33] 	- Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N, Connection: USB3.2
+[08/12 18:09:19.797871][info][10777][DeviceManager.cpp:463] Enable net device enumeration: true
+[08/12 18:09:20.800727][info][10777][DeviceManager.cpp:25] Current device(s) list: (2)
+[08/12 18:09:20.800768][info][10777][DeviceManager.cpp:33] 	- Name: Gemini 305, PID: 0x0840, SN/ID: CV2TC5100075, Connection: USB3.2
+[08/12 18:09:20.800770][info][10777][DeviceManager.cpp:33] 	- Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N, Connection: USB3.2
+[08/12 18:09:20.806859][info][10777][G330Device.cpp:630] UVCAutoRebootOnFault=true for device: Gemini 335L
+[08/12 18:09:20.815098][info][10777][DeviceBase.cpp:742] key: AppSlot,value:1
+[08/12 18:09:20.815108][info][10777][DeviceBase.cpp:742] key: HwType,value:L2
+[08/12 18:09:20.815109][info][10777][DeviceBase.cpp:742] key: HwVer,value:V1.0
+[08/12 18:09:20.815111][info][10777][DeviceBase.cpp:742] key: IspFwVer,value:20260620
+[08/12 18:09:20.815112][info][10777][DeviceBase.cpp:742] key: IspNeedVer,value:20250930
+[08/12 18:09:20.815113][info][10777][DeviceBase.cpp:742] key: PresetVer,value:3.0.7
+[08/12 18:09:21.013969][warning][10777][PropertyServer.cpp:55] [CP3L44P0001N] Property not found to register callback, propertyId: 277
+[08/12 18:09:21.014520][warning][10777][PropertyConfigHandler.hpp:53] Unsupported property '223', skipping getting, return nullvalue
+[08/12 18:09:21.069641][warning][10777][PropertyConfigHandler.hpp:94] Exporting property '190' while stream is not active; the value may differ from what will be applied after streaming starts
+[08/12 18:09:21.084065][warning][10777][PresetHandler.cpp:336] Exporting ROI property '1061' while stream is not active; the value may differ from what will be applied after streaming starts
+[08/12 18:09:21.090155][warning][10777][PresetHandler.cpp:710] Exporting disparity search properties while stream is not active; the values may differ from what will be applied after streaming starts
+[08/12 18:09:21.233359][warning][10777][PropertyConfigHandler.hpp:94] Exporting property '189' while stream is not active; the value may differ from what will be applied after streaming starts
+[08/12 18:09:21.246128][warning][10777][PropertyConfigHandler.hpp:53] Unsupported property '277', skipping getting, return nullvalue
+[08/12 18:09:21.249112][warning][10777][PresetHandler.cpp:336] Exporting ROI property '1060' while stream is not active; the value may differ from what will be applied after streaming starts
+[08/12 18:09:21.249557][info][10777][DeviceManager.cpp:199] Device created successfully! Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N FW: 1.8.10
+[08/12 18:09:21.249652][info][10777][Pipeline.cpp:54] [CP3L44P0001N] Pipeline created with device: {name: Gemini 335L, sn: CP3L44P0001N}, @0xAAAB08E53B80
+[08/12 18:09:23.252797][info][10777][EngineInferEncry.cpp:1038] [EnhanceDepth] TEST Tensor rgb: mode=INPUT, shape=(-1, -1, 3), dtype=UINT8
+[08/12 18:09:23.252830][info][10777][EngineInferEncry.cpp:1038] [EnhanceDepth] TEST Tensor dep: mode=INPUT, shape=(1, 1, -1, -1), dtype=FLOAT
+[08/12 18:09:23.252835][info][10777][EngineInferEncry.cpp:1038] [EnhanceDepth] TEST Tensor pred: mode=OUTPUT, shape=(1, 1, 480, 640), dtype=FLOAT
+[08/12 18:09:23.252864][info][10777][EngineInferEncry.cpp:1038] [EnhanceDepth] TEST Tensor confidence_output: mode=OUTPUT, shape=(1, 1, 480, 640), dtype=FLOAT
+[08/12 18:09:23.252927][info][10777][EngineInferEncry.cpp:1096] [EnhanceDepth] Selected TensorRT optimization profile 0 for rgb=(480, 640, 3), depth=(1, 1, 480, 640)
+[08/12 18:09:23.259784][info][10777][EngineInferEncry.cpp:876] [EnhanceDepth] Configured dynamic TensorRT profile=0, rgb=(480, 640, 3), depth=(1, 1, 480, 640), pred=(1, 1, 480, 640), conf=(1, 1, 480, 640)
+[08/12 18:09:23.652954][info][10777][EngineInferEncry.cpp:1096] [EnhanceDepth] Selected TensorRT optimization profile 0 for rgb=(480, 640, 3), depth=(1, 1, 480, 640)
+[08/12 18:09:23.656646][info][10777][EngineInferEncry.cpp:876] [EnhanceDepth] Configured dynamic TensorRT profile=0, rgb=(480, 640, 3), depth=(1, 1, 480, 640), pred=(1, 1, 480, 640), conf=(1, 1, 480, 640)
+[08/12 18:09:23.853860][info][10777][Pipeline.cpp:228] [CP3L44P0001N] Check and set config done!
+[08/12 18:09:23.855348][info][10777][Pipeline.cpp:266] [CP3L44P0001N] Try to start streams!
+[08/12 18:09:23.855372][info][10777][VideoSensor.cpp:61] [CP3L44P0001N] Try to start stream: {type: Color, format: RGB, width: 640, height: 480, fps: 30}
+[08/12 18:09:23.855394][info][10777][SensorBase.cpp:216] [CP3L44P0001N] Stream state changed from STOPPED to STARTING@Color
+[08/12 18:09:23.855404][info][10777][VideoSensor.cpp:130] [CP3L44P0001N] Start backend stream: {type: Color, format: YUYV, width: 640, height: 480, fps: 30}
+[08/12 18:09:23.859313][info][10777][VideoSensor.cpp:61] [CP3L44P0001N] Try to start stream: {type: Depth, format: Y16, width: 640, height: 480, fps: 30}
+[08/12 18:09:23.859332][info][10777][SensorBase.cpp:216] [CP3L44P0001N] Stream state changed from STOPPED to STARTING@Depth
+[08/12 18:09:23.859341][info][10777][VideoSensor.cpp:130] [CP3L44P0001N] Start backend stream: {type: Depth, format: Z16, width: 640, height: 480, fps: 30}
+[08/12 18:09:23.863169][info][10777][Pipeline.cpp:293] [CP3L44P0001N] Start streams done!
+[08/12 18:09:23.863174][info][10777][Pipeline.cpp:250] [CP3L44P0001N] Pipeline start done!
+[08/12 18:09:23.943670][info][10849][SensorBase.cpp:216] [CP3L44P0001N] Stream state changed from STARTING to STREAMING@Depth
+[08/12 18:09:24.391330][info][10847][SensorBase.cpp:216] [CP3L44P0001N] Stream state changed from STARTING to STREAMING@Color
+[08/12 18:09:24.892300][warning][10854][Pipeline.cpp:324] [CP3L44P0001N] Output frameset queue is full, drop oldest frameset!
+[08/12 18:09:27.928538][warning][10854][Pipeline.cpp:324] [CP3L44P0001N] Output frameset queue is full, drop oldest frameset! [**58 logs in 3036ms**]
+[08/12 18:09:28.948591][info][10849][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=30.169830fps
+[08/12 18:09:28.983368][info][10851][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=30.206676fps
+[08/12 18:09:29.396245][info][10847][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=30.169830fps
+[08/12 18:09:29.396972][info][10854][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=30.193962fps
+[08/12 18:09:29.562206][info][10870][HostTimestampProvider.cpp:36] Update clock type to: realtime(0)
+[08/12 18:09:29.641742][info][10870][LinuxUsbPal.cpp:334] Create PollingDeviceWatcher!
+[08/12 18:09:29.641778][info][10870][DeviceManager.cpp:25] Current found device(s): (2)
+[08/12 18:09:29.641782][info][10870][DeviceManager.cpp:33] 	- Name: Gemini 305, PID: 0x0840, SN/ID: CV2TC5100075, Connection: USB3.2
+[08/12 18:09:29.641783][info][10870][DeviceManager.cpp:33] 	- Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N, Connection: USB3.2
+[08/12 18:09:29.641787][info][10870][DeviceManager.cpp:463] Enable net device enumeration: true
+[08/12 18:09:30.646506][info][10870][DeviceManager.cpp:25] Current device(s) list: (2)
+[08/12 18:09:30.646531][info][10870][DeviceManager.cpp:33] 	- Name: Gemini 305, PID: 0x0840, SN/ID: CV2TC5100075, Connection: USB3.2
+[08/12 18:09:30.646533][info][10870][DeviceManager.cpp:33] 	- Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N, Connection: USB3.2
+[08/12 18:09:30.658367][info][10870][G305Device.cpp:616] UVCAutoRebootOnFault=true for device: Gemini 305
+[08/12 18:09:30.666012][info][10870][DeviceBase.cpp:742] key: AppSlot,value:2
+[08/12 18:09:30.666020][info][10870][DeviceBase.cpp:742] key: HwType,value:S1
+[08/12 18:09:30.666021][info][10870][DeviceBase.cpp:742] key: HwVer,value:V1.3
+[08/12 18:09:30.666037][info][10870][DeviceBase.cpp:742] key: IspFwVer,value:20260116
+[08/12 18:09:30.666038][info][10870][DeviceBase.cpp:742] key: IspNeedVer,value:20250920
+[08/12 18:09:30.666039][info][10870][DeviceBase.cpp:742] key: PresetVer,value:0.0.7
+[08/12 18:09:31.129069][error][10893][ObLibuvcDevicePort.cpp:281] setXu failed, error code=-1
+[08/12 18:09:31.229348][error][10893][ObLibuvcDevicePort.cpp:281] setXu failed, error code=-1
+[08/12 18:09:31.329601][warning][10893][ObException.cpp:31] A unrecoverable_exception has occurred!
+ - where: Protocol.cpp(66)
+ - msg: Request failed, statusCode: 8, msg: Device response size(0) < response header size(10), propertyId: 1037
+ - type: IO
+ - status: 1004
+[08/12 18:09:31.380432][error][10893][ObLibuvcDevicePort.cpp:281] setXu failed, error code=-1
+[08/12 18:09:31.480663][error][10893][ObLibuvcDevicePort.cpp:281] setXu failed, error code=-1
+[08/12 18:09:31.580888][warning][10893][ObException.cpp:31] A unrecoverable_exception has occurred!
+ - where: Protocol.cpp(66)
+ - msg: Request failed, statusCode: 8, msg: Device response size(0) < response header size(10), propertyId: 1037
+ - type: IO
+ - status: 1004
+[08/12 18:09:31.631185][error][10893][ObLibuvcDevicePort.cpp:281] setXu failed, error code=-1
+[08/12 18:09:31.731421][error][10893][ObLibuvcDevicePort.cpp:281] setXu failed, error code=-1
+[08/12 18:09:31.831631][warning][10893][ObException.cpp:31] A unrecoverable_exception has occurred!
+ - where: Protocol.cpp(66)
+ - msg: Request failed, statusCode: 8, msg: Device response size(0) < response header size(10), propertyId: 1037
+ - type: IO
+ - status: 1004
+[08/12 18:09:31.831811][error][10870][ObLibuvcDevicePort.cpp:281] setXu failed, error code=-1
+[08/12 18:09:31.931994][error][10870][ObLibuvcDevicePort.cpp:281] setXu failed, error code=-1
+[08/12 18:09:32.032192][warning][10870][ObException.cpp:31] A unrecoverable_exception has occurred!
+ - where: Protocol.cpp(66)
+ - msg: Request failed, statusCode: 8, msg: Device response size(0) < response header size(10), propertyId: 4034
+ - type: IO
+ - status: 1004
+[08/12 18:09:32.032832][error][10893][ObLibuvcDevicePort.cpp:281] setXu failed, error code=-1
+[08/12 18:09:32.133200][error][10893][ObLibuvcDevicePort.cpp:281] setXu failed, error code=-1
+[08/12 18:09:32.233433][warning][10893][ObException.cpp:31] A unrecoverable_exception has occurred!
+ - where: Protocol.cpp(66)
+ - msg: Request failed, statusCode: 8, msg: Device response size(0) < response header size(10), propertyId: 1037
+ - type: IO
+ - status: 1004
+[08/12 18:09:32.284364][info][10870][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[08/12 18:09:32.284375][info][10870][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[08/12 18:09:32.289417][info][10870][G305Device.cpp:616] UVCAutoRebootOnFault=true for device: Gemini 305
+[08/12 18:09:32.297308][info][10870][DeviceBase.cpp:742] key: AppSlot,value:2
+[08/12 18:09:32.297321][info][10870][DeviceBase.cpp:742] key: HwType,value:S1
+[08/12 18:09:32.297322][info][10870][DeviceBase.cpp:742] key: HwVer,value:V1.3
+[08/12 18:09:32.297324][info][10870][DeviceBase.cpp:742] key: IspFwVer,value:20260116
+[08/12 18:09:32.297325][info][10870][DeviceBase.cpp:742] key: IspNeedVer,value:20250920
+[08/12 18:09:32.297327][info][10870][DeviceBase.cpp:742] key: PresetVer,value:0.0.7
+[08/12 18:09:32.514123][info][10870][DeviceManager.cpp:199] Device created successfully! Name: Gemini 305, PID: 0x0840, SN/ID: CV2TC5100075 FW: 1.0.30
+[08/12 18:09:32.534457][info][10870][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[08/12 18:09:32.534469][info][10870][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[08/12 18:09:32.566757][info][10870][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[08/12 18:09:32.566770][info][10870][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[08/12 18:09:32.571186][info][10870][G330Device.cpp:630] UVCAutoRebootOnFault=true for device: Gemini 335L
+[08/12 18:09:32.577184][info][10870][DeviceBase.cpp:742] key: AppSlot,value:1
+[08/12 18:09:32.577192][info][10870][DeviceBase.cpp:742] key: HwType,value:L2
+[08/12 18:09:32.577195][info][10870][DeviceBase.cpp:742] key: HwVer,value:V1.0
+[08/12 18:09:32.577198][info][10870][DeviceBase.cpp:742] key: IspFwVer,value:20260620
+[08/12 18:09:32.577200][info][10870][DeviceBase.cpp:742] key: IspNeedVer,value:20250930
+[08/12 18:09:32.577203][info][10870][DeviceBase.cpp:742] key: PresetVer,value:3.0.7
+[08/12 18:09:32.773186][warning][10870][PropertyServer.cpp:55] [CP3L44P0001N] Property not found to register callback, propertyId: 277
+[08/12 18:09:32.774146][warning][10870][PropertyConfigHandler.hpp:53] Unsupported property '223', skipping getting, return nullvalue
+[08/12 18:09:32.886059][warning][10870][PropertyConfigHandler.hpp:94] Exporting property '190' while stream is not active; the value may differ from what will be applied after streaming starts
+[08/12 18:09:32.900507][warning][10870][PresetHandler.cpp:336] Exporting ROI property '1061' while stream is not active; the value may differ from what will be applied after streaming starts
+[08/12 18:09:32.906474][warning][10870][PresetHandler.cpp:710] Exporting disparity search properties while stream is not active; the values may differ from what will be applied after streaming starts
+[08/12 18:09:33.090380][warning][10870][PropertyConfigHandler.hpp:94] Exporting property '189' while stream is not active; the value may differ from what will be applied after streaming starts
+[08/12 18:09:33.103210][warning][10870][PropertyConfigHandler.hpp:53] Unsupported property '277', skipping getting, return nullvalue
+[08/12 18:09:33.106235][warning][10870][PresetHandler.cpp:336] Exporting ROI property '1060' while stream is not active; the value may differ from what will be applied after streaming starts
+[08/12 18:09:33.106675][info][10870][DeviceManager.cpp:199] Device created successfully! Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N FW: 1.8.10
+[08/12 18:09:33.106953][info][10870][SensorBase.cpp:53] [CP3L44P0001N] SensorBase is destroyed
+[08/12 18:09:33.125536][info][10870][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[08/12 18:09:33.125548][info][10870][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[08/12 18:09:33.125746][info][10870][SensorBase.cpp:53] [CP3L44P0001N] SensorBase is destroyed
+[08/12 18:09:33.154399][info][10870][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[08/12 18:09:33.154415][info][10870][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[08/12 18:13:47.633663][info][11255][HostTimestampProvider.cpp:36] Update clock type to: realtime(0)
+[08/12 18:13:47.914060][info][11255][LinuxUsbPal.cpp:334] Create PollingDeviceWatcher!
+[08/12 18:13:47.914101][info][11255][DeviceManager.cpp:25] Current found device(s): (2)
+[08/12 18:13:47.914106][info][11255][DeviceManager.cpp:33] 	- Name: Gemini 305, PID: 0x0840, SN/ID: CV2TC5100075, Connection: USB3.2
+[08/12 18:13:47.914110][info][11255][DeviceManager.cpp:33] 	- Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N, Connection: USB3.2
+[08/12 18:13:47.914116][info][11255][DeviceManager.cpp:463] Enable net device enumeration: true
+[08/12 18:13:48.918978][info][11255][DeviceManager.cpp:25] Current device(s) list: (2)
+[08/12 18:13:48.919020][info][11255][DeviceManager.cpp:33] 	- Name: Gemini 305, PID: 0x0840, SN/ID: CV2TC5100075, Connection: USB3.2
+[08/12 18:13:48.919024][info][11255][DeviceManager.cpp:33] 	- Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N, Connection: USB3.2
+[08/12 18:13:48.925376][info][11255][G305Device.cpp:616] UVCAutoRebootOnFault=true for device: Gemini 305
+[08/12 18:13:48.934015][info][11255][DeviceBase.cpp:742] key: AppSlot,value:2
+[08/12 18:13:48.934028][info][11255][DeviceBase.cpp:742] key: HwType,value:S1
+[08/12 18:13:48.934029][info][11255][DeviceBase.cpp:742] key: HwVer,value:V1.3
+[08/12 18:13:48.934052][info][11255][DeviceBase.cpp:742] key: IspFwVer,value:20260116
+[08/12 18:13:48.934054][info][11255][DeviceBase.cpp:742] key: IspNeedVer,value:20250920
+[08/12 18:13:48.934056][info][11255][DeviceBase.cpp:742] key: PresetVer,value:0.0.7
+[08/12 18:13:49.150611][info][11255][DeviceManager.cpp:199] Device created successfully! Name: Gemini 305, PID: 0x0840, SN/ID: CV2TC5100075 FW: 1.0.30
+[08/12 18:13:49.171497][info][11255][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[08/12 18:13:49.171514][info][11255][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[08/12 18:13:49.204352][info][11255][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[08/12 18:13:49.204371][info][11255][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[08/12 18:13:49.217938][info][11255][G330Device.cpp:630] UVCAutoRebootOnFault=true for device: Gemini 335L
+[08/12 18:13:49.226615][info][11255][DeviceBase.cpp:742] key: AppSlot,value:1
+[08/12 18:13:49.226625][info][11255][DeviceBase.cpp:742] key: HwType,value:L2
+[08/12 18:13:49.226626][info][11255][DeviceBase.cpp:742] key: HwVer,value:V1.0
+[08/12 18:13:49.226628][info][11255][DeviceBase.cpp:742] key: IspFwVer,value:20260620
+[08/12 18:13:49.226629][info][11255][DeviceBase.cpp:742] key: IspNeedVer,value:20250930
+[08/12 18:13:49.226630][info][11255][DeviceBase.cpp:742] key: PresetVer,value:3.0.7
+[08/12 18:13:49.424002][warning][11255][PropertyServer.cpp:55] [CP3L44P0001N] Property not found to register callback, propertyId: 277
+[08/12 18:13:49.425002][warning][11255][PropertyConfigHandler.hpp:53] Unsupported property '223', skipping getting, return nullvalue
+[08/12 18:13:49.494082][warning][11255][PropertyConfigHandler.hpp:94] Exporting property '190' while stream is not active; the value may differ from what will be applied after streaming starts
+[08/12 18:13:49.508359][warning][11255][PresetHandler.cpp:336] Exporting ROI property '1061' while stream is not active; the value may differ from what will be applied after streaming starts
+[08/12 18:13:49.514294][warning][11255][PresetHandler.cpp:710] Exporting disparity search properties while stream is not active; the values may differ from what will be applied after streaming starts
+[08/12 18:13:49.648615][warning][11255][PropertyConfigHandler.hpp:94] Exporting property '189' while stream is not active; the value may differ from what will be applied after streaming starts
+[08/12 18:13:49.661678][warning][11255][PropertyConfigHandler.hpp:53] Unsupported property '277', skipping getting, return nullvalue
+[08/12 18:13:49.664712][warning][11255][PresetHandler.cpp:336] Exporting ROI property '1060' while stream is not active; the value may differ from what will be applied after streaming starts
+[08/12 18:13:49.665152][info][11255][DeviceManager.cpp:199] Device created successfully! Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N FW: 1.8.10
+[08/12 18:13:49.665257][info][11255][Pipeline.cpp:54] [CP3L44P0001N] Pipeline created with device: {name: Gemini 335L, sn: CP3L44P0001N}, @0xAAAAFCED3030
+[08/12 18:13:51.726571][info][11255][EngineInferEncry.cpp:1038] [EnhanceDepth] TEST Tensor rgb: mode=INPUT, shape=(-1, -1, 3), dtype=UINT8
+[08/12 18:13:51.726604][info][11255][EngineInferEncry.cpp:1038] [EnhanceDepth] TEST Tensor dep: mode=INPUT, shape=(1, 1, -1, -1), dtype=FLOAT
+[08/12 18:13:51.726609][info][11255][EngineInferEncry.cpp:1038] [EnhanceDepth] TEST Tensor pred: mode=OUTPUT, shape=(1, 1, 480, 640), dtype=FLOAT
+[08/12 18:13:51.726614][info][11255][EngineInferEncry.cpp:1038] [EnhanceDepth] TEST Tensor confidence_output: mode=OUTPUT, shape=(1, 1, 480, 640), dtype=FLOAT
+[08/12 18:13:51.726675][info][11255][EngineInferEncry.cpp:1096] [EnhanceDepth] Selected TensorRT optimization profile 0 for rgb=(480, 640, 3), depth=(1, 1, 480, 640)
+[08/12 18:13:51.734132][info][11255][EngineInferEncry.cpp:876] [EnhanceDepth] Configured dynamic TensorRT profile=0, rgb=(480, 640, 3), depth=(1, 1, 480, 640), pred=(1, 1, 480, 640), conf=(1, 1, 480, 640)
+[08/12 18:13:52.162852][info][11255][EngineInferEncry.cpp:1096] [EnhanceDepth] Selected TensorRT optimization profile 0 for rgb=(480, 640, 3), depth=(1, 1, 480, 640)
+[08/12 18:13:52.166423][info][11255][EngineInferEncry.cpp:876] [EnhanceDepth] Configured dynamic TensorRT profile=0, rgb=(480, 640, 3), depth=(1, 1, 480, 640), pred=(1, 1, 480, 640), conf=(1, 1, 480, 640)
+[08/12 18:13:52.387073][info][11255][Pipeline.cpp:228] [CP3L44P0001N] Check and set config done!
+[08/12 18:13:52.388522][info][11255][Pipeline.cpp:266] [CP3L44P0001N] Try to start streams!
+[08/12 18:13:52.388556][info][11255][VideoSensor.cpp:61] [CP3L44P0001N] Try to start stream: {type: Color, format: RGB, width: 640, height: 480, fps: 30}
+[08/12 18:13:52.388576][info][11255][SensorBase.cpp:216] [CP3L44P0001N] Stream state changed from STOPPED to STARTING@Color
+[08/12 18:13:52.388587][info][11255][VideoSensor.cpp:130] [CP3L44P0001N] Start backend stream: {type: Color, format: YUYV, width: 640, height: 480, fps: 30}
+[08/12 18:13:52.394336][info][11255][VideoSensor.cpp:61] [CP3L44P0001N] Try to start stream: {type: Depth, format: Y16, width: 640, height: 480, fps: 30}
+[08/12 18:13:52.394371][info][11255][SensorBase.cpp:216] [CP3L44P0001N] Stream state changed from STOPPED to STARTING@Depth
+[08/12 18:13:52.394386][info][11255][VideoSensor.cpp:130] [CP3L44P0001N] Start backend stream: {type: Depth, format: Z16, width: 640, height: 480, fps: 30}
+[08/12 18:13:52.405233][info][11255][Pipeline.cpp:293] [CP3L44P0001N] Start streams done!
+[08/12 18:13:52.405243][info][11255][Pipeline.cpp:250] [CP3L44P0001N] Pipeline start done!
+[08/12 18:13:53.405342][warning][11255][Pipeline.cpp:335] [CP3L44P0001N] Wait for frame timeout, you can try to increase the wait time! current timeout=1000
+[08/12 18:13:56.409111][warning][11255][Pipeline.cpp:335] [CP3L44P0001N] Wait for frame timeout, you can try to increase the wait time! current timeout=1000 [**3 logs in 3003ms**]
+[08/12 18:14:02.416402][warning][11255][Pipeline.cpp:335] [CP3L44P0001N] Wait for frame timeout, you can try to increase the wait time! current timeout=1000 [**6 logs in 6007ms**]
+[08/12 18:14:14.430969][warning][11255][Pipeline.cpp:335] [CP3L44P0001N] Wait for frame timeout, you can try to increase the wait time! current timeout=1000 [**12 logs in 12014ms**]
+[08/12 18:14:38.459853][warning][11255][Pipeline.cpp:335] [CP3L44P0001N] Wait for frame timeout, you can try to increase the wait time! current timeout=1000 [**24 logs in 24028ms**]
+[08/12 18:15:26.517052][warning][11255][Pipeline.cpp:335] [CP3L44P0001N] Wait for frame timeout, you can try to increase the wait time! current timeout=1000 [**48 logs in 48057ms**]
+[08/12 18:16:26.589799][warning][11255][Pipeline.cpp:335] [CP3L44P0001N] Wait for frame timeout, you can try to increase the wait time! current timeout=1000 [**60 logs in 60072ms**]
+[08/12 18:17:26.662120][warning][11255][Pipeline.cpp:335] [CP3L44P0001N] Wait for frame timeout, you can try to increase the wait time! current timeout=1000 [**60 logs in 60072ms**]
+[08/12 18:18:26.734568][warning][11255][Pipeline.cpp:335] [CP3L44P0001N] Wait for frame timeout, you can try to increase the wait time! current timeout=1000 [**60 logs in 60072ms**]
+[08/12 18:18:56.131753][info][12186][HostTimestampProvider.cpp:36] Update clock type to: realtime(0)
+[08/12 18:18:56.217273][info][12186][LinuxUsbPal.cpp:334] Create PollingDeviceWatcher!
+[08/12 18:18:56.217305][info][12186][DeviceManager.cpp:25] Current found device(s): (2)
+[08/12 18:18:56.217308][info][12186][DeviceManager.cpp:33] 	- Name: Gemini 305, PID: 0x0840, SN/ID: CV2TC5100075, Connection: USB3.2
+[08/12 18:18:56.217310][info][12186][DeviceManager.cpp:33] 	- Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N, Connection: USB3.2
+[08/12 18:18:56.217314][info][12186][DeviceManager.cpp:463] Enable net device enumeration: true
+[08/12 18:18:57.237841][info][12186][DeviceManager.cpp:25] Current device(s) list: (2)
+[08/12 18:18:57.237874][info][12186][DeviceManager.cpp:33] 	- Name: Gemini 305, PID: 0x0840, SN/ID: CV2TC5100075, Connection: USB3.2
+[08/12 18:18:57.237876][info][12186][DeviceManager.cpp:33] 	- Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N, Connection: USB3.2
+[08/12 18:18:57.247578][info][12186][G305Device.cpp:616] UVCAutoRebootOnFault=true for device: Gemini 305
+[08/12 18:18:57.256086][info][12186][DeviceBase.cpp:742] key: AppSlot,value:2
+[08/12 18:18:57.256100][info][12186][DeviceBase.cpp:742] key: HwType,value:S1
+[08/12 18:18:57.256102][info][12186][DeviceBase.cpp:742] key: HwVer,value:V1.3
+[08/12 18:18:57.256122][info][12186][DeviceBase.cpp:742] key: IspFwVer,value:20260116
+[08/12 18:18:57.256123][info][12186][DeviceBase.cpp:742] key: IspNeedVer,value:20250920
+[08/12 18:18:57.256125][info][12186][DeviceBase.cpp:742] key: PresetVer,value:0.0.7
+[08/12 18:18:57.361091][error][12226][ObLibuvcDevicePort.cpp:281] setXu failed, error code=-1
+[08/12 18:18:57.997776][error][12226][ObLibuvcDevicePort.cpp:281] setXu failed, error code=-1
+[08/12 18:18:58.098095][warning][12226][ObException.cpp:31] A unrecoverable_exception has occurred!
+ - where: Protocol.cpp(66)
+ - msg: Request failed, statusCode: 8, msg: Device response size(0) < response header size(10), propertyId: 1037
+ - type: IO
+ - status: 1004
+[08/12 18:18:58.148521][error][12226][ObLibuvcDevicePort.cpp:281] setXu failed, error code=-1
+[08/12 18:18:58.248920][error][12226][ObLibuvcDevicePort.cpp:281] setXu failed, error code=-1
+[08/12 18:18:58.349246][warning][12226][ObException.cpp:31] A unrecoverable_exception has occurred!
+ - where: Protocol.cpp(66)
+ - msg: Request failed, statusCode: 8, msg: Device response size(0) < response header size(10), propertyId: 1037
+ - type: IO
+ - status: 1004
+[08/12 18:18:58.349557][error][12186][ObLibuvcDevicePort.cpp:281] setXu failed, error code=-1
+[08/12 18:18:58.449811][error][12186][ObLibuvcDevicePort.cpp:281] setXu failed, error code=-1
+[08/12 18:18:58.550118][warning][12186][ObException.cpp:31] A unrecoverable_exception has occurred!
+ - where: Protocol.cpp(66)
+ - msg: Request failed, statusCode: 8, msg: Device response size(0) < response header size(10), propertyId: 4034
+ - type: IO
+ - status: 1004
+[08/12 18:18:58.550414][error][12226][ObLibuvcDevicePort.cpp:281] setXu failed, error code=-1
+[08/12 18:18:58.650685][error][12226][ObLibuvcDevicePort.cpp:281] setXu failed, error code=-1
+[08/12 18:18:58.751014][warning][12226][ObException.cpp:31] A unrecoverable_exception has occurred!
+ - where: Protocol.cpp(66)
+ - msg: Request failed, statusCode: 8, msg: Device response size(0) < response header size(10), propertyId: 1037
+ - type: IO
+ - status: 1004
+[08/12 18:18:58.801611][info][12186][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[08/12 18:18:58.801626][info][12186][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[08/12 18:18:58.806284][warning][12186][ObLibuvcDevicePort.cpp:71] uvc_open failed: [Path: 2-1.2-10.0, Return Code: -6]
+[08/12 18:18:58.806393][warning][12186][ObException.cpp:31] A unrecoverable_exception has occurred!
+ - where: ObLibuvcDevicePort.cpp(72)
+ - msg: uvc_open failed: [Path: 2-1.2-10.0, Return Code: -6]
+ - type: IO
+ - status: 115
+[08/12 18:18:58.806624][warning][12186][DeviceBase.cpp:369] Execute failure! A libobsensor_exception has occurred!
+ - where: DeviceBase.cpp(369):getComponent
+ - msg: uvc_open failed: [Path: 2-1.2-10.0, Return Code: -6]
+ - type: N11libobsensor23unrecoverable_exceptionE
+ - status: 115
+[08/12 18:18:58.810776][warning][12186][ObLibuvcDevicePort.cpp:71] uvc_open failed: [Path: 2-1.2-10.0, Return Code: -6]
+[08/12 18:18:58.810830][warning][12186][ObException.cpp:31] A unrecoverable_exception has occurred!
+ - where: ObLibuvcDevicePort.cpp(72)
+ - msg: uvc_open failed: [Path: 2-1.2-10.0, Return Code: -6]
+ - type: IO
+ - status: 115
+[08/12 18:18:58.811008][warning][12186][DeviceBase.cpp:369] Execute failure! A libobsensor_exception has occurred!
+ - where: DeviceBase.cpp(369):getComponent
+ - msg: uvc_open failed: [Path: 2-1.2-10.0, Return Code: -6]
+ - type: N11libobsensor23unrecoverable_exceptionE
+ - status: 115
+[08/12 18:19:26.806628][warning][11255][Pipeline.cpp:335] [CP3L44P0001N] Wait for frame timeout, you can try to increase the wait time! current timeout=1000 [**60 logs in 60072ms**]
+[08/12 18:20:26.878086][warning][11255][Pipeline.cpp:335] [CP3L44P0001N] Wait for frame timeout, you can try to increase the wait time! current timeout=1000 [**60 logs in 60071ms**]
+[08/12 18:21:26.951449][warning][11255][Pipeline.cpp:335] [CP3L44P0001N] Wait for frame timeout, you can try to increase the wait time! current timeout=1000 [**60 logs in 60073ms**]
+[08/12 18:22:27.024552][warning][11255][Pipeline.cpp:335] [CP3L44P0001N] Wait for frame timeout, you can try to increase the wait time! current timeout=1000 [**60 logs in 60073ms**]
+[08/12 18:23:27.097600][warning][11255][Pipeline.cpp:335] [CP3L44P0001N] Wait for frame timeout, you can try to increase the wait time! current timeout=1000 [**60 logs in 60073ms**]
+[08/12 18:24:27.169825][warning][11255][Pipeline.cpp:335] [CP3L44P0001N] Wait for frame timeout, you can try to increase the wait time! current timeout=1000 [**60 logs in 60072ms**]
+[08/12 18:26:33.359054][info][13390][HostTimestampProvider.cpp:36] Update clock type to: realtime(0)
+[08/12 18:26:33.569187][info][13390][LinuxUsbPal.cpp:334] Create PollingDeviceWatcher!
+[08/12 18:26:33.569228][info][13390][DeviceManager.cpp:25] Current found device(s): (1)
+[08/12 18:26:33.569233][info][13390][DeviceManager.cpp:33] 	- Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N, Connection: USB3.2
+[08/12 18:26:33.569239][info][13390][DeviceManager.cpp:463] Enable net device enumeration: true
+[08/12 18:26:34.591428][info][13390][DeviceManager.cpp:25] Current device(s) list: (1)
+[08/12 18:26:34.591467][info][13390][DeviceManager.cpp:33] 	- Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N, Connection: USB3.2
+[08/12 18:26:34.600024][info][13390][G330Device.cpp:630] UVCAutoRebootOnFault=true for device: Gemini 335L
+[08/12 18:26:34.608071][info][13390][DeviceBase.cpp:742] key: AppSlot,value:1
+[08/12 18:26:34.608078][info][13390][DeviceBase.cpp:742] key: HwType,value:L2
+[08/12 18:26:34.608079][info][13390][DeviceBase.cpp:742] key: HwVer,value:V1.0
+[08/12 18:26:34.608080][info][13390][DeviceBase.cpp:742] key: IspFwVer,value:20260620
+[08/12 18:26:34.608081][info][13390][DeviceBase.cpp:742] key: IspNeedVer,value:20250930
+[08/12 18:26:34.608082][info][13390][DeviceBase.cpp:742] key: PresetVer,value:3.0.7
+[08/12 18:26:34.808084][warning][13390][PropertyServer.cpp:55] [CP3L44P0001N] Property not found to register callback, propertyId: 277
+[08/12 18:26:34.808631][warning][13390][PropertyConfigHandler.hpp:53] Unsupported property '223', skipping getting, return nullvalue
+[08/12 18:26:34.867769][warning][13390][PropertyConfigHandler.hpp:94] Exporting property '190' while stream is not active; the value may differ from what will be applied after streaming starts
+[08/12 18:26:34.882333][warning][13390][PresetHandler.cpp:336] Exporting ROI property '1061' while stream is not active; the value may differ from what will be applied after streaming starts
+[08/12 18:26:34.888588][warning][13390][PresetHandler.cpp:710] Exporting disparity search properties while stream is not active; the values may differ from what will be applied after streaming starts
+[08/12 18:26:35.040737][warning][13390][PropertyConfigHandler.hpp:94] Exporting property '189' while stream is not active; the value may differ from what will be applied after streaming starts
+[08/12 18:26:35.053815][warning][13390][PropertyConfigHandler.hpp:53] Unsupported property '277', skipping getting, return nullvalue
+[08/12 18:26:35.057256][warning][13390][PresetHandler.cpp:336] Exporting ROI property '1060' while stream is not active; the value may differ from what will be applied after streaming starts
+[08/12 18:26:35.057806][info][13390][DeviceManager.cpp:199] Device created successfully! Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N FW: 1.8.10
+[08/12 18:26:35.057901][info][13390][Pipeline.cpp:54] [CP3L44P0001N] Pipeline created with device: {name: Gemini 335L, sn: CP3L44P0001N}, @0xAAAABD32B790
+[08/12 18:26:37.146623][info][13390][EngineInferEncry.cpp:1038] [EnhanceDepth] TEST Tensor rgb: mode=INPUT, shape=(-1, -1, 3), dtype=UINT8
+[08/12 18:26:37.146652][info][13390][EngineInferEncry.cpp:1038] [EnhanceDepth] TEST Tensor dep: mode=INPUT, shape=(1, 1, -1, -1), dtype=FLOAT
+[08/12 18:26:37.146658][info][13390][EngineInferEncry.cpp:1038] [EnhanceDepth] TEST Tensor pred: mode=OUTPUT, shape=(1, 1, 480, 640), dtype=FLOAT
+[08/12 18:26:37.146662][info][13390][EngineInferEncry.cpp:1038] [EnhanceDepth] TEST Tensor confidence_output: mode=OUTPUT, shape=(1, 1, 480, 640), dtype=FLOAT
+[08/12 18:26:37.146728][info][13390][EngineInferEncry.cpp:1096] [EnhanceDepth] Selected TensorRT optimization profile 0 for rgb=(480, 640, 3), depth=(1, 1, 480, 640)
+[08/12 18:26:37.153719][info][13390][EngineInferEncry.cpp:876] [EnhanceDepth] Configured dynamic TensorRT profile=0, rgb=(480, 640, 3), depth=(1, 1, 480, 640), pred=(1, 1, 480, 640), conf=(1, 1, 480, 640)
+[08/12 18:26:37.556907][info][13390][EngineInferEncry.cpp:1096] [EnhanceDepth] Selected TensorRT optimization profile 0 for rgb=(480, 640, 3), depth=(1, 1, 480, 640)
+[08/12 18:26:37.560562][info][13390][EngineInferEncry.cpp:876] [EnhanceDepth] Configured dynamic TensorRT profile=0, rgb=(480, 640, 3), depth=(1, 1, 480, 640), pred=(1, 1, 480, 640), conf=(1, 1, 480, 640)
+[08/12 18:26:37.753188][info][13390][Pipeline.cpp:228] [CP3L44P0001N] Check and set config done!
+[08/12 18:26:37.754640][info][13390][Pipeline.cpp:266] [CP3L44P0001N] Try to start streams!
+[08/12 18:26:37.754673][info][13390][VideoSensor.cpp:61] [CP3L44P0001N] Try to start stream: {type: Color, format: RGB, width: 640, height: 480, fps: 30}
+[08/12 18:26:37.754697][info][13390][SensorBase.cpp:216] [CP3L44P0001N] Stream state changed from STOPPED to STARTING@Color
+[08/12 18:26:37.754708][info][13390][VideoSensor.cpp:130] [CP3L44P0001N] Start backend stream: {type: Color, format: YUYV, width: 640, height: 480, fps: 30}
+[08/12 18:26:37.758722][info][13390][VideoSensor.cpp:61] [CP3L44P0001N] Try to start stream: {type: Depth, format: Y16, width: 640, height: 480, fps: 30}
+[08/12 18:26:37.758751][info][13390][SensorBase.cpp:216] [CP3L44P0001N] Stream state changed from STOPPED to STARTING@Depth
+[08/12 18:26:37.758763][info][13390][VideoSensor.cpp:130] [CP3L44P0001N] Start backend stream: {type: Depth, format: Z16, width: 640, height: 480, fps: 30}
+[08/12 18:26:37.762786][info][13390][Pipeline.cpp:293] [CP3L44P0001N] Start streams done!
+[08/12 18:26:37.762794][info][13390][Pipeline.cpp:250] [CP3L44P0001N] Pipeline start done!
+[08/12 18:26:37.843697][info][13436][SensorBase.cpp:216] [CP3L44P0001N] Stream state changed from STARTING to STREAMING@Depth
+[08/12 18:26:38.290734][info][13434][SensorBase.cpp:216] [CP3L44P0001N] Stream state changed from STARTING to STREAMING@Color
+[08/12 18:26:38.793056][warning][13441][Pipeline.cpp:324] [CP3L44P0001N] Output frameset queue is full, drop oldest frameset!
+[08/12 18:26:41.828287][warning][13441][Pipeline.cpp:324] [CP3L44P0001N] Output frameset queue is full, drop oldest frameset! [**58 logs in 3035ms**]
+[08/12 18:26:42.848362][info][13436][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=30.169830fps
+[08/12 18:26:42.882917][info][13438][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=30.212681fps
+[08/12 18:26:43.296117][info][13434][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=30.163803fps
+[08/12 18:26:43.296899][info][13441][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=30.181892fps
+[08/12 18:26:47.854208][info][13436][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=29.964043fps
+[08/12 18:26:47.862287][warning][13457][Pipeline.cpp:324] [CP3L44P0001N] Output frameset queue is full, drop oldest frameset! [**115 logs in 6033ms, last: 18:26:47.802080**]
+[08/12 18:26:47.888890][info][13438][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=29.964043fps
+[08/12 18:26:48.301972][info][13434][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=29.970030fps
+[08/12 18:26:48.302624][info][13441][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=29.964043fps
+[08/12 18:26:52.860133][info][13436][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=29.970030fps
+[08/12 18:26:52.895147][info][13438][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=29.964043fps
+[08/12 18:26:53.307884][info][13434][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=29.964043fps
+[08/12 18:26:53.308598][info][13441][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=29.964043fps
+[08/12 18:26:53.386034][info][13490][HostTimestampProvider.cpp:36] Update clock type to: realtime(0)
+[08/12 18:26:53.391687][info][13490][LinuxUsbPal.cpp:334] Create PollingDeviceWatcher!
+[08/12 18:26:53.391709][info][13490][DeviceManager.cpp:25] Current found device(s): (1)
+[08/12 18:26:53.391712][info][13490][DeviceManager.cpp:33] 	- Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N, Connection: USB3.2
+[08/12 18:26:53.391716][info][13490][DeviceManager.cpp:463] Enable net device enumeration: true
+[08/12 18:26:54.395542][info][13490][DeviceManager.cpp:25] Current device(s) list: (1)
+[08/12 18:26:54.395580][info][13490][DeviceManager.cpp:33] 	- Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N, Connection: USB3.2
+[08/12 18:26:54.395631][warning][13490][ObException.cpp:25] A recoverable_exception has occurred!
+ - where: Device.cpp(309)
+ - msg: Device not found by serial number: CV2TC5100075
+ - type: INVALID_VALUE
+ - status: 100
+[08/12 18:26:54.400048][warning][13490][ObLibuvcDevicePort.cpp:71] uvc_open failed: [Path: 2-1.2-11.0, Return Code: -6]
+[08/12 18:26:54.400113][warning][13490][ObException.cpp:31] A unrecoverable_exception has occurred!
+ - where: ObLibuvcDevicePort.cpp(72)
+ - msg: uvc_open failed: [Path: 2-1.2-11.0, Return Code: -6]
+ - type: IO
+ - status: 115
+[08/12 18:26:54.400263][warning][13490][DeviceBase.cpp:369] Execute failure! A libobsensor_exception has occurred!
+ - where: DeviceBase.cpp(369):getComponent
+ - msg: uvc_open failed: [Path: 2-1.2-11.0, Return Code: -6]
+ - type: N11libobsensor23unrecoverable_exceptionE
+ - status: 115
+[08/12 18:26:54.404135][warning][13490][ObLibuvcDevicePort.cpp:71] uvc_open failed: [Path: 2-1.2-11.0, Return Code: -6]
+[08/12 18:26:54.404161][warning][13490][ObException.cpp:31] A unrecoverable_exception has occurred!
+ - where: ObLibuvcDevicePort.cpp(72)
+ - msg: uvc_open failed: [Path: 2-1.2-11.0, Return Code: -6]
+ - type: IO
+ - status: 115
+[08/12 18:26:54.404216][warning][13490][DeviceBase.cpp:369] Execute failure! A libobsensor_exception has occurred!
+ - where: DeviceBase.cpp(369):getComponent
+ - msg: uvc_open failed: [Path: 2-1.2-11.0, Return Code: -6]
+ - type: N11libobsensor23unrecoverable_exceptionE
+ - status: 115
+[08/12 18:34:14.631927][info][14051][HostTimestampProvider.cpp:36] Update clock type to: realtime(0)
+[08/12 18:34:14.841295][info][14051][LinuxUsbPal.cpp:334] Create PollingDeviceWatcher!
+[08/12 18:34:14.841339][info][14051][DeviceManager.cpp:25] Current found device(s): (1)
+[08/12 18:34:14.841345][info][14051][DeviceManager.cpp:33] 	- Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N, Connection: USB3.2
+[08/12 18:34:14.841351][info][14051][DeviceManager.cpp:463] Enable net device enumeration: true
+[08/12 18:34:15.851302][info][14051][DeviceManager.cpp:25] Current device(s) list: (1)
+[08/12 18:34:15.851345][info][14051][DeviceManager.cpp:33] 	- Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N, Connection: USB3.2
+[08/12 18:34:15.851404][warning][14051][ObException.cpp:25] A recoverable_exception has occurred!
+ - where: Device.cpp(309)
+ - msg: Device not found by serial number: CV2TC5100075
+ - type: INVALID_VALUE
+ - status: 100
+[08/12 18:34:15.861276][info][14051][G330Device.cpp:630] UVCAutoRebootOnFault=true for device: Gemini 335L
+[08/12 18:34:15.869356][info][14051][DeviceBase.cpp:742] key: AppSlot,value:1
+[08/12 18:34:15.869366][info][14051][DeviceBase.cpp:742] key: HwType,value:L2
+[08/12 18:34:15.869367][info][14051][DeviceBase.cpp:742] key: HwVer,value:V1.0
+[08/12 18:34:15.869368][info][14051][DeviceBase.cpp:742] key: IspFwVer,value:20260620
+[08/12 18:34:15.869370][info][14051][DeviceBase.cpp:742] key: IspNeedVer,value:20250930
+[08/12 18:34:15.869371][info][14051][DeviceBase.cpp:742] key: PresetVer,value:3.0.7
+[08/12 18:34:16.068138][warning][14051][PropertyServer.cpp:55] [CP3L44P0001N] Property not found to register callback, propertyId: 277
+[08/12 18:34:16.069197][warning][14051][PropertyConfigHandler.hpp:53] Unsupported property '223', skipping getting, return nullvalue
+[08/12 18:34:16.135686][warning][14051][PropertyConfigHandler.hpp:94] Exporting property '190' while stream is not active; the value may differ from what will be applied after streaming starts
+[08/12 18:34:16.150082][warning][14051][PresetHandler.cpp:336] Exporting ROI property '1061' while stream is not active; the value may differ from what will be applied after streaming starts
+[08/12 18:34:16.156149][warning][14051][PresetHandler.cpp:710] Exporting disparity search properties while stream is not active; the values may differ from what will be applied after streaming starts
+[08/12 18:34:16.304271][warning][14051][PropertyConfigHandler.hpp:94] Exporting property '189' while stream is not active; the value may differ from what will be applied after streaming starts
+[08/12 18:34:16.317039][warning][14051][PropertyConfigHandler.hpp:53] Unsupported property '277', skipping getting, return nullvalue
+[08/12 18:34:16.320180][warning][14051][PresetHandler.cpp:336] Exporting ROI property '1060' while stream is not active; the value may differ from what will be applied after streaming starts
+[08/12 18:34:16.321212][info][14051][DeviceManager.cpp:199] Device created successfully! Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N FW: 1.8.10
+[08/12 18:34:16.321580][info][14051][SensorBase.cpp:53] [CP3L44P0001N] SensorBase is destroyed
+[08/12 18:34:16.340297][info][14051][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[08/12 18:34:16.340314][info][14051][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[08/12 18:34:16.340509][info][14051][SensorBase.cpp:53] [CP3L44P0001N] SensorBase is destroyed
+[08/12 18:34:16.367953][info][14051][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[08/12 18:34:16.367968][info][14051][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[08/12 18:48:28.868942][info][15082][HostTimestampProvider.cpp:36] Update clock type to: realtime(0)
+[08/12 18:48:29.253857][info][15082][LinuxUsbPal.cpp:334] Create PollingDeviceWatcher!
+[08/12 18:48:29.253903][info][15082][DeviceManager.cpp:25] Current found device(s): (2)
+[08/12 18:48:29.253907][info][15082][DeviceManager.cpp:33] 	- Name: Gemini 305, PID: 0x0840, SN/ID: CV2TC5100075, Connection: USB3.2
+[08/12 18:48:29.253908][info][15082][DeviceManager.cpp:33] 	- Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N, Connection: USB3.2
+[08/12 18:48:29.253912][info][15082][DeviceManager.cpp:463] Enable net device enumeration: true
+[08/12 18:48:30.258676][info][15082][DeviceManager.cpp:25] Current device(s) list: (2)
+[08/12 18:48:30.258711][info][15082][DeviceManager.cpp:33] 	- Name: Gemini 305, PID: 0x0840, SN/ID: CV2TC5100075, Connection: USB3.2
+[08/12 18:48:30.258713][info][15082][DeviceManager.cpp:33] 	- Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N, Connection: USB3.2
+[08/12 18:48:30.263661][info][15082][G305Device.cpp:616] UVCAutoRebootOnFault=true for device: Gemini 305
+[08/12 18:48:30.274881][info][15082][DeviceBase.cpp:742] key: AppSlot,value:2
+[08/12 18:48:30.274892][info][15082][DeviceBase.cpp:742] key: HwType,value:S1
+[08/12 18:48:30.274893][info][15082][DeviceBase.cpp:742] key: HwVer,value:V1.3
+[08/12 18:48:30.274894][info][15082][DeviceBase.cpp:742] key: IspFwVer,value:20260116
+[08/12 18:48:30.274895][info][15082][DeviceBase.cpp:742] key: IspNeedVer,value:20250920
+[08/12 18:48:30.274896][info][15082][DeviceBase.cpp:742] key: PresetVer,value:0.0.7
+[08/12 18:48:30.489661][info][15082][DeviceManager.cpp:199] Device created successfully! Name: Gemini 305, PID: 0x0840, SN/ID: CV2TC5100075 FW: 1.0.30
+[08/12 18:48:30.489734][info][15082][Pipeline.cpp:54] [CV2TC5100075] Pipeline created with device: {name: Gemini 305, sn: CV2TC5100075}, @0xAAAAC8996280
+[08/12 18:48:30.506518][info][15082][Pipeline.cpp:228] [CV2TC5100075] Check and set config done!
+[08/12 18:48:30.507949][info][15082][Pipeline.cpp:266] [CV2TC5100075] Try to start streams!
+[08/12 18:48:30.507977][info][15082][VideoSensor.cpp:61] [CV2TC5100075] Try to start stream: {type: Color, format: RGB, width: 640, height: 480, fps: 30}
+[08/12 18:48:30.508000][info][15082][SensorBase.cpp:216] [CV2TC5100075] Stream state changed from STOPPED to STARTING@Color
+[08/12 18:48:30.508009][info][15082][VideoSensor.cpp:130] [CV2TC5100075] Start backend stream: {type: Color, format: YUYV, width: 640, height: 480, fps: 30}
+[08/12 18:48:30.512710][info][15082][Pipeline.cpp:293] [CV2TC5100075] Start streams done!
+[08/12 18:48:30.512720][info][15082][Pipeline.cpp:250] [CV2TC5100075] Pipeline start done!
+[08/12 18:48:31.060047][info][15115][SensorBase.cpp:216] [CV2TC5100075] Stream state changed from STARTING to STREAMING@Color
+[08/12 18:48:31.693744][warning][15119][Pipeline.cpp:324] [CV2TC5100075] Output frameset queue is full, drop oldest frameset!
+[08/12 18:53:08.674932][info][15792][HostTimestampProvider.cpp:36] Update clock type to: realtime(0)
+[08/12 18:53:08.958523][info][15792][LinuxUsbPal.cpp:334] Create PollingDeviceWatcher!
+[08/12 18:53:08.958563][info][15792][DeviceManager.cpp:25] Current found device(s): (2)
+[08/12 18:53:08.958568][info][15792][DeviceManager.cpp:33] 	- Name: Gemini 305, PID: 0x0840, SN/ID: CV2TC5100075, Connection: USB3.2
+[08/12 18:53:08.958570][info][15792][DeviceManager.cpp:33] 	- Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N, Connection: USB3.2
+[08/12 18:53:08.958574][info][15792][DeviceManager.cpp:463] Enable net device enumeration: true
+[08/12 18:53:09.963348][info][15792][DeviceManager.cpp:25] Current device(s) list: (2)
+[08/12 18:53:09.963386][info][15792][DeviceManager.cpp:33] 	- Name: Gemini 305, PID: 0x0840, SN/ID: CV2TC5100075, Connection: USB3.2
+[08/12 18:53:09.963388][info][15792][DeviceManager.cpp:33] 	- Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N, Connection: USB3.2
+[08/12 18:53:09.968583][info][15792][G305Device.cpp:616] UVCAutoRebootOnFault=true for device: Gemini 305
+[08/12 18:53:09.978692][info][15792][DeviceBase.cpp:742] key: AppSlot,value:2
+[08/12 18:53:09.978704][info][15792][DeviceBase.cpp:742] key: HwType,value:S1
+[08/12 18:53:09.978707][info][15792][DeviceBase.cpp:742] key: HwVer,value:V1.3
+[08/12 18:53:09.978709][info][15792][DeviceBase.cpp:742] key: IspFwVer,value:20260116
+[08/12 18:53:09.978711][info][15792][DeviceBase.cpp:742] key: IspNeedVer,value:20250920
+[08/12 18:53:09.978713][info][15792][DeviceBase.cpp:742] key: PresetVer,value:0.0.7
+[08/12 18:53:10.196023][info][15792][DeviceManager.cpp:199] Device created successfully! Name: Gemini 305, PID: 0x0840, SN/ID: CV2TC5100075 FW: 1.0.30
+[08/12 18:53:10.196143][info][15792][Pipeline.cpp:54] [CV2TC5100075] Pipeline created with device: {name: Gemini 305, sn: CV2TC5100075}, @0xAAAAE26502B0
+[08/12 18:53:10.224698][info][15792][Pipeline.cpp:228] [CV2TC5100075] Check and set config done!
+[08/12 18:53:10.226261][info][15792][Pipeline.cpp:266] [CV2TC5100075] Try to start streams!
+[08/12 18:53:10.226286][info][15792][VideoSensor.cpp:61] [CV2TC5100075] Try to start stream: {type: Color, format: RGB, width: 640, height: 480, fps: 30}
+[08/12 18:53:10.226310][info][15792][SensorBase.cpp:216] [CV2TC5100075] Stream state changed from STOPPED to STARTING@Color
+[08/12 18:53:10.226318][info][15792][VideoSensor.cpp:130] [CV2TC5100075] Start backend stream: {type: Color, format: YUYV, width: 640, height: 480, fps: 30}
+[08/12 18:53:10.231418][info][15792][Pipeline.cpp:293] [CV2TC5100075] Start streams done!
+[08/12 18:53:10.231429][info][15792][Pipeline.cpp:250] [CV2TC5100075] Pipeline start done!
+[08/12 18:53:10.777129][info][15813][SensorBase.cpp:216] [CV2TC5100075] Stream state changed from STARTING to STREAMING@Color
+[08/12 18:53:11.511119][warning][15816][Pipeline.cpp:324] [CV2TC5100075] Output frameset queue is full, drop oldest frameset!
+[08/12 19:08:40.909315][info][17086][HostTimestampProvider.cpp:36] Update clock type to: realtime(0)
+[08/12 19:08:41.190781][info][17086][LinuxUsbPal.cpp:334] Create PollingDeviceWatcher!
+[08/12 19:08:41.190846][info][17086][DeviceManager.cpp:25] Current found device(s): (2)
+[08/12 19:08:41.190853][info][17086][DeviceManager.cpp:33] 	- Name: Gemini 305, PID: 0x0840, SN/ID: CV2TC5100075, Connection: USB3.2
+[08/12 19:08:41.190857][info][17086][DeviceManager.cpp:33] 	- Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N, Connection: USB3.2
+[08/12 19:08:41.190863][info][17086][DeviceManager.cpp:463] Enable net device enumeration: true
+[08/12 19:08:42.196525][info][17086][DeviceManager.cpp:25] Current device(s) list: (2)
+[08/12 19:08:42.196562][info][17086][DeviceManager.cpp:33] 	- Name: Gemini 305, PID: 0x0840, SN/ID: CV2TC5100075, Connection: USB3.2
+[08/12 19:08:42.196565][info][17086][DeviceManager.cpp:33] 	- Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N, Connection: USB3.2
+[08/12 19:08:42.204321][info][17086][G305Device.cpp:616] UVCAutoRebootOnFault=true for device: Gemini 305
+[08/12 19:08:42.212977][info][17086][DeviceBase.cpp:742] key: AppSlot,value:2
+[08/12 19:08:42.212986][info][17086][DeviceBase.cpp:742] key: HwType,value:S1
+[08/12 19:08:42.212988][info][17086][DeviceBase.cpp:742] key: HwVer,value:V1.3
+[08/12 19:08:42.212989][info][17086][DeviceBase.cpp:742] key: IspFwVer,value:20260116
+[08/12 19:08:42.212990][info][17086][DeviceBase.cpp:742] key: IspNeedVer,value:20250920
+[08/12 19:08:42.212991][info][17086][DeviceBase.cpp:742] key: PresetVer,value:0.0.7
+[08/12 19:08:42.428344][info][17086][DeviceManager.cpp:199] Device created successfully! Name: Gemini 305, PID: 0x0840, SN/ID: CV2TC5100075 FW: 1.0.30
+[08/12 19:08:42.428432][info][17086][Pipeline.cpp:54] [CV2TC5100075] Pipeline created with device: {name: Gemini 305, sn: CV2TC5100075}, @0xAAAACD7205B0
+[08/12 19:08:42.459536][info][17086][Pipeline.cpp:228] [CV2TC5100075] Check and set config done!
+[08/12 19:08:42.461109][info][17086][Pipeline.cpp:266] [CV2TC5100075] Try to start streams!
+[08/12 19:08:42.461136][info][17086][VideoSensor.cpp:61] [CV2TC5100075] Try to start stream: {type: Color, format: RGB, width: 640, height: 480, fps: 30}
+[08/12 19:08:42.461166][info][17086][SensorBase.cpp:216] [CV2TC5100075] Stream state changed from STOPPED to STARTING@Color
+[08/12 19:08:42.461180][info][17086][VideoSensor.cpp:130] [CV2TC5100075] Start backend stream: {type: Color, format: YUYV, width: 640, height: 480, fps: 30}
+[08/12 19:08:42.466683][info][17086][Pipeline.cpp:293] [CV2TC5100075] Start streams done!
+[08/12 19:08:42.466693][info][17086][Pipeline.cpp:250] [CV2TC5100075] Pipeline start done!
+[08/12 19:08:43.013013][info][17106][SensorBase.cpp:216] [CV2TC5100075] Stream state changed from STARTING to STREAMING@Color
+[08/12 19:08:48.017989][info][17106][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=30.169830fps
+[08/12 19:08:48.019317][info][17109][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=30.181892fps
+[08/12 19:08:53.023749][info][17106][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=29.964043fps
+[08/12 19:08:53.025167][info][17109][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=29.964043fps
+[08/12 19:12:03.514573][info][17341][HostTimestampProvider.cpp:36] Update clock type to: realtime(0)
+[08/12 19:12:03.798516][info][17341][LinuxUsbPal.cpp:334] Create PollingDeviceWatcher!
+[08/12 19:12:03.798559][info][17341][DeviceManager.cpp:25] Current found device(s): (2)
+[08/12 19:12:03.798565][info][17341][DeviceManager.cpp:33] 	- Name: Gemini 305, PID: 0x0840, SN/ID: CV2TC5100075, Connection: USB3.2
+[08/12 19:12:03.798568][info][17341][DeviceManager.cpp:33] 	- Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N, Connection: USB3.2
+[08/12 19:12:03.798572][info][17341][DeviceManager.cpp:463] Enable net device enumeration: true
+[08/12 19:12:04.803139][info][17341][DeviceManager.cpp:25] Current device(s) list: (2)
+[08/12 19:12:04.803171][info][17341][DeviceManager.cpp:33] 	- Name: Gemini 305, PID: 0x0840, SN/ID: CV2TC5100075, Connection: USB3.2
+[08/12 19:12:04.803172][info][17341][DeviceManager.cpp:33] 	- Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N, Connection: USB3.2
+[08/12 19:12:04.808020][info][17341][G305Device.cpp:616] UVCAutoRebootOnFault=true for device: Gemini 305
+[08/12 19:12:04.817790][info][17341][DeviceBase.cpp:742] key: AppSlot,value:2
+[08/12 19:12:04.817800][info][17341][DeviceBase.cpp:742] key: HwType,value:S1
+[08/12 19:12:04.817802][info][17341][DeviceBase.cpp:742] key: HwVer,value:V1.3
+[08/12 19:12:04.817803][info][17341][DeviceBase.cpp:742] key: IspFwVer,value:20260116
+[08/12 19:12:04.817805][info][17341][DeviceBase.cpp:742] key: IspNeedVer,value:20250920
+[08/12 19:12:04.817807][info][17341][DeviceBase.cpp:742] key: PresetVer,value:0.0.7
+[08/12 19:12:05.034967][info][17341][DeviceManager.cpp:199] Device created successfully! Name: Gemini 305, PID: 0x0840, SN/ID: CV2TC5100075 FW: 1.0.30
+[08/12 19:12:05.035041][info][17341][Pipeline.cpp:54] [CV2TC5100075] Pipeline created with device: {name: Gemini 305, sn: CV2TC5100075}, @0xAAAAD9A3E5C0
+[08/12 19:12:05.061793][info][17341][Pipeline.cpp:228] [CV2TC5100075] Check and set config done!
+[08/12 19:12:05.063301][info][17341][Pipeline.cpp:266] [CV2TC5100075] Try to start streams!
+[08/12 19:12:05.063318][info][17341][VideoSensor.cpp:61] [CV2TC5100075] Try to start stream: {type: Color, format: RGB, width: 640, height: 480, fps: 30}
+[08/12 19:12:05.063338][info][17341][SensorBase.cpp:216] [CV2TC5100075] Stream state changed from STOPPED to STARTING@Color
+[08/12 19:12:05.063346][info][17341][VideoSensor.cpp:130] [CV2TC5100075] Start backend stream: {type: Color, format: YUYV, width: 640, height: 480, fps: 30}
+[08/12 19:12:05.068708][info][17341][Pipeline.cpp:293] [CV2TC5100075] Start streams done!
+[08/12 19:12:05.068717][info][17341][Pipeline.cpp:250] [CV2TC5100075] Pipeline start done!
+[08/12 19:12:05.613970][info][17361][SensorBase.cpp:216] [CV2TC5100075] Stream state changed from STARTING to STREAMING@Color
+[08/12 19:12:10.619086][info][17361][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=30.169830fps
+[08/12 19:12:10.620440][info][17364][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=30.175858fps
+[08/12 19:12:15.624876][info][17361][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=29.964043fps
+[08/12 19:12:15.626366][info][17364][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=29.970030fps
+[08/12 19:12:18.574175][info][17388][HostTimestampProvider.cpp:36] Update clock type to: realtime(0)
+[08/12 19:12:18.653522][info][17388][LinuxUsbPal.cpp:334] Create PollingDeviceWatcher!
+[08/12 19:12:18.653559][info][17388][DeviceManager.cpp:25] Current found device(s): (2)
+[08/12 19:12:18.653564][info][17388][DeviceManager.cpp:33] 	- Name: Gemini 305, PID: 0x0840, SN/ID: CV2TC5100075, Connection: USB3.2
+[08/12 19:12:18.653566][info][17388][DeviceManager.cpp:33] 	- Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N, Connection: USB3.2
+[08/12 19:12:18.653571][info][17388][DeviceManager.cpp:463] Enable net device enumeration: true
+[08/12 19:12:19.659258][info][17388][DeviceManager.cpp:25] Current device(s) list: (2)
+[08/12 19:12:19.659303][info][17388][DeviceManager.cpp:33] 	- Name: Gemini 305, PID: 0x0840, SN/ID: CV2TC5100075, Connection: USB3.2
+[08/12 19:12:19.659308][info][17388][DeviceManager.cpp:33] 	- Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N, Connection: USB3.2
+[08/12 19:12:19.664743][info][17388][G330Device.cpp:630] UVCAutoRebootOnFault=true for device: Gemini 335L
+[08/12 19:12:19.673400][info][17388][DeviceBase.cpp:742] key: AppSlot,value:1
+[08/12 19:12:19.673412][info][17388][DeviceBase.cpp:742] key: HwType,value:L2
+[08/12 19:12:19.673413][info][17388][DeviceBase.cpp:742] key: HwVer,value:V1.0
+[08/12 19:12:19.673414][info][17388][DeviceBase.cpp:742] key: IspFwVer,value:20260620
+[08/12 19:12:19.673415][info][17388][DeviceBase.cpp:742] key: IspNeedVer,value:20250930
+[08/12 19:12:19.673416][info][17388][DeviceBase.cpp:742] key: PresetVer,value:3.0.7
+[08/12 19:12:19.872068][warning][17388][PropertyServer.cpp:55] [CP3L44P0001N] Property not found to register callback, propertyId: 277
+[08/12 19:12:19.873047][warning][17388][PropertyConfigHandler.hpp:53] Unsupported property '223', skipping getting, return nullvalue
+[08/12 19:12:19.949193][warning][17388][PropertyConfigHandler.hpp:94] Exporting property '190' while stream is not active; the value may differ from what will be applied after streaming starts
+[08/12 19:12:19.963799][warning][17388][PresetHandler.cpp:336] Exporting ROI property '1061' while stream is not active; the value may differ from what will be applied after streaming starts
+[08/12 19:12:19.969840][warning][17388][PresetHandler.cpp:710] Exporting disparity search properties while stream is not active; the values may differ from what will be applied after streaming starts
+[08/12 19:12:20.130819][warning][17388][PropertyConfigHandler.hpp:94] Exporting property '189' while stream is not active; the value may differ from what will be applied after streaming starts
+[08/12 19:12:20.143606][warning][17388][PropertyConfigHandler.hpp:53] Unsupported property '277', skipping getting, return nullvalue
+[08/12 19:12:20.146612][warning][17388][PresetHandler.cpp:336] Exporting ROI property '1060' while stream is not active; the value may differ from what will be applied after streaming starts
+[08/12 19:12:20.147184][info][17388][DeviceManager.cpp:199] Device created successfully! Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N FW: 1.8.10
+[08/12 19:12:20.147282][info][17388][Pipeline.cpp:54] [CP3L44P0001N] Pipeline created with device: {name: Gemini 335L, sn: CP3L44P0001N}, @0xAAAAF3A50F30
+[08/12 19:12:20.630964][info][17361][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=29.964043fps
+[08/12 19:12:20.631605][info][17364][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=29.964043fps
+[08/12 19:12:22.089134][info][17388][EngineInferEncry.cpp:1038] [EnhanceDepth] TEST Tensor rgb: mode=INPUT, shape=(-1, -1, 3), dtype=UINT8
+[08/12 19:12:22.089166][info][17388][EngineInferEncry.cpp:1038] [EnhanceDepth] TEST Tensor dep: mode=INPUT, shape=(1, 1, -1, -1), dtype=FLOAT
+[08/12 19:12:22.089171][info][17388][EngineInferEncry.cpp:1038] [EnhanceDepth] TEST Tensor pred: mode=OUTPUT, shape=(1, 1, 480, 640), dtype=FLOAT
+[08/12 19:12:22.089176][info][17388][EngineInferEncry.cpp:1038] [EnhanceDepth] TEST Tensor confidence_output: mode=OUTPUT, shape=(1, 1, 480, 640), dtype=FLOAT
+[08/12 19:12:22.089239][info][17388][EngineInferEncry.cpp:1096] [EnhanceDepth] Selected TensorRT optimization profile 0 for rgb=(480, 640, 3), depth=(1, 1, 480, 640)
+[08/12 19:12:22.096207][info][17388][EngineInferEncry.cpp:876] [EnhanceDepth] Configured dynamic TensorRT profile=0, rgb=(480, 640, 3), depth=(1, 1, 480, 640), pred=(1, 1, 480, 640), conf=(1, 1, 480, 640)
+[08/12 19:12:22.548682][info][17388][EngineInferEncry.cpp:1096] [EnhanceDepth] Selected TensorRT optimization profile 0 for rgb=(480, 640, 3), depth=(1, 1, 480, 640)
+[08/12 19:12:22.552328][info][17388][EngineInferEncry.cpp:876] [EnhanceDepth] Configured dynamic TensorRT profile=0, rgb=(480, 640, 3), depth=(1, 1, 480, 640), pred=(1, 1, 480, 640), conf=(1, 1, 480, 640)
+[08/12 19:12:22.738868][info][17388][Pipeline.cpp:228] [CP3L44P0001N] Check and set config done!
+[08/12 19:12:22.740500][info][17388][Pipeline.cpp:266] [CP3L44P0001N] Try to start streams!
+[08/12 19:12:22.740535][info][17388][VideoSensor.cpp:61] [CP3L44P0001N] Try to start stream: {type: Color, format: RGB, width: 640, height: 480, fps: 30}
+[08/12 19:12:22.740565][info][17388][SensorBase.cpp:216] [CP3L44P0001N] Stream state changed from STOPPED to STARTING@Color
+[08/12 19:12:22.740579][info][17388][VideoSensor.cpp:130] [CP3L44P0001N] Start backend stream: {type: Color, format: YUYV, width: 640, height: 480, fps: 30}
+[08/12 19:12:22.744723][info][17388][VideoSensor.cpp:61] [CP3L44P0001N] Try to start stream: {type: Depth, format: Y16, width: 640, height: 480, fps: 30}
+[08/12 19:12:22.744745][info][17388][SensorBase.cpp:216] [CP3L44P0001N] Stream state changed from STOPPED to STARTING@Depth
+[08/12 19:12:22.744757][info][17388][VideoSensor.cpp:130] [CP3L44P0001N] Start backend stream: {type: Depth, format: Z16, width: 640, height: 480, fps: 30}
+[08/12 19:12:22.748860][info][17388][Pipeline.cpp:293] [CP3L44P0001N] Start streams done!
+[08/12 19:12:22.748866][info][17388][Pipeline.cpp:250] [CP3L44P0001N] Pipeline start done!
+[08/12 19:12:22.828799][info][17420][SensorBase.cpp:216] [CP3L44P0001N] Stream state changed from STARTING to STREAMING@Depth
+[08/12 19:12:23.276778][info][17418][SensorBase.cpp:216] [CP3L44P0001N] Stream state changed from STARTING to STREAMING@Color
+[08/12 19:12:23.777446][warning][17447][Pipeline.cpp:324] [CP3L44P0001N] Output frameset queue is full, drop oldest frameset!
+[08/12 19:12:25.636790][info][17361][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=29.964043fps
+[08/12 19:12:25.638158][info][17364][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=29.964043fps
+[08/12 19:12:26.781612][warning][17447][Pipeline.cpp:324] [CP3L44P0001N] Output frameset queue is full, drop oldest frameset! [**55 logs in 3004ms**]
+[08/12 19:12:27.834245][info][17420][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=30.169830fps
+[08/12 19:12:27.869846][info][17444][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=30.200676fps
+[08/12 19:12:28.282182][info][17418][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=30.169830fps
+[08/12 19:12:28.283146][info][17447][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=30.181892fps
+[08/12 19:12:30.642829][info][17361][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=29.970030fps
+[08/12 19:12:30.644334][info][17364][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=29.964043fps
+[08/12 19:12:32.822068][warning][17447][Pipeline.cpp:324] [CP3L44P0001N] Output frameset queue is full, drop oldest frameset! [**110 logs in 6040ms**]
+[08/12 19:12:32.840053][info][17420][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=29.964043fps
+[08/12 19:12:32.876285][info][17444][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=29.964043fps
+[08/12 19:12:33.288188][info][17418][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=29.964043fps
+[08/12 19:12:33.289683][info][17447][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=29.964043fps
+[08/12 19:12:35.648805][info][17361][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=29.964043fps
+[08/12 19:12:35.650145][info][17364][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=29.964043fps
+[08/12 19:12:37.846105][info][17420][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=29.964043fps
+[08/12 19:12:37.882269][info][17444][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=29.964043fps
+[08/12 19:12:38.293811][info][17418][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=29.970030fps
+[08/12 19:12:38.295339][info][17447][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=29.964043fps
+[08/12 19:12:40.654566][info][17361][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=29.964043fps
+[08/12 19:12:40.655120][info][17364][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=29.970030fps
+[08/12 19:12:42.851909][info][17420][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=29.970030fps
+[08/12 19:12:42.886795][info][17444][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=29.976019fps
+[08/12 19:12:43.299607][info][17418][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=29.964043fps
+[08/12 19:12:43.301162][info][17447][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=29.970030fps
+[08/12 19:12:44.835341][warning][17447][Pipeline.cpp:324] [CP3L44P0001N] Output frameset queue is full, drop oldest frameset! [**221 logs in 12013ms**]
+[08/12 19:12:45.660659][info][17361][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=29.964043fps
+[08/12 19:12:45.662033][info][17364][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=29.964043fps
+[08/12 19:12:47.857979][info][17420][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=29.964043fps
+[08/12 19:12:47.894034][info][17444][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=29.958059fps
+[08/12 19:12:48.305620][info][17418][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=29.964043fps
+[08/12 19:12:48.306778][info][17447][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=29.964043fps
+[08/12 19:12:50.666421][info][17361][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=29.964043fps
+[08/12 19:12:50.667828][info][17364][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=29.964043fps
+[08/12 19:12:52.863694][info][17420][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=29.964043fps
+[08/12 19:12:52.898580][info][17444][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=29.970030fps
+[08/12 19:12:53.311433][info][17418][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=29.970030fps
+[08/12 19:12:53.312142][info][17447][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=29.970030fps
+[08/12 19:18:42.534936][info][17956][HostTimestampProvider.cpp:36] Update clock type to: realtime(0)
+[08/12 19:18:42.814645][info][17956][LinuxUsbPal.cpp:334] Create PollingDeviceWatcher!
+[08/12 19:18:42.814688][info][17956][DeviceManager.cpp:25] Current found device(s): (2)
+[08/12 19:18:42.814696][info][17956][DeviceManager.cpp:33] 	- Name: Gemini 305, PID: 0x0840, SN/ID: CV2TC5100075, Connection: USB3.2
+[08/12 19:18:42.814700][info][17956][DeviceManager.cpp:33] 	- Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N, Connection: USB3.2
+[08/12 19:18:42.814706][info][17956][DeviceManager.cpp:463] Enable net device enumeration: true
+[08/12 19:18:43.819281][info][17956][DeviceManager.cpp:25] Current device(s) list: (2)
+[08/12 19:18:43.819316][info][17956][DeviceManager.cpp:33] 	- Name: Gemini 305, PID: 0x0840, SN/ID: CV2TC5100075, Connection: USB3.2
+[08/12 19:18:43.819319][info][17956][DeviceManager.cpp:33] 	- Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N, Connection: USB3.2
+[08/12 19:18:43.824353][info][17956][G305Device.cpp:616] UVCAutoRebootOnFault=true for device: Gemini 305
+[08/12 19:18:43.834119][info][17956][DeviceBase.cpp:742] key: AppSlot,value:2
+[08/12 19:18:43.834126][info][17956][DeviceBase.cpp:742] key: HwType,value:S1
+[08/12 19:18:43.834127][info][17956][DeviceBase.cpp:742] key: HwVer,value:V1.3
+[08/12 19:18:43.834127][info][17956][DeviceBase.cpp:742] key: IspFwVer,value:20260116
+[08/12 19:18:43.834129][info][17956][DeviceBase.cpp:742] key: IspNeedVer,value:20250920
+[08/12 19:18:43.834130][info][17956][DeviceBase.cpp:742] key: PresetVer,value:0.0.7
+[08/12 19:18:44.047394][info][17956][DeviceManager.cpp:199] Device created successfully! Name: Gemini 305, PID: 0x0840, SN/ID: CV2TC5100075 FW: 1.0.30
+[08/12 19:18:44.047471][info][17956][Pipeline.cpp:54] [CV2TC5100075] Pipeline created with device: {name: Gemini 305, sn: CV2TC5100075}, @0xAAAAE3B4B5C0
+[08/12 19:18:44.064267][info][17956][Pipeline.cpp:228] [CV2TC5100075] Check and set config done!
+[08/12 19:18:44.065692][info][17956][Pipeline.cpp:266] [CV2TC5100075] Try to start streams!
+[08/12 19:18:44.065709][info][17956][VideoSensor.cpp:61] [CV2TC5100075] Try to start stream: {type: Color, format: RGB, width: 640, height: 480, fps: 10}
+[08/12 19:18:44.065729][info][17956][SensorBase.cpp:216] [CV2TC5100075] Stream state changed from STOPPED to STARTING@Color
+[08/12 19:18:44.065737][info][17956][VideoSensor.cpp:130] [CV2TC5100075] Start backend stream: {type: Color, format: YUYV, width: 640, height: 480, fps: 10}
+[08/12 19:18:44.070040][info][17956][Pipeline.cpp:293] [CV2TC5100075] Start streams done!
+[08/12 19:18:44.070044][info][17956][Pipeline.cpp:250] [CV2TC5100075] Pipeline start done!
+[08/12 19:18:45.016516][info][17989][SensorBase.cpp:216] [CV2TC5100075] Stream state changed from STARTING to STREAMING@Color
+[08/12 19:18:50.018950][info][17989][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=10.195922fps
+[08/12 19:18:50.019887][info][17993][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=10.197961fps
+[08/12 19:18:55.022505][info][17989][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.992006fps
+[08/12 19:18:55.023288][info][17993][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/12 19:18:57.571610][info][18018][HostTimestampProvider.cpp:36] Update clock type to: realtime(0)
+[08/12 19:18:57.657768][info][18018][LinuxUsbPal.cpp:334] Create PollingDeviceWatcher!
+[08/12 19:18:57.657800][info][18018][DeviceManager.cpp:25] Current found device(s): (2)
+[08/12 19:18:57.657803][info][18018][DeviceManager.cpp:33] 	- Name: Gemini 305, PID: 0x0840, SN/ID: CV2TC5100075, Connection: USB3.2
+[08/12 19:18:57.657805][info][18018][DeviceManager.cpp:33] 	- Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N, Connection: USB3.2
+[08/12 19:18:57.657809][info][18018][DeviceManager.cpp:463] Enable net device enumeration: true
+[08/12 19:18:58.661923][info][18018][DeviceManager.cpp:25] Current device(s) list: (2)
+[08/12 19:18:58.661958][info][18018][DeviceManager.cpp:33] 	- Name: Gemini 305, PID: 0x0840, SN/ID: CV2TC5100075, Connection: USB3.2
+[08/12 19:18:58.661960][info][18018][DeviceManager.cpp:33] 	- Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N, Connection: USB3.2
+[08/12 19:18:58.672155][info][18018][G330Device.cpp:630] UVCAutoRebootOnFault=true for device: Gemini 335L
+[08/12 19:18:58.682198][info][18018][DeviceBase.cpp:742] key: AppSlot,value:1
+[08/12 19:18:58.682207][info][18018][DeviceBase.cpp:742] key: HwType,value:L2
+[08/12 19:18:58.682209][info][18018][DeviceBase.cpp:742] key: HwVer,value:V1.0
+[08/12 19:18:58.682210][info][18018][DeviceBase.cpp:742] key: IspFwVer,value:20260620
+[08/12 19:18:58.682212][info][18018][DeviceBase.cpp:742] key: IspNeedVer,value:20250930
+[08/12 19:18:58.682213][info][18018][DeviceBase.cpp:742] key: PresetVer,value:3.0.7
+[08/12 19:18:58.880342][warning][18018][PropertyServer.cpp:55] [CP3L44P0001N] Property not found to register callback, propertyId: 277
+[08/12 19:18:58.881522][warning][18018][PropertyConfigHandler.hpp:53] Unsupported property '223', skipping getting, return nullvalue
+[08/12 19:18:58.923792][warning][18018][PropertyConfigHandler.hpp:94] Exporting property '190' while stream is not active; the value may differ from what will be applied after streaming starts
+[08/12 19:18:58.938131][warning][18018][PresetHandler.cpp:336] Exporting ROI property '1061' while stream is not active; the value may differ from what will be applied after streaming starts
+[08/12 19:18:58.944112][warning][18018][PresetHandler.cpp:710] Exporting disparity search properties while stream is not active; the values may differ from what will be applied after streaming starts
+[08/12 19:18:59.072494][warning][18018][PropertyConfigHandler.hpp:94] Exporting property '189' while stream is not active; the value may differ from what will be applied after streaming starts
+[08/12 19:18:59.085378][warning][18018][PropertyConfigHandler.hpp:53] Unsupported property '277', skipping getting, return nullvalue
+[08/12 19:18:59.088503][warning][18018][PresetHandler.cpp:336] Exporting ROI property '1060' while stream is not active; the value may differ from what will be applied after streaming starts
+[08/12 19:18:59.088929][info][18018][DeviceManager.cpp:199] Device created successfully! Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N FW: 1.8.10
+[08/12 19:18:59.089011][info][18018][Pipeline.cpp:54] [CP3L44P0001N] Pipeline created with device: {name: Gemini 335L, sn: CP3L44P0001N}, @0xAAAAE6537F20
+[08/12 19:19:00.025877][info][17989][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/12 19:19:00.026755][info][17993][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.992006fps
+[08/12 19:19:01.199517][info][18018][EngineInferEncry.cpp:1038] [EnhanceDepth] TEST Tensor rgb: mode=INPUT, shape=(-1, -1, 3), dtype=UINT8
+[08/12 19:19:01.199555][info][18018][EngineInferEncry.cpp:1038] [EnhanceDepth] TEST Tensor dep: mode=INPUT, shape=(1, 1, -1, -1), dtype=FLOAT
+[08/12 19:19:01.199561][info][18018][EngineInferEncry.cpp:1038] [EnhanceDepth] TEST Tensor pred: mode=OUTPUT, shape=(1, 1, 480, 640), dtype=FLOAT
+[08/12 19:19:01.199565][info][18018][EngineInferEncry.cpp:1038] [EnhanceDepth] TEST Tensor confidence_output: mode=OUTPUT, shape=(1, 1, 480, 640), dtype=FLOAT
+[08/12 19:19:01.199633][info][18018][EngineInferEncry.cpp:1096] [EnhanceDepth] Selected TensorRT optimization profile 0 for rgb=(480, 640, 3), depth=(1, 1, 480, 640)
+[08/12 19:19:01.206723][info][18018][EngineInferEncry.cpp:876] [EnhanceDepth] Configured dynamic TensorRT profile=0, rgb=(480, 640, 3), depth=(1, 1, 480, 640), pred=(1, 1, 480, 640), conf=(1, 1, 480, 640)
+[08/12 19:19:01.626833][info][18018][EngineInferEncry.cpp:1096] [EnhanceDepth] Selected TensorRT optimization profile 0 for rgb=(480, 640, 3), depth=(1, 1, 480, 640)
+[08/12 19:19:01.630614][info][18018][EngineInferEncry.cpp:876] [EnhanceDepth] Configured dynamic TensorRT profile=0, rgb=(480, 640, 3), depth=(1, 1, 480, 640), pred=(1, 1, 480, 640), conf=(1, 1, 480, 640)
+[08/12 19:19:01.817785][info][18018][Pipeline.cpp:228] [CP3L44P0001N] Check and set config done!
+[08/12 19:19:01.819303][info][18018][Pipeline.cpp:266] [CP3L44P0001N] Try to start streams!
+[08/12 19:19:01.819330][info][18018][VideoSensor.cpp:61] [CP3L44P0001N] Try to start stream: {type: Color, format: RGB, width: 640, height: 480, fps: 10}
+[08/12 19:19:01.819351][info][18018][SensorBase.cpp:216] [CP3L44P0001N] Stream state changed from STOPPED to STARTING@Color
+[08/12 19:19:01.819362][info][18018][VideoSensor.cpp:130] [CP3L44P0001N] Start backend stream: {type: Color, format: YUYV, width: 640, height: 480, fps: 10}
+[08/12 19:19:01.823264][info][18018][VideoSensor.cpp:61] [CP3L44P0001N] Try to start stream: {type: Depth, format: Y16, width: 640, height: 480, fps: 10}
+[08/12 19:19:01.823283][info][18018][SensorBase.cpp:216] [CP3L44P0001N] Stream state changed from STOPPED to STARTING@Depth
+[08/12 19:19:01.823293][info][18018][VideoSensor.cpp:130] [CP3L44P0001N] Start backend stream: {type: Depth, format: Z16, width: 640, height: 480, fps: 10}
+[08/12 19:19:01.827919][info][18018][Pipeline.cpp:293] [CP3L44P0001N] Start streams done!
+[08/12 19:19:01.827940][info][18018][Pipeline.cpp:250] [CP3L44P0001N] Pipeline start done!
+[08/12 19:19:02.041572][info][18069][SensorBase.cpp:216] [CP3L44P0001N] Stream state changed from STARTING to STREAMING@Depth
+[08/12 19:19:02.454529][info][18067][SensorBase.cpp:216] [CP3L44P0001N] Stream state changed from STARTING to STREAMING@Color
+[08/12 19:19:05.029195][info][17989][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/12 19:19:05.029968][info][17993][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/12 19:19:07.043547][info][18069][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=10.197961fps
+[08/12 19:19:07.145002][info][18074][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=10.206085fps
+[08/12 19:19:07.457377][info][18067][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=10.195922fps
+[08/12 19:19:07.558113][info][18077][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=10.196078fps
+[08/12 19:19:10.032862][info][17989][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.992006fps
+[08/12 19:19:10.034212][info][17993][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.992006fps
+[08/12 19:19:12.047010][info][18069][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.992006fps
+[08/12 19:19:12.148601][info][18074][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/12 19:19:12.460856][info][18067][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.992006fps
+[08/12 19:19:12.561524][info][18077][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/12 19:19:15.036122][info][17989][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/12 19:19:15.037023][info][17993][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/12 19:19:17.050434][info][18069][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/12 19:19:17.151647][info][18074][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/12 19:19:17.464416][info][18067][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/12 19:19:17.564978][info][18077][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.992006fps
+[08/12 19:19:20.039511][info][17989][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/12 19:19:20.040144][info][17993][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/12 19:19:22.053879][info][18069][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/12 19:19:22.155126][info][18074][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.992006fps
+[08/12 19:19:22.467686][info][18067][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/12 19:19:22.568485][info][18077][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/12 19:20:46.576217][info][18361][HostTimestampProvider.cpp:36] Update clock type to: realtime(0)
+[08/12 19:20:46.857124][info][18361][LinuxUsbPal.cpp:334] Create PollingDeviceWatcher!
+[08/12 19:20:46.857157][info][18361][DeviceManager.cpp:25] Current found device(s): (2)
+[08/12 19:20:46.857160][info][18361][DeviceManager.cpp:33] 	- Name: Gemini 305, PID: 0x0840, SN/ID: CV2TC5100075, Connection: USB3.2
+[08/12 19:20:46.857162][info][18361][DeviceManager.cpp:33] 	- Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N, Connection: USB3.2
+[08/12 19:20:46.857166][info][18361][DeviceManager.cpp:463] Enable net device enumeration: true
+[08/12 19:20:47.862292][info][18361][DeviceManager.cpp:25] Current device(s) list: (2)
+[08/12 19:20:47.862324][info][18361][DeviceManager.cpp:33] 	- Name: Gemini 305, PID: 0x0840, SN/ID: CV2TC5100075, Connection: USB3.2
+[08/12 19:20:47.862327][info][18361][DeviceManager.cpp:33] 	- Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N, Connection: USB3.2
+[08/12 19:20:47.872134][info][18361][G305Device.cpp:616] UVCAutoRebootOnFault=true for device: Gemini 305
+[08/12 19:20:47.880089][info][18361][DeviceBase.cpp:742] key: AppSlot,value:2
+[08/12 19:20:47.880097][info][18361][DeviceBase.cpp:742] key: HwType,value:S1
+[08/12 19:20:47.880098][info][18361][DeviceBase.cpp:742] key: HwVer,value:V1.3
+[08/12 19:20:47.880100][info][18361][DeviceBase.cpp:742] key: IspFwVer,value:20260116
+[08/12 19:20:47.880124][info][18361][DeviceBase.cpp:742] key: IspNeedVer,value:20250920
+[08/12 19:20:47.880125][info][18361][DeviceBase.cpp:742] key: PresetVer,value:0.0.7
+[08/12 19:20:48.095971][info][18361][DeviceManager.cpp:199] Device created successfully! Name: Gemini 305, PID: 0x0840, SN/ID: CV2TC5100075 FW: 1.0.30
+[08/12 19:20:48.096053][info][18361][Pipeline.cpp:54] [CV2TC5100075] Pipeline created with device: {name: Gemini 305, sn: CV2TC5100075}, @0xAAAAAB7B55C0
+[08/12 19:20:48.127116][info][18361][Pipeline.cpp:228] [CV2TC5100075] Check and set config done!
+[08/12 19:20:48.128572][info][18361][Pipeline.cpp:266] [CV2TC5100075] Try to start streams!
+[08/12 19:20:48.128597][info][18361][VideoSensor.cpp:61] [CV2TC5100075] Try to start stream: {type: Color, format: RGB, width: 640, height: 480, fps: 10}
+[08/12 19:20:48.128626][info][18361][SensorBase.cpp:216] [CV2TC5100075] Stream state changed from STOPPED to STARTING@Color
+[08/12 19:20:48.128639][info][18361][VideoSensor.cpp:130] [CV2TC5100075] Start backend stream: {type: Color, format: YUYV, width: 640, height: 480, fps: 10}
+[08/12 19:20:48.133029][info][18361][Pipeline.cpp:293] [CV2TC5100075] Start streams done!
+[08/12 19:20:48.133034][info][18361][Pipeline.cpp:250] [CV2TC5100075] Pipeline start done!
+[08/12 19:20:49.080423][info][18393][SensorBase.cpp:216] [CV2TC5100075] Stream state changed from STARTING to STREAMING@Color
+[08/12 19:20:54.083058][info][18393][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=10.193884fps
+[08/12 19:20:54.084191][info][18397][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=10.195922fps
+[08/12 19:20:59.086201][info][18393][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/12 19:20:59.087051][info][18397][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/12 19:21:01.637245][info][18420][HostTimestampProvider.cpp:36] Update clock type to: realtime(0)
+[08/12 19:21:01.716796][info][18420][LinuxUsbPal.cpp:334] Create PollingDeviceWatcher!
+[08/12 19:21:01.716832][info][18420][DeviceManager.cpp:25] Current found device(s): (2)
+[08/12 19:21:01.716836][info][18420][DeviceManager.cpp:33] 	- Name: Gemini 305, PID: 0x0840, SN/ID: CV2TC5100075, Connection: USB3.2
+[08/12 19:21:01.716903][info][18420][DeviceManager.cpp:33] 	- Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N, Connection: USB3.2
+[08/12 19:21:01.716911][info][18420][DeviceManager.cpp:463] Enable net device enumeration: true
+[08/12 19:21:02.742073][info][18420][DeviceManager.cpp:25] Current device(s) list: (2)
+[08/12 19:21:02.742112][info][18420][DeviceManager.cpp:33] 	- Name: Gemini 305, PID: 0x0840, SN/ID: CV2TC5100075, Connection: USB3.2
+[08/12 19:21:02.742114][info][18420][DeviceManager.cpp:33] 	- Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N, Connection: USB3.2
+[08/12 19:21:02.750669][info][18420][G330Device.cpp:630] UVCAutoRebootOnFault=true for device: Gemini 335L
+[08/12 19:21:02.758537][info][18420][DeviceBase.cpp:742] key: AppSlot,value:1
+[08/12 19:21:02.758549][info][18420][DeviceBase.cpp:742] key: HwType,value:L2
+[08/12 19:21:02.758550][info][18420][DeviceBase.cpp:742] key: HwVer,value:V1.0
+[08/12 19:21:02.758551][info][18420][DeviceBase.cpp:742] key: IspFwVer,value:20260620
+[08/12 19:21:02.758552][info][18420][DeviceBase.cpp:742] key: IspNeedVer,value:20250930
+[08/12 19:21:02.758553][info][18420][DeviceBase.cpp:742] key: PresetVer,value:3.0.7
+[08/12 19:21:02.955393][warning][18420][PropertyServer.cpp:55] [CP3L44P0001N] Property not found to register callback, propertyId: 277
+[08/12 19:21:02.955948][warning][18420][PropertyConfigHandler.hpp:53] Unsupported property '223', skipping getting, return nullvalue
+[08/12 19:21:02.997989][warning][18420][PropertyConfigHandler.hpp:94] Exporting property '190' while stream is not active; the value may differ from what will be applied after streaming starts
+[08/12 19:21:03.012228][warning][18420][PresetHandler.cpp:336] Exporting ROI property '1061' while stream is not active; the value may differ from what will be applied after streaming starts
+[08/12 19:21:03.018225][warning][18420][PresetHandler.cpp:710] Exporting disparity search properties while stream is not active; the values may differ from what will be applied after streaming starts
+[08/12 19:21:03.150255][warning][18420][PropertyConfigHandler.hpp:94] Exporting property '189' while stream is not active; the value may differ from what will be applied after streaming starts
+[08/12 19:21:03.163104][warning][18420][PropertyConfigHandler.hpp:53] Unsupported property '277', skipping getting, return nullvalue
+[08/12 19:21:03.166108][warning][18420][PresetHandler.cpp:336] Exporting ROI property '1060' while stream is not active; the value may differ from what will be applied after streaming starts
+[08/12 19:21:03.166516][info][18420][DeviceManager.cpp:199] Device created successfully! Name: Gemini 335L, PID: 0x0804, SN/ID: CP3L44P0001N FW: 1.8.10
+[08/12 19:21:03.166600][info][18420][Pipeline.cpp:54] [CP3L44P0001N] Pipeline created with device: {name: Gemini 335L, sn: CP3L44P0001N}, @0xAAAAE13E7F30
+[08/12 19:21:04.089786][info][18393][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/12 19:21:04.091087][info][18397][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.992006fps
+[08/12 19:21:05.218391][info][18420][EngineInferEncry.cpp:1038] [EnhanceDepth] TEST Tensor rgb: mode=INPUT, shape=(-1, -1, 3), dtype=UINT8
+[08/12 19:21:05.218421][info][18420][EngineInferEncry.cpp:1038] [EnhanceDepth] TEST Tensor dep: mode=INPUT, shape=(1, 1, -1, -1), dtype=FLOAT
+[08/12 19:21:05.218426][info][18420][EngineInferEncry.cpp:1038] [EnhanceDepth] TEST Tensor pred: mode=OUTPUT, shape=(1, 1, 480, 640), dtype=FLOAT
+[08/12 19:21:05.218430][info][18420][EngineInferEncry.cpp:1038] [EnhanceDepth] TEST Tensor confidence_output: mode=OUTPUT, shape=(1, 1, 480, 640), dtype=FLOAT
+[08/12 19:21:05.218497][info][18420][EngineInferEncry.cpp:1096] [EnhanceDepth] Selected TensorRT optimization profile 0 for rgb=(480, 640, 3), depth=(1, 1, 480, 640)
+[08/12 19:21:05.226229][info][18420][EngineInferEncry.cpp:876] [EnhanceDepth] Configured dynamic TensorRT profile=0, rgb=(480, 640, 3), depth=(1, 1, 480, 640), pred=(1, 1, 480, 640), conf=(1, 1, 480, 640)
+[08/12 19:21:05.629477][info][18420][EngineInferEncry.cpp:1096] [EnhanceDepth] Selected TensorRT optimization profile 0 for rgb=(480, 640, 3), depth=(1, 1, 480, 640)
+[08/12 19:21:05.633226][info][18420][EngineInferEncry.cpp:876] [EnhanceDepth] Configured dynamic TensorRT profile=0, rgb=(480, 640, 3), depth=(1, 1, 480, 640), pred=(1, 1, 480, 640), conf=(1, 1, 480, 640)
+[08/12 19:21:05.820241][info][18420][Pipeline.cpp:228] [CP3L44P0001N] Check and set config done!
+[08/12 19:21:05.821866][info][18420][Pipeline.cpp:266] [CP3L44P0001N] Try to start streams!
+[08/12 19:21:05.821912][info][18420][VideoSensor.cpp:61] [CP3L44P0001N] Try to start stream: {type: Color, format: RGB, width: 640, height: 480, fps: 10}
+[08/12 19:21:05.821949][info][18420][SensorBase.cpp:216] [CP3L44P0001N] Stream state changed from STOPPED to STARTING@Color
+[08/12 19:21:05.821961][info][18420][VideoSensor.cpp:130] [CP3L44P0001N] Start backend stream: {type: Color, format: YUYV, width: 640, height: 480, fps: 10}
+[08/12 19:21:05.826364][info][18420][VideoSensor.cpp:61] [CP3L44P0001N] Try to start stream: {type: Depth, format: Y16, width: 640, height: 480, fps: 10}
+[08/12 19:21:05.826406][info][18420][SensorBase.cpp:216] [CP3L44P0001N] Stream state changed from STOPPED to STARTING@Depth
+[08/12 19:21:05.826420][info][18420][VideoSensor.cpp:130] [CP3L44P0001N] Start backend stream: {type: Depth, format: Z16, width: 640, height: 480, fps: 10}
+[08/12 19:21:05.830392][info][18420][Pipeline.cpp:293] [CP3L44P0001N] Start streams done!
+[08/12 19:21:05.830402][info][18420][Pipeline.cpp:250] [CP3L44P0001N] Pipeline start done!
+[08/12 19:21:06.044031][info][18469][SensorBase.cpp:216] [CP3L44P0001N] Stream state changed from STARTING to STREAMING@Depth
+[08/12 19:21:06.457968][info][18467][SensorBase.cpp:216] [CP3L44P0001N] Stream state changed from STARTING to STREAMING@Color
+[08/12 19:21:09.093106][info][18393][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/12 19:21:09.093678][info][18397][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.996002fps
+[08/12 19:21:11.046919][info][18469][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=10.193884fps
+[08/12 19:21:11.148238][info][18474][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=10.204082fps
+[08/12 19:21:11.460639][info][18467][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=10.193884fps
+[08/12 19:21:11.461288][info][18477][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=10.197961fps
+[08/12 19:21:14.096541][info][18393][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.992006fps
+[08/12 19:21:14.097128][info][18397][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/12 19:21:16.050274][info][18469][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/12 19:21:16.151590][info][18474][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/12 19:21:16.464086][info][18467][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/12 19:21:16.464741][info][18477][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/12 19:21:19.099991][info][18393][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/12 19:21:19.100565][info][18397][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.992006fps
+[08/12 19:21:21.053708][info][18469][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.992006fps
+[08/12 19:21:21.155021][info][18474][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/12 19:21:21.467535][info][18467][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.992006fps
+[08/12 19:21:21.468191][info][18477][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/12 19:21:24.103400][info][18393][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/12 19:21:24.103959][info][18397][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/12 19:21:26.057135][info][18469][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/12 19:21:26.158321][info][18474][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/12 19:21:26.470954][info][18467][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/12 19:21:26.471588][info][18477][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.992006fps
+[08/12 19:21:29.106900][info][18393][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.992006fps
+[08/12 19:21:29.107487][info][18397][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/12 19:21:31.060708][info][18469][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.992006fps
+[08/12 19:21:31.162926][info][18474][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.990009fps
+[08/12 19:21:31.475239][info][18467][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.992006fps
+[08/12 19:21:31.476331][info][18477][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.992006fps
+[08/12 19:21:34.111031][info][18393][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.992006fps
+[08/12 19:21:34.111576][info][18397][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.992006fps
+[08/12 19:21:36.064043][info][18469][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/12 19:21:36.165727][info][18474][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.996002fps
+[08/12 19:21:36.477900][info][18467][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/12 19:21:36.478630][info][18477][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.996002fps
+[08/12 19:21:39.113760][info][18393][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.996002fps
+[08/12 19:21:39.114311][info][18397][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/12 19:21:41.067455][info][18469][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/12 19:21:41.168670][info][18474][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/12 19:21:41.481523][info][18467][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/12 19:21:41.482276][info][18477][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.992006fps
+[08/12 19:21:44.118173][info][18393][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.990009fps
+[08/12 19:21:44.118733][info][18397][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.992006fps
+[08/12 19:21:46.070919][info][18469][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/12 19:21:46.172169][info][18474][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.992006fps
+[08/12 19:21:46.484702][info][18467][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/12 19:21:46.485454][info][18477][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/12 19:21:49.120668][info][18393][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.996002fps
+[08/12 19:21:49.121437][info][18397][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/12 19:21:51.074368][info][18469][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.992006fps
+[08/12 19:21:51.176063][info][18474][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/12 19:21:51.488124][info][18467][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/12 19:21:51.488781][info][18477][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/12 19:21:54.125808][info][18393][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.990009fps
+[08/12 19:21:54.126417][info][18397][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.990009fps
+[08/12 19:21:56.078053][info][18469][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/12 19:21:56.179091][info][18474][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/12 19:21:56.491582][info][18467][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.992006fps
+[08/12 19:21:56.492248][info][18477][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.992006fps
+[08/12 19:21:59.130092][info][18393][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.992006fps
+[08/12 19:21:59.130715][info][18397][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.992006fps
+[08/12 19:22:01.082088][info][18469][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.992006fps
+[08/12 19:22:01.182817][info][18474][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.992006fps
+[08/12 19:22:01.495017][info][18467][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/12 19:22:01.495665][info][18477][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/12 19:22:04.130962][info][18393][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.998000fps
+[08/12 19:22:04.131519][info][18397][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.998000fps
+[08/12 19:22:06.085278][info][18469][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/12 19:22:06.186015][info][18474][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/12 19:22:06.498477][info][18467][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.992006fps
+[08/12 19:22:06.499359][info][18477][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/12 19:22:09.134363][info][18393][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/12 19:22:09.134967][info][18397][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/12 19:22:11.088061][info][18469][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/12 19:22:11.190299][info][18474][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.992006fps
+[08/12 19:22:11.501912][info][18467][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/12 19:22:11.502603][info][18477][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.992006fps
+[08/12 19:22:14.137777][info][18393][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.992006fps
+[08/12 19:22:14.138335][info][18397][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/12 19:22:16.091450][info][18469][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/12 19:22:16.192621][info][18474][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.996002fps
+[08/12 19:22:16.505363][info][18467][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/12 19:22:16.506144][info][18477][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/12 19:22:19.141257][info][18393][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/12 19:22:19.141830][info][18397][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.992006fps
+[08/12 19:22:21.095336][info][18469][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.992006fps
+[08/12 19:22:21.196263][info][18474][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.992006fps
+[08/12 19:22:21.508708][info][18467][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/12 19:22:21.509417][info][18477][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/12 19:22:24.144659][info][18393][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/12 19:22:24.145217][info][18397][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/12 19:22:26.098325][info][18469][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/12 19:22:26.201104][info][18474][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.990009fps
+[08/12 19:22:26.512198][info][18467][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.992006fps
+[08/12 19:22:26.512927][info][18477][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.992006fps
+[08/12 19:22:29.148119][info][18393][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.992006fps
+[08/12 19:22:29.148701][info][18397][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/12 19:22:31.101723][info][18469][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/12 19:22:31.204342][info][18474][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/12 19:22:31.515584][info][18467][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/12 19:22:31.516327][info][18477][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/12 19:22:34.151580][info][18393][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/12 19:22:34.152220][info][18397][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.992006fps
+[08/12 19:22:36.105205][info][18469][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.992006fps
+[08/12 19:22:36.206475][info][18474][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.996002fps
+[08/12 19:22:36.518961][info][18467][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/12 19:22:36.519607][info][18477][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/12 19:22:39.155012][info][18393][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/12 19:22:39.155585][info][18397][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/12 19:22:41.108723][info][18469][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/12 19:22:41.209852][info][18474][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/12 19:22:41.522379][info][18467][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.992006fps
+[08/12 19:22:41.523125][info][18477][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/12 19:22:44.158403][info][18393][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.992006fps
+[08/12 19:22:44.158970][info][18397][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/12 19:22:46.112001][info][18469][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/12 19:22:46.213272][info][18474][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/12 19:22:46.525889][info][18467][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/12 19:22:46.526575][info][18477][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.992006fps
+[08/12 19:22:49.161804][info][18393][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/12 19:22:49.162368][info][18397][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.994004fps
+[08/12 19:22:51.115461][info][18469][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/12 19:22:51.216763][info][18474][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.992006fps
+[08/12 19:22:51.529248][info][18467][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/12 19:22:51.529887][info][18477][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.994004fps
+[08/12 19:22:54.165314][info][18393][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/12 19:22:54.165872][info][18397][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.992006fps
+[08/12 19:22:56.118885][info][18469][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.992006fps
+[08/12 19:22:56.220244][info][18474][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/12 19:22:56.532740][info][18467][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.992006fps
+[08/12 19:22:56.535363][info][18477][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.990009fps
+[08/12 19:22:59.169236][info][18393][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.992006fps
+[08/12 19:22:59.169806][info][18397][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.992006fps
+[08/12 19:23:01.122331][info][18469][VideoSensor.cpp:180] [CP3L44P0001N] Depth backend frame callback, frameRate=9.994004fps
+[08/12 19:23:01.223501][info][18474][SensorBase.cpp:405] [CP3L44P0001N] Depth Streaming... frameRate=9.994004fps
+[08/12 19:23:01.536208][info][18467][VideoSensor.cpp:180] [CP3L44P0001N] Color backend frame callback, frameRate=9.994004fps
+[08/12 19:23:01.536952][info][18477][SensorBase.cpp:405] [CP3L44P0001N] Color Streaming... frameRate=9.996002fps
+[08/12 19:23:04.172149][info][18393][VideoSensor.cpp:180] [CV2TC5100075] Color backend frame callback, frameRate=9.994004fps
+[08/12 19:23:04.172720][info][18397][SensorBase.cpp:405] [CV2TC5100075] Color Streaming... frameRate=9.996002fps

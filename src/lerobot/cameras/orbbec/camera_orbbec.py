@@ -56,6 +56,7 @@ class OrbbecCamera(Camera):
         self.latest_color_frame: NDArray[Any] | None = None
         self.latest_depth_frame: NDArray[Any] | None = None
         self.latest_timestamp: float | None = None
+        self.read_error: Exception | None = None
         self.new_frame_event: Event = Event()
 
         if self.height and self.width:
@@ -106,8 +107,11 @@ class OrbbecCamera(Camera):
         ]
         if self.serial_number:
             command.extend(["--serial", self.serial_number])
-        if self.config.align_depth_to_color:
+        if not self.config.use_depth:
+            command.append("--color-only")
+        if self.config.align_depth_to_color and self.config.use_depth:
             command.append("--align-depth-to-color")
+            command.extend(["--align-depth-to-color-mode", self.config.align_depth_to_color_mode])
         if self.config.use_enhanced_depth_filter:
             command.append("--enhanced-depth-filter")
             command.extend(["--enhanced-depth-filter-name", self.config.enhanced_depth_filter_name])
@@ -125,8 +129,9 @@ class OrbbecCamera(Camera):
 
         if warmup and self.warmup_s > 0:
             start_time = time.time()
+            warmup_timeout_ms = max(self.config.timeout_ms, self.warmup_s * 1000)
             while time.time() - start_time < self.warmup_s:
-                self._wait_for_expected_frames(timeout_ms=self.warmup_s * 1000)
+                self._wait_for_expected_frames(timeout_ms=warmup_timeout_ms)
                 time.sleep(0.1)
 
         logger.info(f"{self} connected.")
@@ -136,10 +141,10 @@ class OrbbecCamera(Camera):
             return
 
         if not self.config.enhanced_depth_license_check_command:
-            logger.warning(
+            logger.info(
                 "%s is starting with EnhancedDepthFilter enabled but no "
-                "`enhanced_depth_license_check_command` was configured. The OrbbecSDK "
-                "filter initialization must still validate the device license in the C++ bridge.",
+                "`enhanced_depth_license_check_command` was configured. This is expected when the "
+                "LingBot-Depth license is stored on the device; OrbbecSDK validates it in the C++ bridge.",
                 self,
             )
             return
@@ -166,8 +171,19 @@ class OrbbecCamera(Camera):
             raise RuntimeError(f"EnhancedDepthFilter license check failed with exit code {exc.returncode}.") from exc
 
     def _wait_for_expected_frames(self, timeout_ms: float) -> None:
-        if not self.new_frame_event.wait(timeout=timeout_ms / 1000.0):
+        deadline = time.perf_counter() + timeout_ms / 1000.0
+        while not self.new_frame_event.wait(timeout=0.1):
+            self._raise_if_read_thread_failed()
+            self._raise_if_bridge_exited()
+            if time.perf_counter() >= deadline:
+                break
+
+        if not self.new_frame_event.is_set():
+            self._raise_if_read_thread_failed()
+            self._raise_if_bridge_exited()
             raise TimeoutError(f"Timed out waiting for frames from {self}.")
+        self._raise_if_read_thread_failed()
+        self._raise_if_bridge_exited()
         with self.frame_lock:
             has_color = self.latest_color_frame is not None
             has_depth = self.latest_depth_frame is not None
@@ -178,6 +194,20 @@ class OrbbecCamera(Camera):
             raise ConnectionError(f"{self} did not produce a depth frame during warmup.")
         if self.record_depth_viz and not has_depth:
             raise ConnectionError(f"{self} did not produce a depth frame for depth visualization during warmup.")
+
+    def _raise_if_bridge_exited(self) -> None:
+        if self.process is None:
+            return
+        returncode = self.process.poll()
+        if returncode is not None:
+            raise ConnectionError(
+                f"{self} bridge process exited before producing the expected frames "
+                f"(exit code {returncode}). Check the OrbbecSDK/C++ bridge error printed above."
+            )
+
+    def _raise_if_read_thread_failed(self) -> None:
+        if self.read_error is not None:
+            raise RuntimeError(f"{self} read thread failed before producing expected frames.") from self.read_error
 
     def _read_exact(self, size: int) -> bytes:
         if self.process is None or self.process.stdout is None:
@@ -265,7 +295,9 @@ class OrbbecCamera(Camera):
                     failure_count += 1
                     logger.warning(f"Error reading frame in background thread for {self}: {e}")
                 else:
-                    raise RuntimeError(f"{self} exceeded maximum consecutive read failures.") from e
+                    self.read_error = RuntimeError(f"{self} exceeded maximum consecutive read failures.")
+                    self.stop_event.set()
+                    return
 
     def _start_read_thread(self) -> None:
         self._stop_read_thread()
@@ -288,6 +320,7 @@ class OrbbecCamera(Camera):
             self.latest_color_frame = None
             self.latest_depth_frame = None
             self.latest_timestamp = None
+            self.read_error = None
             self.new_frame_event.clear()
 
     def read(self, color_mode: ColorMode | None = None) -> NDArray[Any]:
@@ -296,12 +329,16 @@ class OrbbecCamera(Camera):
         self.new_frame_event.clear()
         return self.async_read(timeout_ms=10000)
 
-    def async_read(self, timeout_ms: float = 200) -> NDArray[Any]:
+    def async_read(self, timeout_ms: float | None = None) -> NDArray[Any]:
+        timeout_ms = self.config.timeout_ms if timeout_ms is None else timeout_ms
         if not self.is_connected:
             raise DeviceNotConnectedError(f"{self} is not connected.")
         if self.thread is None or not self.thread.is_alive():
+            self._raise_if_read_thread_failed()
             raise RuntimeError(f"{self} read thread is not running.")
         if not self.new_frame_event.wait(timeout=timeout_ms / 1000.0):
+            self._raise_if_read_thread_failed()
+            self._raise_if_bridge_exited()
             raise TimeoutError(f"Timed out waiting for color frame from {self} after {timeout_ms} ms.")
         with self.frame_lock:
             frame = self.latest_color_frame
@@ -312,14 +349,18 @@ class OrbbecCamera(Camera):
             )
         return frame
 
-    def async_read_depth(self, timeout_ms: float = 200) -> NDArray[Any]:
+    def async_read_depth(self, timeout_ms: float | None = None) -> NDArray[Any]:
+        timeout_ms = self.config.timeout_ms if timeout_ms is None else timeout_ms
         if not self.use_depth:
             raise RuntimeError(f"Depth stream is not enabled for {self}.")
         if not self.is_connected:
             raise DeviceNotConnectedError(f"{self} is not connected.")
         if self.thread is None or not self.thread.is_alive():
+            self._raise_if_read_thread_failed()
             raise RuntimeError(f"{self} read thread is not running.")
         if not self.new_frame_event.wait(timeout=timeout_ms / 1000.0):
+            self._raise_if_read_thread_failed()
+            self._raise_if_bridge_exited()
             raise TimeoutError(f"Timed out waiting for depth frame from {self} after {timeout_ms} ms.")
         with self.frame_lock:
             frame = self.latest_depth_frame
@@ -328,7 +369,7 @@ class OrbbecCamera(Camera):
             raise RuntimeError(f"{self} has no depth frame.")
         return frame
 
-    def read_depth(self, timeout_ms: int = 200) -> NDArray[Any]:
+    def read_depth(self, timeout_ms: int | None = None) -> NDArray[Any]:
         return self.async_read_depth(timeout_ms=timeout_ms)
 
     def read_latest_depth(self, max_age_ms: int = 1000) -> NDArray[Any]:
@@ -336,6 +377,7 @@ class OrbbecCamera(Camera):
             raise RuntimeError(f"Depth stream is not enabled for {self}.")
         if not self.is_connected:
             raise DeviceNotConnectedError(f"{self} is not connected.")
+        self._raise_if_read_thread_failed()
         with self.frame_lock:
             frame = self.latest_depth_frame
             timestamp = self.latest_timestamp
@@ -363,12 +405,13 @@ class OrbbecCamera(Camera):
     def read_latest_depth_viz(self, max_age_ms: int = 1000) -> NDArray[Any]:
         return self._depth_to_viz(self.read_latest_depth(max_age_ms=max_age_ms))
 
-    def async_read_depth_viz(self, timeout_ms: float = 200) -> NDArray[Any]:
+    def async_read_depth_viz(self, timeout_ms: float | None = None) -> NDArray[Any]:
         return self._depth_to_viz(self.async_read_depth(timeout_ms=timeout_ms))
 
     def read_latest(self, max_age_ms: int = 1000) -> NDArray[Any]:
         if not self.is_connected:
             raise DeviceNotConnectedError(f"{self} is not connected.")
+        self._raise_if_read_thread_failed()
         with self.frame_lock:
             frame = self.latest_color_frame
             timestamp = self.latest_timestamp

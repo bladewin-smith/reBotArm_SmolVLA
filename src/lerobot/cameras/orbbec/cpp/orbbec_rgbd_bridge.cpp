@@ -30,6 +30,7 @@
 #include <cstdint>
 #include <cstring>
 #include <fstream>
+#include <functional>
 #include <iostream>
 #include <memory>
 #include <sstream>
@@ -37,6 +38,10 @@
 #include <string>
 #include <thread>
 #include <vector>
+
+#ifndef _WIN32
+#include <unistd.h>
+#endif
 
 #include "libobsensor/ObSensor.hpp"
 
@@ -58,7 +63,10 @@ struct Args {
     int height = 480;
     int fps = 30;
     std::string serial;
+    bool list_devices = false;
+    bool enable_depth = true;
     bool align_depth_to_color = false;
+    std::string align_depth_to_color_mode = "sw";
     bool enhanced_depth_filter = false;
     std::string enhanced_depth_filter_name = "EnhancedDepthFilter";
     std::string enhanced_depth_model;
@@ -94,8 +102,17 @@ Args parse_args(int argc, char** argv) {
         else if(key == "--serial") {
             args.serial = require_value("--serial");
         }
+        else if(key == "--list-devices") {
+            args.list_devices = true;
+        }
+        else if(key == "--disable-depth" || key == "--color-only") {
+            args.enable_depth = false;
+        }
         else if(key == "--align-depth-to-color") {
             args.align_depth_to_color = true;
+        }
+        else if(key == "--align-depth-to-color-mode") {
+            args.align_depth_to_color_mode = require_value("--align-depth-to-color-mode");
         }
         else if(key == "--enhanced-depth-filter" || key == "--lingbo-filter") {
             args.enhanced_depth_filter = true;
@@ -120,6 +137,15 @@ Args parse_args(int argc, char** argv) {
     return args;
 }
 
+std::string value_or_error(const std::function<std::string()>& fn) {
+    try {
+        return fn();
+    }
+    catch(const std::exception& exc) {
+        return std::string("<error: ") + exc.what() + ">";
+    }
+}
+
 std::shared_ptr<ob::VideoStreamProfile> choose_profile(
     const std::shared_ptr<ob::StreamProfileList>& profiles,
     int width,
@@ -135,6 +161,25 @@ std::shared_ptr<ob::VideoStreamProfile> choose_profile(
     }
 }
 
+std::shared_ptr<ob::VideoStreamProfile> choose_color_profile(
+    const std::shared_ptr<ob::StreamProfileList>& profiles,
+    int width,
+    int height,
+    int fps
+) {
+    try {
+        return profiles->getVideoStreamProfile(width, height, OB_FORMAT_RGB, fps);
+    }
+    catch(...) {
+    }
+    try {
+        return profiles->getVideoStreamProfile(width, height, OB_FORMAT_ANY, fps);
+    }
+    catch(...) {
+    }
+    return profiles->getVideoStreamProfile(OB_WIDTH_ANY, OB_HEIGHT_ANY, OB_FORMAT_ANY, fps);
+}
+
 void ensure_file_exists(const std::string& path, const std::string& label) {
     std::ifstream file(path);
     if(!file.good()) {
@@ -142,9 +187,66 @@ void ensure_file_exists(const std::string& path, const std::string& label) {
     }
 }
 
-std::shared_ptr<ob::Filter> create_enhanced_depth_filter(const Args& args) {
+OBConvertFormat convert_format_for_rgb(OBFormat format) {
+    switch(format) {
+        case OB_FORMAT_YUYV:
+            return FORMAT_YUYV_TO_RGB;
+        case OB_FORMAT_UYVY:
+            return FORMAT_UYVY_TO_RGB;
+        case OB_FORMAT_NV12:
+            return FORMAT_NV12_TO_RGB;
+        case OB_FORMAT_NV21:
+            return FORMAT_NV21_TO_RGB;
+        case OB_FORMAT_I420:
+            return FORMAT_I420_TO_RGB;
+        case OB_FORMAT_MJPG:
+            return FORMAT_MJPG_TO_RGB;
+        default:
+            throw std::runtime_error("Unsupported Orbbec color format for RGB conversion: " + std::to_string(format));
+    }
+}
+
+std::shared_ptr<ob::VideoFrame> ensure_rgb_color_frame(const std::shared_ptr<ob::VideoFrame>& color_frame) {
+    if(color_frame == nullptr) {
+        return nullptr;
+    }
+    if(color_frame->format() == OB_FORMAT_RGB) {
+        return color_frame;
+    }
+
+    ob::FormatConvertFilter converter;
+    converter.setFormatConvertType(convert_format_for_rgb(color_frame->format()));
+    auto converted_frame = converter.process(color_frame);
+    if(converted_frame == nullptr) {
+        throw std::runtime_error("Orbbec FormatConvertFilter returned no RGB frame.");
+    }
+    auto rgb_frame = converted_frame->as<ob::VideoFrame>();
+    if(rgb_frame == nullptr || rgb_frame->format() != OB_FORMAT_RGB) {
+        throw std::runtime_error("Orbbec FormatConvertFilter output is not an RGB video frame.");
+    }
+    return rgb_frame;
+}
+
+std::string video_profile_summary(const std::shared_ptr<ob::VideoStreamProfile>& profile) {
+    if(profile == nullptr) {
+        return "<null>";
+    }
+    return std::to_string(profile->getWidth()) + "x" + std::to_string(profile->getHeight()) + "@"
+           + std::to_string(profile->getFps()) + " format=" + std::to_string(profile->getFormat());
+}
+
+std::shared_ptr<ob::Filter> create_enhanced_depth_filter(
+    const Args& args,
+    const std::shared_ptr<ob::Device>& device
+) {
     if(!args.enhanced_depth_filter) {
         return nullptr;
+    }
+    if(!args.enable_depth) {
+        throw std::runtime_error("EnhancedDepthFilter requires depth to be enabled.");
+    }
+    if(device == nullptr) {
+        throw std::runtime_error("EnhancedDepthFilter requires a valid Orbbec device.");
     }
     if(args.enhanced_depth_model.empty()) {
         throw std::runtime_error("--enhanced-depth-model is required when --enhanced-depth-filter is enabled.");
@@ -163,13 +265,20 @@ std::shared_ptr<ob::Filter> create_enhanced_depth_filter(const Args& args) {
 
     std::shared_ptr<ob::Filter> filter;
     try {
-        filter = ob::FilterFactory::createPrivateFilter(
-            args.enhanced_depth_filter_name.c_str(),
-            args.enhanced_depth_model.c_str()
-        );
+        if(args.enhanced_depth_filter_name == "EnhancedDepthFilter") {
+            filter = std::make_shared<ob::EnhancedDepthFilter>(device, args.enhanced_depth_model);
+        }
+        else {
+            filter = ob::FilterFactory::createPrivateFilter(
+                args.enhanced_depth_filter_name.c_str(),
+                args.enhanced_depth_model.c_str()
+            );
+        }
         if(filter == nullptr) {
             throw std::runtime_error("OrbbecSDK returned a null EnhancedDepthFilter.");
         }
+        filter->setConfigValue("width", static_cast<double>(args.width));
+        filter->setConfigValue("height", static_cast<double>(args.height));
         filter->setConfigValue(
             args.enhanced_depth_confidence_key.c_str(),
             static_cast<double>(args.enhanced_depth_confidence_threshold)
@@ -230,7 +339,37 @@ std::shared_ptr<ob::FrameSet> apply_enhanced_depth_filter(
     return filtered_frameset;
 }
 
-void write_packet(const std::vector<uint8_t>& color_rgb, const std::vector<uint16_t>& depth_mm, int width, int height) {
+void write_all(int fd, const void* data, size_t size) {
+    const auto* bytes = static_cast<const uint8_t*>(data);
+    size_t written = 0;
+    while(written < size) {
+#ifdef _WIN32
+        std::cout.write(
+            reinterpret_cast<const char*>(bytes + written),
+            static_cast<std::streamsize>(size - written)
+        );
+        if(!std::cout.good()) {
+            throw std::runtime_error("Failed to write Orbbec frame packet to stdout.");
+        }
+        std::cout.flush();
+        return;
+#else
+        const ssize_t rc = ::write(fd, bytes + written, size - written);
+        if(rc <= 0) {
+            throw std::runtime_error("Failed to write Orbbec frame packet to stdout.");
+        }
+        written += static_cast<size_t>(rc);
+#endif
+    }
+}
+
+void write_packet(
+    int protocol_fd,
+    const std::vector<uint8_t>& color_rgb,
+    const std::vector<uint16_t>& depth_mm,
+    int width,
+    int height
+) {
     PacketHeader header{};
     std::memcpy(header.magic, "OBLR", 4);
     header.timestamp_ns = now_ns();
@@ -239,17 +378,33 @@ void write_packet(const std::vector<uint8_t>& color_rgb, const std::vector<uint1
     header.color_size = static_cast<uint32_t>(color_rgb.size());
     header.depth_size = static_cast<uint32_t>(depth_mm.size() * sizeof(uint16_t));
 
-    std::cout.write(reinterpret_cast<const char*>(&header), sizeof(header));
+    write_all(protocol_fd, &header, sizeof(header));
     if(!color_rgb.empty()) {
-        std::cout.write(reinterpret_cast<const char*>(color_rgb.data()), static_cast<std::streamsize>(color_rgb.size()));
+        write_all(protocol_fd, color_rgb.data(), color_rgb.size());
     }
     if(!depth_mm.empty()) {
-        std::cout.write(
-            reinterpret_cast<const char*>(depth_mm.data()),
-            static_cast<std::streamsize>(depth_mm.size() * sizeof(uint16_t))
-        );
+        write_all(protocol_fd, depth_mm.data(), depth_mm.size() * sizeof(uint16_t));
     }
-    std::cout.flush();
+}
+
+std::string device_list_summary(const std::shared_ptr<ob::DeviceList>& devices) {
+    if(devices == nullptr) {
+        return "No Orbbec device list returned by SDK.";
+    }
+
+    std::ostringstream out;
+    const uint32_t count = devices->getCount();
+    out << "Orbbec devices found: " << count;
+    for(uint32_t index = 0; index < count; ++index) {
+        out << "\n[" << index << "]"
+            << " name=" << value_or_error([&]() { return std::string(devices->getName(index)); })
+            << " serial=" << value_or_error([&]() { return std::string(devices->getSerialNumber(index)); })
+            << " uid=" << value_or_error([&]() { return std::string(devices->getUid(index)); })
+            << " connection=" << value_or_error([&]() { return std::string(devices->getConnectionType(index)); })
+            << " vid=" << value_or_error([&]() { return std::to_string(devices->getVid(index)); })
+            << " pid=" << value_or_error([&]() { return std::to_string(devices->getPid(index)); });
+    }
+    return out.str();
 }
 
 std::shared_ptr<ob::Device> get_device_by_serial(ob::Context& context, const std::string& serial) {
@@ -258,62 +413,117 @@ std::shared_ptr<ob::Device> get_device_by_serial(ob::Context& context, const std
         throw std::runtime_error("No Orbbec devices found");
     }
 
+    std::string direct_error;
     try {
         return devices->getDeviceBySN(serial.c_str());
     }
-    catch(const std::exception&) {
-        std::ostringstream available;
-        for(uint32_t index = 0; index < devices->getCount(); ++index) {
-            auto device = devices->getDevice(index);
-            auto info = device->getDeviceInfo();
-            if(info == nullptr) {
-                continue;
-            }
+    catch(const std::exception& exc) {
+        direct_error = exc.what();
+    }
+
+    std::ostringstream available;
+    std::string errors;
+    for(uint32_t index = 0; index < devices->getCount(); ++index) {
+        try {
             if(index > 0) {
                 available << ", ";
             }
-            available << info->serialNumber();
+            const std::string candidate_serial = devices->getSerialNumber(index);
+            available << candidate_serial;
+            if(candidate_serial == serial) {
+                return devices->getDevice(index);
+            }
         }
-        throw std::runtime_error(
-            "Could not find Orbbec device with serial " + serial + ". Available serials: " + available.str()
-        );
+        catch(const std::exception& exc) {
+            if(!errors.empty()) {
+                errors += "; ";
+            }
+            errors += "index " + std::to_string(index) + ": " + exc.what();
+        }
     }
+
+    std::string message = "Could not find Orbbec device with serial " + serial
+                          + ". Available serials: " + available.str();
+    if(!direct_error.empty()) {
+        message += ". getDeviceBySN error: " + direct_error;
+    }
+    if(!errors.empty()) {
+        message += ". Device list errors: " + errors;
+    }
+    throw std::runtime_error(message);
 }
 
 }  // namespace
 
 int main(int argc, char** argv) {
     try {
+#ifdef _WIN32
+        const int protocol_fd = 1;
+#else
+        const int protocol_fd = ::dup(STDOUT_FILENO);
+        if(protocol_fd < 0) {
+            throw std::runtime_error("Failed to duplicate stdout for Orbbec frame packets.");
+        }
+        if(::dup2(STDERR_FILENO, STDOUT_FILENO) < 0) {
+            throw std::runtime_error("Failed to redirect stdout to stderr for OrbbecSDK logs.");
+        }
+#endif
+
         const Args args = parse_args(argc, argv);
 
         ob::Context context;
+        if(args.list_devices) {
+            std::cerr << device_list_summary(context.queryDeviceList()) << std::endl;
+            return 0;
+        }
+
         if(!args.serial.empty()) {
             context.setDeviceChangedCallback([](std::shared_ptr<ob::DeviceList>, std::shared_ptr<ob::DeviceList>) {});
         }
 
         std::shared_ptr<ob::Pipeline> pipeline;
+        std::shared_ptr<ob::Device> device;
         if(args.serial.empty()) {
             pipeline = std::make_shared<ob::Pipeline>();
+            device = pipeline->getDevice();
         }
         else {
-            pipeline = std::make_shared<ob::Pipeline>(get_device_by_serial(context, args.serial));
+            device = get_device_by_serial(context, args.serial);
+            pipeline = std::make_shared<ob::Pipeline>(device);
         }
 
         auto config = std::make_shared<ob::Config>();
 
         auto color_profiles = pipeline->getStreamProfileList(OB_SENSOR_COLOR);
-        auto color_profile = choose_profile(color_profiles, args.width, args.height, OB_FORMAT_RGB, args.fps);
+        auto color_profile = choose_color_profile(color_profiles, args.width, args.height, args.fps);
         config->enableStream(color_profile);
+        std::cerr << "Selected color profile: " << video_profile_summary(color_profile) << std::endl;
 
-        auto depth_profiles = pipeline->getStreamProfileList(OB_SENSOR_DEPTH);
-        auto depth_profile = choose_profile(depth_profiles, args.width, args.height, OB_FORMAT_Y16, args.fps);
-        config->enableStream(depth_profile);
-
-        if(args.align_depth_to_color) {
-            config->setAlignMode(ALIGN_D2C_HW_MODE);
+        if(args.enable_depth) {
+            auto depth_profiles = pipeline->getStreamProfileList(OB_SENSOR_DEPTH);
+            auto depth_profile = choose_profile(depth_profiles, args.width, args.height, OB_FORMAT_Y16, args.fps);
+            config->enableStream(depth_profile);
+            std::cerr << "Selected depth profile: " << video_profile_summary(depth_profile) << std::endl;
         }
 
-        auto enhanced_depth_filter = create_enhanced_depth_filter(args);
+        if(args.align_depth_to_color) {
+            if(!args.enable_depth) {
+                throw std::runtime_error("--align-depth-to-color requires depth to be enabled.");
+            }
+            if(args.align_depth_to_color_mode == "hw" || args.align_depth_to_color_mode == "hardware") {
+                config->setAlignMode(ALIGN_D2C_HW_MODE);
+            }
+            else if(args.align_depth_to_color_mode == "sw" || args.align_depth_to_color_mode == "software") {
+                config->setAlignMode(ALIGN_D2C_SW_MODE);
+            }
+            else {
+                throw std::runtime_error(
+                    "--align-depth-to-color-mode must be 'sw', 'software', 'hw', or 'hardware'."
+                );
+            }
+        }
+
+        auto enhanced_depth_filter = create_enhanced_depth_filter(args, device);
 
         pipeline->start(config);
 
@@ -324,39 +534,48 @@ int main(int argc, char** argv) {
                 continue;
             }
 
-            if(frameset->colorFrame() == nullptr || frameset->depthFrame() == nullptr) {
+            if(frameset->colorFrame() == nullptr) {
+                continue;
+            }
+            if(args.enable_depth && frameset->depthFrame() == nullptr) {
                 continue;
             }
 
             frameset = apply_enhanced_depth_filter(frameset, enhanced_depth_filter);
 
-            auto color_frame = frameset->colorFrame();
+            auto color_frame = ensure_rgb_color_frame(frameset->colorFrame());
             auto depth_frame = frameset->depthFrame();
-            if(color_frame == nullptr || depth_frame == nullptr) {
+            if(color_frame == nullptr) {
                 continue;
             }
 
             const int width = static_cast<int>(color_frame->width());
             const int height = static_cast<int>(color_frame->height());
-            const int depth_width = static_cast<int>(depth_frame->width());
-            const int depth_height = static_cast<int>(depth_frame->height());
-            if(depth_width != width || depth_height != height) {
-                throw std::runtime_error(
-                    "Depth frame size " + std::to_string(depth_width) + "x" + std::to_string(depth_height)
-                    + " does not match color frame size " + std::to_string(width) + "x" + std::to_string(height)
-                    + ". Enable --align-depth-to-color or request matching RGB/depth stream profiles."
-                );
-            }
 
             const auto color_bytes = static_cast<size_t>(width * height * 3);
             std::vector<uint8_t> color_rgb(color_bytes);
             std::memcpy(color_rgb.data(), color_frame->data(), color_bytes);
 
-            const auto depth_pixels = static_cast<size_t>(width * height);
-            std::vector<uint16_t> depth_mm(depth_pixels);
-            std::memcpy(depth_mm.data(), depth_frame->data(), depth_pixels * sizeof(uint16_t));
+            std::vector<uint16_t> depth_mm;
+            if(args.enable_depth) {
+                if(depth_frame == nullptr) {
+                    continue;
+                }
+                const int depth_width = static_cast<int>(depth_frame->width());
+                const int depth_height = static_cast<int>(depth_frame->height());
+                if(depth_width != width || depth_height != height) {
+                    throw std::runtime_error(
+                        "Depth frame size " + std::to_string(depth_width) + "x" + std::to_string(depth_height)
+                        + " does not match color frame size " + std::to_string(width) + "x" + std::to_string(height)
+                        + ". Enable --align-depth-to-color or request matching RGB/depth stream profiles."
+                    );
+                }
+                const auto depth_pixels = static_cast<size_t>(width * height);
+                depth_mm.resize(depth_pixels);
+                std::memcpy(depth_mm.data(), depth_frame->data(), depth_pixels * sizeof(uint16_t));
+            }
 
-            write_packet(color_rgb, depth_mm, width, height);
+            write_packet(protocol_fd, color_rgb, depth_mm, width, height);
         }
     }
     catch(const std::exception& exc) {
