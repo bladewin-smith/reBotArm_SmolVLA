@@ -59,6 +59,19 @@ class RebotB601FollowerConfigBase:
     safety_hold_joints: list[str] = field(
         default_factory=lambda: ["joint_1", "joint_2", "joint_3", "joint_4", "joint_5", "joint_6"]
     )
+    safety_abort_episode_on_hold: bool = True
+    safety_auto_recover_to_episode_start: bool = True
+    safety_recovery_joints: list[str] = field(
+        default_factory=lambda: ["joint_1", "joint_2", "joint_3", "joint_4", "joint_5", "joint_6"]
+    )
+    safety_recovery_step_deg: float = 1.5
+    safety_recovery_hz: float = 20.0
+    safety_recovery_timeout_s: float = 25.0
+    safety_recovery_tolerance_deg: float = 3.0
+    safety_recovery_position_kp_scale: float = 0.5
+    safety_wait_for_leader_start: bool = True
+    safety_leader_start_tolerance_deg: float = 8.0
+    safety_leader_start_timeout_s: float = 45.0
     gripper_action_scale: float = 1.0
     gripper_action_offset: float = 0.0
     gripper_leader_close_pos: float | None = 5.0

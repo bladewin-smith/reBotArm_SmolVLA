@@ -5,9 +5,10 @@
 # Licensed under the Apache License, Version 2.0 (the "License");
 
 import logging
+import math
 import time
 from functools import cached_property
-from typing import Any
+from typing import Any, Callable
 
 from lerobot.cameras.utils import make_cameras_from_configs
 from lerobot.motors import Motor, MotorCalibration, MotorNormMode
@@ -63,6 +64,8 @@ class RebotB601Follower(Robot):
         self._last_observation_states: dict[str, dict[str, float]] = {}
         self._last_safety_hold_log_s = 0.0
         self._safety_hold_active = False
+        self._safety_fault_active = False
+        self._episode_start_pos: dict[str, float] | None = None
 
     @property
     def _state_ft(self) -> dict[str, type]:
@@ -178,6 +181,158 @@ class RebotB601Follower(Robot):
             names = list(self.bus.motors)
             return float(values[names.index(motor_name)])
         return float(values)
+
+    @property
+    def safety_fault_active(self) -> bool:
+        return self._safety_fault_active
+
+    def clear_safety_fault(self) -> None:
+        self._safety_fault_active = False
+        self._safety_hold_active = False
+
+    def mark_episode_start_pose(self) -> dict[str, float]:
+        if not self.is_connected:
+            raise DeviceNotConnectedError(f"{self} is not connected.")
+
+        states = self.bus.sync_read_all_states()
+        self._last_observation_states = {motor: state.copy() for motor, state in states.items()}
+        self._episode_start_pos = {
+            motor: float(state.get("position", 0.0)) for motor, state in states.items() if "position" in state
+        }
+        self.clear_safety_fault()
+        logger.info("%s marked episode start pose: %s", self.name, self._episode_start_pos)
+        return self._episode_start_pos.copy()
+
+    def episode_start_pose(self) -> dict[str, float] | None:
+        return None if self._episode_start_pos is None else self._episode_start_pos.copy()
+
+    def _present_positions(self) -> dict[str, float]:
+        states = self.bus.sync_read_all_states()
+        self._last_observation_states = {motor: state.copy() for motor, state in states.items()}
+        return {
+            motor: float(state.get("position", 0.0))
+            for motor, state in states.items()
+            if "position" in state
+        }
+
+    def _build_mit_commands(
+        self,
+        goal_pos: dict[str, float],
+        *,
+        position_kp_scale: float = 1.0,
+    ) -> dict[str, tuple[float, float, float, float, float]]:
+        return {
+            motor_name: (
+                (
+                    self.config.gripper_position_kp
+                    if motor_name == "gripper" and self.config.gripper_position_kp is not None
+                    else self._gain_for(self.config.position_kp, motor_name)
+                )
+                * position_kp_scale,
+                self.config.gripper_position_kd
+                if motor_name == "gripper" and self.config.gripper_position_kd is not None
+                else self._gain_for(self.config.position_kd, motor_name),
+                float(position_degrees),
+                0.0,
+                0.0,
+            )
+            for motor_name, position_degrees in goal_pos.items()
+        }
+
+    def recover_to_episode_start_pose(
+        self,
+        should_stop: Callable[[], bool] | None = None,
+        update_teleoperator: Callable[[], Any] | None = None,
+    ) -> bool:
+        if not self.is_connected:
+            raise DeviceNotConnectedError(f"{self} is not connected.")
+        if not self.config.safety_auto_recover_to_episode_start:
+            logger.warning("%s automatic episode-start recovery is disabled.", self.name)
+            return False
+        if self._episode_start_pos is None:
+            logger.warning("%s cannot recover: episode start pose has not been marked.", self.name)
+            return False
+
+        recovery_step_deg = float(self.config.safety_recovery_step_deg)
+        recovery_hz = float(self.config.safety_recovery_hz)
+        recovery_timeout_s = float(self.config.safety_recovery_timeout_s)
+        recovery_tolerance_deg = float(self.config.safety_recovery_tolerance_deg)
+        recovery_kp_scale = float(self.config.safety_recovery_position_kp_scale)
+        if (
+            not math.isfinite(recovery_step_deg)
+            or recovery_step_deg <= 0
+            or not math.isfinite(recovery_hz)
+            or recovery_hz <= 0
+            or not math.isfinite(recovery_timeout_s)
+            or recovery_timeout_s <= 0
+            or not math.isfinite(recovery_tolerance_deg)
+            or recovery_tolerance_deg < 0
+            or not math.isfinite(recovery_kp_scale)
+            or not 0 < recovery_kp_scale <= 1
+        ):
+            logger.error("%s cannot recover: invalid safety recovery parameters.", self.name)
+            return False
+
+        recovery_joints = [
+            joint for joint in self.config.safety_recovery_joints if joint in self._episode_start_pos
+        ]
+        if not recovery_joints:
+            logger.warning("%s cannot recover: no valid recovery joints configured.", self.name)
+            return False
+
+        invalid_targets = {
+            joint: self._episode_start_pos[joint]
+            for joint in recovery_joints
+            if not math.isfinite(self._episode_start_pos[joint])
+        }
+        if invalid_targets:
+            logger.error("%s cannot recover: invalid episode start positions: %s", self.name, invalid_targets)
+            return False
+
+        logger.warning("%s recovering follower arm to episode start pose.", self.name)
+        start_s = time.monotonic()
+        period_s = 1.0 / recovery_hz
+        while time.monotonic() - start_s < recovery_timeout_s:
+            if should_stop is not None and should_stop():
+                logger.warning("%s episode-start recovery was cancelled.", self.name)
+                return False
+            if update_teleoperator is not None:
+                update_teleoperator()
+
+            present_pos = self._present_positions()
+            goal_pos: dict[str, float] = {}
+            max_error = 0.0
+            for joint in recovery_joints:
+                current = present_pos[joint]
+                target = self._episode_start_pos[joint]
+                if not math.isfinite(current):
+                    logger.error(
+                        "%s cannot recover: invalid current position for %s: %s",
+                        self.name,
+                        joint,
+                        current,
+                    )
+                    return False
+                error = target - current
+                max_error = max(max_error, abs(error))
+                step = max(-recovery_step_deg, min(recovery_step_deg, error))
+                goal_pos[joint] = current + step
+
+            goal_pos = self._clamp_to_joint_limits(goal_pos)
+            commands = self._build_mit_commands(
+                goal_pos,
+                position_kp_scale=recovery_kp_scale,
+            )
+            self.bus.sync_write_mit(commands)
+
+            if max_error <= recovery_tolerance_deg:
+                logger.info("%s recovered to episode start pose.", self.name)
+                self.clear_safety_fault()
+                return True
+            time.sleep(period_s)
+
+        logger.error("%s failed to recover to episode start pose before timeout.", self.name)
+        return False
 
     def _map_gripper_goal(self, leader_position: float) -> float:
         if (
@@ -320,33 +475,29 @@ class RebotB601Follower(Robot):
             safety_hold = self._should_hold_on_clamp(clamp_info)
             if safety_hold:
                 self._safety_hold_active = True
+                self._safety_fault_active = True
                 self._log_safety_hold(clamp_info)
-                goal_pos = {motor: float(present_pos[motor]) for motor in goal_pos}
+                hold_joints = set(self.config.safety_hold_joints)
+                goal_pos = {
+                    motor: float(present_pos[motor]) if motor in hold_joints else target_pos
+                    for motor, target_pos in goal_pos.items()
+                }
+                goal_pos = self._clamp_to_joint_limits(goal_pos)
             else:
                 if self._safety_hold_active:
-                    logger.info("%s safety hold cleared; follower target is back within safe range.", self.name)
+                    logger.info(
+                        "%s safety hold cleared; follower target is back within safe range.",
+                        self.name,
+                    )
                 self._safety_hold_active = False
                 goal_pos = self._clamp_to_joint_limits(goal_pos)
         else:
             self._safety_hold_active = False
 
-        commands = {
-            motor_name: (
-                (
-                    self.config.gripper_position_kp
-                    if motor_name == "gripper" and self.config.gripper_position_kp is not None
-                    else self._gain_for(self.config.position_kp, motor_name)
-                )
-                * (self.config.safety_hold_position_kp_scale if safety_hold else 1.0),
-                self.config.gripper_position_kd
-                if motor_name == "gripper" and self.config.gripper_position_kd is not None
-                else self._gain_for(self.config.position_kd, motor_name),
-                float(position_degrees),
-                0.0,
-                0.0,
-            )
-            for motor_name, position_degrees in goal_pos.items()
-        }
+        commands = self._build_mit_commands(
+            goal_pos,
+            position_kp_scale=self.config.safety_hold_position_kp_scale if safety_hold else 1.0,
+        )
         self.bus.sync_write_mit(commands)
         return {f"{motor}.pos": val for motor, val in goal_pos.items()}
 

@@ -13,12 +13,12 @@ REPO_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
 
 # Local dataset folder to create/write. Example:
 # DATASET_ROOT="/home/r/datasets/rebot_b601_banana_bottle_rgbd"
-DATASET_ROOT="/home/r/ws/rebot_lerobot/datasets/rebot_b601_banana_bottle_rgbd"
+DATASET_ROOT="/home/r/ws/rebot_lerobot/datasets/rebot_b601_banana_bottle_rgbd_1"
 
 # Dataset id stored in metadata. Keep this identical when training locally.
-DATASET_REPO_ID="${HF_USER:-local}/rebot_b601_banana_bottle_rgbd"
+DATASET_REPO_ID="${HF_USER:-local}/rebot_b601_banana_bottle_rgbd_1"
 
-# reBot B601 motorbridge ports.
+# reBot B601 motorbridge ports verified by the teleoperation setup.
 FOLLOWER_PORT="/dev/ttyACM0"
 LEADER_PORT="/dev/ttyACM1"
 
@@ -28,6 +28,16 @@ FOLLOWER_MAX_RELATIVE_TARGET=6.0
 FOLLOWER_GRIPPER_MAX_RELATIVE_TARGET=30.0
 FOLLOWER_DISABLE_TORQUE_ON_DISCONNECT=false
 FOLLOWER_SAFETY_HOLD_ON_RELATIVE_CLAMP=true
+FOLLOWER_SAFETY_ABORT_EPISODE_ON_HOLD=true
+FOLLOWER_SAFETY_AUTO_RECOVER_TO_EPISODE_START=true
+FOLLOWER_SAFETY_RECOVERY_STEP_DEG=1.5
+FOLLOWER_SAFETY_RECOVERY_HZ=20
+FOLLOWER_SAFETY_RECOVERY_TIMEOUT_S=25
+FOLLOWER_SAFETY_RECOVERY_TOLERANCE_DEG=3.0
+FOLLOWER_SAFETY_RECOVERY_POSITION_KP_SCALE=0.5
+FOLLOWER_SAFETY_WAIT_FOR_LEADER_START=true
+FOLLOWER_SAFETY_LEADER_START_TOLERANCE_DEG=8.0
+FOLLOWER_SAFETY_LEADER_START_TIMEOUT_S=45
 
 # Top Gemini 335L OrbbecSDK serial number. This is not a /dev/video* path.
 # If the bridge reports available serials, choose the Gemini 335L serial from that list.
@@ -46,9 +56,9 @@ LINGBOT_MODEL="/home/r/ws/model.sm4"
 WIDTH=640
 HEIGHT=480
 FPS=10
-NUM_EPISODES=50
-EPISODE_TIME_S=45
-RESET_TIME_S=20
+NUM_EPISODES=30
+EPISODE_TIME_S=210
+RESET_TIME_S=45
 
 # Task prompt saved in every frame.
 TASK="Arrange the banana model and the transparent plastic cola bottle back to their assigned places on the desktop"
@@ -98,6 +108,26 @@ Optional command line overrides:
                               Max follower gripper step per control frame. Default: 30.0
   --follower-disable-torque-on-disconnect true|false
                               Whether to disable follower torque when the script exits. Default: false.
+  --follower-safety-abort-episode true|false
+                              Abort and discard the current episode after safety hold. Default: true.
+  --follower-safety-auto-recover true|false
+                              Recover follower arm joints to the episode start pose after safety hold. Default: true.
+  --follower-safety-recovery-step-deg N
+                              Max degrees per recovery control step. Default: 1.5
+  --follower-safety-recovery-hz N
+                              Recovery command frequency. Default: 20.
+  --follower-safety-recovery-timeout-s N
+                              Stop collection if follower recovery times out. Default: 25.
+  --follower-safety-recovery-tolerance-deg N
+                              Follower start-pose tolerance. Default: 3.0.
+  --follower-safety-recovery-kp-scale N
+                              Position Kp multiplier during recovery. Default: 0.5.
+  --follower-safety-wait-for-leader-start true|false
+                              Wait for leader arm to return near the episode start pose. Default: true.
+  --follower-safety-leader-tolerance-deg N
+                              Leader start-pose tolerance before rerecording. Default: 8.0.
+  --follower-safety-leader-timeout-s N
+                              Stop collection if leader does not return in time. Default: 45.
   --orbbec-bridge PATH        Built orbbec_rgbd_bridge binary.
   --lingbot-model PATH        LingBot EnhancedDepthFilter model.sm4 path.
   --fps N                     Dataset/control FPS. Default: 10 with EnhancedDepthFilter.
@@ -133,6 +163,16 @@ while [[ $# -gt 0 ]]; do
     --follower-gripper-max-relative-target) FOLLOWER_GRIPPER_MAX_RELATIVE_TARGET="$2"; shift 2 ;;
     --follower-disable-torque-on-disconnect) FOLLOWER_DISABLE_TORQUE_ON_DISCONNECT="$2"; shift 2 ;;
     --follower-safety-hold-on-relative-clamp) FOLLOWER_SAFETY_HOLD_ON_RELATIVE_CLAMP="$2"; shift 2 ;;
+    --follower-safety-abort-episode) FOLLOWER_SAFETY_ABORT_EPISODE_ON_HOLD="$2"; shift 2 ;;
+    --follower-safety-auto-recover) FOLLOWER_SAFETY_AUTO_RECOVER_TO_EPISODE_START="$2"; shift 2 ;;
+    --follower-safety-recovery-step-deg) FOLLOWER_SAFETY_RECOVERY_STEP_DEG="$2"; shift 2 ;;
+    --follower-safety-recovery-hz) FOLLOWER_SAFETY_RECOVERY_HZ="$2"; shift 2 ;;
+    --follower-safety-recovery-timeout-s) FOLLOWER_SAFETY_RECOVERY_TIMEOUT_S="$2"; shift 2 ;;
+    --follower-safety-recovery-tolerance-deg) FOLLOWER_SAFETY_RECOVERY_TOLERANCE_DEG="$2"; shift 2 ;;
+    --follower-safety-recovery-kp-scale) FOLLOWER_SAFETY_RECOVERY_POSITION_KP_SCALE="$2"; shift 2 ;;
+    --follower-safety-wait-for-leader-start) FOLLOWER_SAFETY_WAIT_FOR_LEADER_START="$2"; shift 2 ;;
+    --follower-safety-leader-tolerance-deg) FOLLOWER_SAFETY_LEADER_START_TOLERANCE_DEG="$2"; shift 2 ;;
+    --follower-safety-leader-timeout-s) FOLLOWER_SAFETY_LEADER_START_TIMEOUT_S="$2"; shift 2 ;;
     --top-serial) TOP_SERIAL="$2"; shift 2 ;;
     --wrist-serial) WRIST_SERIAL="$2"; shift 2 ;;
     --orbbec-bridge) ORBBEC_BRIDGE="$2"; shift 2 ;;
@@ -272,6 +312,16 @@ lerobot-record \
   --robot.gripper_max_relative_target="${FOLLOWER_GRIPPER_MAX_RELATIVE_TARGET}" \
   --robot.disable_torque_on_disconnect="${FOLLOWER_DISABLE_TORQUE_ON_DISCONNECT}" \
   --robot.safety_hold_on_relative_clamp="${FOLLOWER_SAFETY_HOLD_ON_RELATIVE_CLAMP}" \
+  --robot.safety_abort_episode_on_hold="${FOLLOWER_SAFETY_ABORT_EPISODE_ON_HOLD}" \
+  --robot.safety_auto_recover_to_episode_start="${FOLLOWER_SAFETY_AUTO_RECOVER_TO_EPISODE_START}" \
+  --robot.safety_recovery_step_deg="${FOLLOWER_SAFETY_RECOVERY_STEP_DEG}" \
+  --robot.safety_recovery_hz="${FOLLOWER_SAFETY_RECOVERY_HZ}" \
+  --robot.safety_recovery_timeout_s="${FOLLOWER_SAFETY_RECOVERY_TIMEOUT_S}" \
+  --robot.safety_recovery_tolerance_deg="${FOLLOWER_SAFETY_RECOVERY_TOLERANCE_DEG}" \
+  --robot.safety_recovery_position_kp_scale="${FOLLOWER_SAFETY_RECOVERY_POSITION_KP_SCALE}" \
+  --robot.safety_wait_for_leader_start="${FOLLOWER_SAFETY_WAIT_FOR_LEADER_START}" \
+  --robot.safety_leader_start_tolerance_deg="${FOLLOWER_SAFETY_LEADER_START_TOLERANCE_DEG}" \
+  --robot.safety_leader_start_timeout_s="${FOLLOWER_SAFETY_LEADER_START_TIMEOUT_S}" \
   --robot.cameras="${CAMERAS_CONFIG}" \
   --teleop.type=rebot_b601_leader \
   --teleop.port="${LEADER_PORT}" \

@@ -146,6 +146,102 @@ from lerobot.utils.utils import (
 from lerobot.utils.visualization_utils import init_rerun, log_rerun_data
 
 
+def _action_positions(action: RobotAction) -> dict[str, float]:
+    return {key.removesuffix(".pos"): float(value) for key, value in action.items() if key.endswith(".pos")}
+
+
+def _mark_episode_start_pose(
+    robot: Robot,
+    teleop: Teleoperator | list[Teleoperator] | None,
+) -> dict[str, float] | None:
+    if not hasattr(robot, "mark_episode_start_pose"):
+        return None
+
+    robot_start_pose = robot.mark_episode_start_pose()
+    if isinstance(teleop, Teleoperator):
+        leader_start_pose = _action_positions(teleop.get_action())
+        setattr(robot, "_episode_leader_start_pos", leader_start_pose)
+    else:
+        setattr(robot, "_episode_leader_start_pos", None)
+    return robot_start_pose
+
+
+def _wait_for_leader_start_pose(
+    robot: Robot,
+    teleop: Teleoperator | list[Teleoperator] | None,
+    events: dict,
+) -> bool:
+    config = getattr(robot, "config", None)
+    if (
+        not isinstance(teleop, Teleoperator)
+        or config is None
+        or not getattr(config, "safety_wait_for_leader_start", False)
+    ):
+        return True
+
+    leader_start_pose = getattr(robot, "_episode_leader_start_pos", None)
+    if not leader_start_pose:
+        return True
+
+    joints = getattr(config, "safety_recovery_joints", [])
+    tolerance = float(getattr(config, "safety_leader_start_tolerance_deg", 8.0))
+    timeout_s = float(getattr(config, "safety_leader_start_timeout_s", 45.0))
+    start_s = time.monotonic()
+    logging.warning("Move the leader arm back near the episode start pose; waiting before rerecording.")
+
+    while time.monotonic() - start_s < timeout_s and not events["stop_recording"]:
+        if events["exit_early"]:
+            events["exit_early"] = False
+            return False
+
+        action_pos = _action_positions(teleop.get_action())
+        errors = [
+            abs(action_pos[joint] - leader_start_pose[joint])
+            for joint in joints
+            if joint in action_pos and joint in leader_start_pose
+        ]
+        if errors and max(errors) <= tolerance:
+            logging.info("Leader arm returned near the episode start pose.")
+            return True
+        time.sleep(0.1)
+
+    logging.warning("Timed out waiting for the leader arm to return near the episode start pose.")
+    return False
+
+
+def _recover_after_safety_fault(
+    robot: Robot,
+    teleop: Teleoperator | list[Teleoperator] | None,
+    events: dict,
+    play_sounds: bool,
+) -> bool:
+    if not getattr(robot, "safety_fault_active", False):
+        return True
+
+    # The safety fault itself uses exit_early to leave record_loop. Clear only
+    # that internal request so a new operator key press can still cancel recovery.
+    events["exit_early"] = False
+    log_say("Safety fault detected. Recover follower and rerecord episode.", play_sounds)
+    if hasattr(robot, "recover_to_episode_start_pose"):
+        update_teleoperator = teleop.get_action if isinstance(teleop, Teleoperator) else None
+        recovered = robot.recover_to_episode_start_pose(
+            should_stop=lambda: events["stop_recording"] or events["exit_early"],
+            update_teleoperator=update_teleoperator,
+        )
+        if not recovered:
+            logging.error("Safety recovery failed; stopping recording.")
+            events["stop_recording"] = True
+            events["exit_early"] = True
+            return False
+
+    leader_ready = _wait_for_leader_start_pose(robot, teleop, events)
+    if not leader_ready:
+        logging.error("Leader did not return to the episode start pose; stopping recording.")
+        events["stop_recording"] = True
+        events["exit_early"] = True
+    return leader_ready
+
+
 @dataclass
 class DatasetRecordConfig:
     # Dataset identifier. By convention it should match '{hf_username}/{dataset_name}' (e.g. `lerobot/test`).
@@ -388,10 +484,18 @@ def record_loop(
         # so action actually sent is saved in the dataset. action = postprocessor.process(action)
         # TODO(steven, pepijn, adil): we should use a pipeline step to clip the action, so the sent action is the action that we input to the robot.
         _sent_action = robot.send_action(robot_action_to_send)
+        if getattr(robot, "safety_fault_active", False) and getattr(
+            getattr(robot, "config", None), "safety_abort_episode_on_hold", False
+        ):
+            logging.error("Robot safety fault detected; aborting and rerecording this episode.")
+            events["rerecord_episode"] = True
+            events["exit_early"] = True
+            break
 
         # Write to dataset
         if dataset is not None:
-            action_frame = build_dataset_frame(dataset.features, action_values, prefix=ACTION)
+            dataset_action = _sent_action if robot.name == "rebot_b601_follower" else action_values
+            action_frame = build_dataset_frame(dataset.features, dataset_action, prefix=ACTION)
             frame = {**observation_frame, **action_frame, "task": single_task}
             dataset.add_frame(frame)
 
@@ -497,6 +601,7 @@ def record(cfg: RecordConfig) -> LeRobotDataset:
             recorded_episodes = 0
             while recorded_episodes < cfg.dataset.num_episodes and not events["stop_recording"]:
                 log_say(f"Recording episode {dataset.num_episodes}", cfg.play_sounds)
+                _mark_episode_start_pose(robot, teleop)
                 record_loop(
                     robot=robot,
                     events=events,
@@ -514,6 +619,16 @@ def record(cfg: RecordConfig) -> LeRobotDataset:
                     display_data=cfg.display_data,
                     display_compressed_images=display_compressed_images,
                 )
+
+                if events["rerecord_episode"]:
+                    recovered = _recover_after_safety_fault(robot, teleop, events, cfg.play_sounds)
+                    log_say("Re-record episode", cfg.play_sounds)
+                    events["rerecord_episode"] = False
+                    events["exit_early"] = False
+                    dataset.clear_episode_buffer()
+                    if recovered and not events["stop_recording"]:
+                        continue
+                    break
 
                 # Execute a few seconds without recording to give time to manually reset the environment
                 # Skip reset for the last episode to be recorded
@@ -540,11 +655,14 @@ def record(cfg: RecordConfig) -> LeRobotDataset:
                     )
 
                 if events["rerecord_episode"]:
+                    recovered = _recover_after_safety_fault(robot, teleop, events, cfg.play_sounds)
                     log_say("Re-record episode", cfg.play_sounds)
                     events["rerecord_episode"] = False
                     events["exit_early"] = False
                     dataset.clear_episode_buffer()
-                    continue
+                    if recovered and not events["stop_recording"]:
+                        continue
+                    break
 
                 if dataset.episode_buffer is None or dataset.episode_buffer.get("size", 0) == 0:
                     logging.warning("Skipping empty episode; no frames were recorded before save_episode().")

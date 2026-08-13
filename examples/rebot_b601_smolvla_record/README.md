@@ -263,6 +263,35 @@ singular or mechanically weak posture. The B601 follower now enters a software
 safety hold when multiple arm joints are heavily clamped: it commands the
 current follower pose instead of chasing the unreachable target.
 
+This is a joint-command tracking safety mechanism. It detects large leader to
+follower position gaps through repeated relative-target clamping. It is not a
+full kinematic singularity detector, and the current MotorBridge feedback does
+not expose every DM drive fault code. A drive that has already disabled itself
+may therefore be unable to execute automatic recovery; that case stops the
+recording after the recovery timeout.
+
+At the start of every episode, the recorder stores the follower and leader arm
+joint positions. If an arm safety hold occurs during recording or environment
+reset, the workflow is:
+
+1. Stop the active loop before adding the fault-triggering frame to the dataset.
+2. Move only follower `joint_1` through `joint_6` back toward the stored start
+   pose using small bounded position steps. The gripper is not moved by recovery.
+   The leader action is still refreshed in this loop so gravity compensation
+   continues to follow the leader's current posture.
+3. Wait for the operator to manually return the gravity-compensated leader arm
+   near its stored start pose.
+4. Clear the incomplete episode buffer and record the same episode index again.
+
+For non-faulting B601 frames, the dataset stores the follower command returned
+by `send_action()`, including any ordinary per-frame safety limiting, rather
+than the unbounded leader target. This keeps SmolVLA action labels consistent
+with the commands that the follower actually received.
+
+If follower recovery or leader return times out, recording stops instead of
+continuing from an unknown pose. During automatic recovery, press Right Arrow
+or `Esc` to cancel. Always use the hardware E-stop if motion is unsafe.
+
 For collection, the recording script uses conservative follower defaults:
 
 ```text
@@ -270,7 +299,37 @@ FOLLOWER_MAX_RELATIVE_TARGET=6.0
 FOLLOWER_GRIPPER_MAX_RELATIVE_TARGET=30.0
 FOLLOWER_DISABLE_TORQUE_ON_DISCONNECT=false
 FOLLOWER_SAFETY_HOLD_ON_RELATIVE_CLAMP=true
+FOLLOWER_SAFETY_ABORT_EPISODE_ON_HOLD=true
+FOLLOWER_SAFETY_AUTO_RECOVER_TO_EPISODE_START=true
+FOLLOWER_SAFETY_RECOVERY_STEP_DEG=1.5
+FOLLOWER_SAFETY_RECOVERY_HZ=20
+FOLLOWER_SAFETY_RECOVERY_TIMEOUT_S=25
+FOLLOWER_SAFETY_RECOVERY_TOLERANCE_DEG=3.0
+FOLLOWER_SAFETY_RECOVERY_POSITION_KP_SCALE=0.5
+FOLLOWER_SAFETY_WAIT_FOR_LEADER_START=true
+FOLLOWER_SAFETY_LEADER_START_TOLERANCE_DEG=8.0
+FOLLOWER_SAFETY_LEADER_START_TIMEOUT_S=45
 ```
+
+The episode start pose must itself be a safe, supported, non-singular pose.
+For the first hardware test, reduce recovery speed and record one short episode:
+
+```shell
+bash examples/rebot_b601_smolvla_record/record_b601_smolvla_rgbd.sh \
+  --num-episodes 1 \
+  --episode-time-s 20 \
+  --reset-time-s 10 \
+  --follower-max-relative-target 4.0 \
+  --follower-safety-recovery-step-deg 1.0 \
+  --follower-safety-recovery-hz 15 \
+  --follower-safety-recovery-timeout-s 30
+```
+
+Do not deliberately drive the arm into a singularity to test this feature.
+Instead, while supporting the follower and staying near the neutral pose, move
+the leader far enough ahead to trigger `safety hold active`. Confirm that the
+current episode is discarded, the follower returns slowly, and recording only
+restarts after the leader is also near its start pose.
 
 `FOLLOWER_DISABLE_TORQUE_ON_DISCONNECT=false` prevents a Python exception or
 Escape stop from immediately disabling all follower motor torque. This avoids a
