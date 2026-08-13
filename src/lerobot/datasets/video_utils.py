@@ -17,6 +17,7 @@ import glob
 import importlib
 import logging
 import shutil
+import subprocess
 import tempfile
 import warnings
 from dataclasses import dataclass, field
@@ -429,6 +430,10 @@ def concatenate_video_files(
     if len(input_video_paths) == 0:
         raise FileNotFoundError("No input video paths provided.")
 
+    if not hasattr(av.container.output.OutputContainer, "add_stream_from_template"):
+        concatenate_video_files_with_ffmpeg(input_video_paths, output_video_path, overwrite=overwrite)
+        return
+
     # Create a temporary .ffconcat file to list the input video paths
     with tempfile.NamedTemporaryFile(mode="w", suffix=".ffconcat", delete=False) as tmp_concatenate_file:
         tmp_concatenate_file.write("ffconcat version 1.0\n")
@@ -480,6 +485,51 @@ def concatenate_video_files(
     Path(tmp_concatenate_path).unlink()
 
 
+def concatenate_video_files_with_ffmpeg(
+    input_video_paths: list[Path | str], output_video_path: Path, overwrite: bool = True
+) -> None:
+    output_video_path = Path(output_video_path)
+
+    if output_video_path.exists() and not overwrite:
+        logging.warning(f"Video file already exists: {output_video_path}. Skipping concatenation.")
+        return
+
+    output_video_path.parent.mkdir(parents=True, exist_ok=True)
+    with tempfile.NamedTemporaryFile(mode="w", suffix=".ffconcat", delete=False) as tmp_concatenate_file:
+        tmp_concatenate_path = Path(tmp_concatenate_file.name)
+        tmp_concatenate_file.write("ffconcat version 1.0\n")
+        for input_path in input_video_paths:
+            tmp_concatenate_file.write(f"file '{Path(input_path).resolve()}'\n")
+
+    with tempfile.NamedTemporaryFile(suffix=output_video_path.suffix, delete=False) as tmp_named_file:
+        tmp_output_video_path = Path(tmp_named_file.name)
+
+    command = [
+        "ffmpeg",
+        "-hide_banner",
+        "-loglevel",
+        "error",
+        "-y" if overwrite else "-n",
+        "-f",
+        "concat",
+        "-safe",
+        "0",
+        "-i",
+        str(tmp_concatenate_path),
+        "-c",
+        "copy",
+        "-movflags",
+        "+faststart",
+        str(tmp_output_video_path),
+    ]
+    try:
+        subprocess.run(command, check=True)
+        shutil.move(str(tmp_output_video_path), output_video_path)
+    finally:
+        tmp_concatenate_path.unlink(missing_ok=True)
+        tmp_output_video_path.unlink(missing_ok=True)
+
+
 @dataclass
 class VideoFrame:
     # TODO(rcadene, lhoestq): move to Hugging Face `datasets` repo
@@ -527,7 +577,7 @@ def get_audio_info(video_path: Path | str) -> dict:
             return {"has_audio": False}
 
         audio_info["audio.channels"] = audio_stream.channels
-        audio_info["audio.codec"] = audio_stream.codec.canonical_name
+        audio_info["audio.codec"] = get_codec_name(audio_stream.codec)
         # In an ideal loseless case : bit depth x sample rate x channels = bit rate.
         # In an actual compressed case, the bit rate is set according to the compression level : the lower the bit rate, the more compression is applied.
         audio_info["audio.bit_rate"] = audio_stream.bit_rate
@@ -560,7 +610,7 @@ def get_video_info(video_path: Path | str) -> dict:
 
         video_info["video.height"] = video_stream.height
         video_info["video.width"] = video_stream.width
-        video_info["video.codec"] = video_stream.codec.canonical_name
+        video_info["video.codec"] = get_codec_name(video_stream.codec)
         video_info["video.pix_fmt"] = video_stream.pix_fmt
         video_info["video.is_depth_map"] = False
 
@@ -577,6 +627,16 @@ def get_video_info(video_path: Path | str) -> dict:
     video_info.update(**get_audio_info(video_path))
 
     return video_info
+
+
+def get_codec_name(codec: Any) -> str:
+    """Return a stable codec name across PyAV versions."""
+    return (
+        getattr(codec, "canonical_name", None)
+        or getattr(codec, "name", None)
+        or getattr(codec, "long_name", None)
+        or str(codec)
+    )
 
 
 def get_video_pixel_channels(pix_fmt: str) -> int:

@@ -13,10 +13,10 @@ REPO_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
 
 # Local dataset folder to create/write. Example:
 # DATASET_ROOT="/home/r/datasets/rebot_b601_banana_bottle_rgbd"
-DATASET_ROOT="/home/r/ws/rebot_lerobot/datasets/rebot_b601_banana_bottle_rgbd"
+DATASET_ROOT="/home/r/ws/rebot_lerobot/datasets/rebot_b601_banana_bottle_rgbd_1"
 
 # Dataset id stored in metadata. Keep this identical when training locally.
-DATASET_REPO_ID="${HF_USER:-local}/rebot_b601_banana_bottle_rgbd"
+DATASET_REPO_ID="${HF_USER:-local}/rebot_b601_banana_bottle_rgbd_1"
 
 # reBot B601 motorbridge ports.
 FOLLOWER_PORT="/dev/ttyACM0"
@@ -39,8 +39,8 @@ LINGBOT_MODEL="/home/r/ws/model.sm4"
 WIDTH=640
 HEIGHT=480
 FPS=10
-NUM_EPISODES=75
-EPISODE_TIME_S=60
+NUM_EPISODES=30
+EPISODE_TIME_S=300
 RESET_TIME_S=30
 
 # Task prompt saved in every frame.

@@ -466,6 +466,47 @@ camera exposes multiple `/dev/video*` nodes. Some of those nodes are not normal
 decoded RGB streams and can look like green speckle images if OpenCV interprets
 the raw data as BGR.
 
+## Merge Batches
+
+You can record multiple batches into separate local directories, review/delete
+bad episodes in each batch, and then merge the accepted batches into a new
+dataset directory for training.
+
+For each batch, change these values:
+
+```shell
+DATASET_ROOT="/home/r/ws/rebot_lerobot/datasets/rebot_b601_banana_bottle_rgbd_batch01"
+DATASET_REPO_ID="local/rebot_b601_banana_bottle_rgbd_batch01"
+```
+
+Keep the schema-defining values identical across all batches:
+
+```shell
+WIDTH=640
+HEIGHT=480
+FPS=10
+TOP_SERIAL="CP3L44P0001N"
+WRIST_SERIAL="CV2TC5100075"
+TOP_DEPTH_ALIGN_MODE="sw"
+ENHANCED_DEPTH_FILTER_NAME="EnhancedDepthFilter"
+ENHANCED_DEPTH_CONFIDENCE_KEY="confidence_threshold"
+```
+
+Also keep the camera keys and depth keys unchanged: `wrist`, `top`,
+`top_depth`, and `depths.top`. The source directories may differ, but all
+datasets must have the same feature names, shapes, fps, robot type, and
+EnhancedDepthFilter/depth settings.
+
+Recommended merge script:
+
+```shell
+bash examples/rebot_b601_smolvla_record/merge_b601_datasets.sh
+```
+
+Before running it, edit `SOURCE_ROOTS`, `SOURCE_REPO_IDS`, `OUTPUT_ROOT`, and
+`OUTPUT_REPO_ID` in the script. Use the merged `OUTPUT_ROOT` and
+`OUTPUT_REPO_ID` when training.
+
 ## Train SmolVLA
 
 Recommended script:
