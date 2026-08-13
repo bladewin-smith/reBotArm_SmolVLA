@@ -49,6 +49,13 @@ class RebotB601FollowerConfigBase:
     can_bitrate: int = 1000000
     can_data_bitrate: int = 5000000
     disable_torque_on_disconnect: bool = True
+    command_stream_enabled: bool = True
+    command_stream_hz: float = 100.0
+    command_stream_max_consecutive_failures: int = 5
+    command_stream_max_gap_s: float = 0.25
+    abort_on_motor_fault_status: bool = True
+    motor_feedback_max_consecutive_misses: int = 3
+    runtime_error_hold_s: float = 15.0
     max_relative_target: float | dict[str, float] | None = 15.0
     safety_hold_on_relative_clamp: bool = True
     safety_hold_clamp_joint_count: int = 2

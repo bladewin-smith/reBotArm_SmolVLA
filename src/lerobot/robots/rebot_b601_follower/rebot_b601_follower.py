@@ -66,6 +66,7 @@ class RebotB601Follower(Robot):
         self._safety_hold_active = False
         self._safety_fault_active = False
         self._episode_start_pos: dict[str, float] | None = None
+        self._runtime_error_hold_done = False
 
     @property
     def _state_ft(self) -> dict[str, type]:
@@ -100,6 +101,7 @@ class RebotB601Follower(Robot):
         if self.is_connected:
             raise DeviceAlreadyConnectedError(f"{self} already connected")
 
+        self._runtime_error_hold_done = False
         logger.info(f"Connecting {self.name} on {self.config.port}...")
         self.bus.connect()
 
@@ -111,7 +113,32 @@ class RebotB601Follower(Robot):
             cam.connect()
 
         self.configure()
+        states = self.bus.sync_read_all_states()
+        self._check_motorbridge_health(require_enabled=False)
+        initial_goal = {
+            motor: float(state.get("position", 0.0))
+            for motor, state in states.items()
+            if "position" in state
+        }
+        initial_commands = self._build_mit_commands(initial_goal)
         self.bus.enable_torque()
+        try:
+            if self.config.transport == "motorbridge" and self.config.command_stream_enabled:
+                self.bus.start_mit_command_stream(
+                    initial_commands,
+                    hz=self.config.command_stream_hz,
+                    max_consecutive_failures=self.config.command_stream_max_consecutive_failures,
+                    max_gap_s=self.config.command_stream_max_gap_s,
+                )
+            else:
+                self.bus.sync_write_mit(initial_commands)
+            if self.config.transport == "motorbridge":
+                time.sleep(0.05)
+                self.bus.sync_read_all_states()
+                self._check_motorbridge_health(require_enabled=True)
+        except Exception:
+            self.bus.disable_torque()
+            raise
         logger.info(f"{self} connected.")
 
     @property
@@ -121,7 +148,8 @@ class RebotB601Follower(Robot):
     def calibrate(self) -> None:
         if self.calibration:
             user_input = input(
-                f"Press ENTER to use calibration file for id {self.id}, or type 'c' and press ENTER to run calibration: "
+                f"Press ENTER to use calibration file for id {self.id}, "
+                "or type 'c' and press ENTER to run calibration: "
             )
             if user_input.strip().lower() != "c":
                 self.bus.write_calibration(self.calibration)
@@ -158,10 +186,13 @@ class RebotB601Follower(Robot):
     def get_observation(self) -> RobotObservation:
         if not self.is_connected:
             raise DeviceNotConnectedError(f"{self} is not connected.")
+        if self.config.transport == "motorbridge" and self.config.command_stream_enabled:
+            self.bus.check_mit_command_stream(max_gap_s=self.config.command_stream_max_gap_s)
 
         start = time.perf_counter()
         obs_dict: dict[str, Any] = {}
         states = self.bus.sync_read_all_states()
+        self._check_motorbridge_health()
         self._last_observation_states = {motor: state.copy() for motor, state in states.items()}
         for motor in self.bus.motors:
             state = states.get(motor, {})
@@ -190,11 +221,47 @@ class RebotB601Follower(Robot):
         self._safety_fault_active = False
         self._safety_hold_active = False
 
+    def _check_motorbridge_health(self, *, require_enabled: bool = True) -> None:
+        if self.config.transport == "motorbridge" and self.config.abort_on_motor_fault_status:
+            self.bus.check_motor_status_codes(
+                max_feedback_misses=self.config.motor_feedback_max_consecutive_misses,
+                required_enabled_motors=list(self.bus.motors) if require_enabled else None,
+            )
+
+    def hold_after_runtime_error(self) -> None:
+        hold_s = float(self.config.runtime_error_hold_s)
+        if self._runtime_error_hold_done or hold_s <= 0 or self.config.transport != "motorbridge":
+            return
+        self._runtime_error_hold_done = True
+        if not self.bus.is_connected or not self.bus.mit_command_stream_active:
+            return
+        try:
+            self.bus.check_mit_command_stream(max_gap_s=self.config.command_stream_max_gap_s)
+            self._check_motorbridge_health()
+        except Exception as exc:
+            logger.error("Cannot hold follower after runtime error because motor control is unhealthy: %s", exc)
+            return
+
+        logger.critical(
+            "Recording failed while follower control is still healthy. Holding the last pose for %.1fs; "
+            "support the arm or use the E-stop now.",
+            hold_s,
+        )
+        deadline_s = time.monotonic() + hold_s
+        while time.monotonic() < deadline_s:
+            try:
+                self.bus.check_mit_command_stream(max_gap_s=self.config.command_stream_max_gap_s)
+            except Exception as exc:
+                logger.error("Follower runtime-error hold ended early: %s", exc)
+                break
+            time.sleep(min(0.1, max(0.0, deadline_s - time.monotonic())))
+
     def mark_episode_start_pose(self) -> dict[str, float]:
         if not self.is_connected:
             raise DeviceNotConnectedError(f"{self} is not connected.")
 
         states = self.bus.sync_read_all_states()
+        self._check_motorbridge_health()
         self._last_observation_states = {motor: state.copy() for motor, state in states.items()}
         self._episode_start_pos = {
             motor: float(state.get("position", 0.0)) for motor, state in states.items() if "position" in state
@@ -208,6 +275,7 @@ class RebotB601Follower(Robot):
 
     def _present_positions(self) -> dict[str, float]:
         states = self.bus.sync_read_all_states()
+        self._check_motorbridge_health()
         self._last_observation_states = {motor: state.copy() for motor, state in states.items()}
         return {
             motor: float(state.get("position", 0.0))
@@ -457,6 +525,8 @@ class RebotB601Follower(Robot):
     def send_action(self, action: RobotAction) -> RobotAction:
         if not self.is_connected:
             raise DeviceNotConnectedError(f"{self} is not connected.")
+        if self.config.transport == "motorbridge" and self.config.command_stream_enabled:
+            self.bus.check_mit_command_stream(max_gap_s=self.config.command_stream_max_gap_s)
 
         goal_pos = {key.removesuffix(".pos"): val for key, val in action.items() if key.endswith(".pos")}
         if "gripper" in goal_pos:
@@ -502,9 +572,14 @@ class RebotB601Follower(Robot):
         return {f"{motor}.pos": val for motor, val in goal_pos.items()}
 
     def disconnect(self) -> None:
-        if not self.is_connected:
+        connected_cameras = [cam for cam in self.cameras.values() if cam.is_connected]
+        if not self.bus.is_connected and not connected_cameras:
             raise DeviceNotConnectedError(f"{self} is not connected.")
-        self.bus.disconnect(self.config.disable_torque_on_disconnect)
-        for cam in self.cameras.values():
-            cam.disconnect()
+        for cam in connected_cameras:
+            try:
+                cam.disconnect()
+            except Exception as exc:
+                logger.warning("Failed to disconnect %s while keeping follower control active: %s", cam, exc)
+        if self.bus.is_connected:
+            self.bus.disconnect(self.config.disable_torque_on_disconnect)
         logger.info(f"{self} disconnected.")

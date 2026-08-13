@@ -28,6 +28,12 @@ class RebotB601LeaderConfigBase:
     can_bitrate: int = 1000000
     can_data_bitrate: int = 5000000
     handshake: bool = True
+    command_stream_enabled: bool = True
+    command_stream_hz: float = 100.0
+    command_stream_max_consecutive_failures: int = 5
+    command_stream_max_gap_s: float = 0.25
+    abort_on_motor_fault_status: bool = True
+    motor_feedback_max_consecutive_misses: int = 3
     motor_config: dict[str, tuple[int, int, str]] = field(default_factory=lambda: DEFAULT_MOTOR_CONFIG.copy())
 
     manual_control_mode: str = "impedance"

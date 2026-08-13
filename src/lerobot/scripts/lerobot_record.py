@@ -278,6 +278,9 @@ class DatasetRecordConfig:
     # Number of episodes to record before batch encoding videos
     # Set to 1 for immediate encoding (default behavior), or higher for batched encoding
     video_encoding_batch_size: int = 1
+    # Encode different camera videos in parallel. Disable on resource-constrained
+    # edge devices when encoder processes interfere with real-time robot control.
+    parallel_video_encoding: bool = True
     # Video codec for encoding videos. Options: 'h264', 'hevc', 'libsvtav1'.
     # Use 'h264' for faster encoding on systems where AV1 encoding is CPU-heavy.
     vcodec: str = "libsvtav1"
@@ -671,21 +674,37 @@ def record(cfg: RecordConfig) -> LeRobotDataset:
                         break
                     continue
 
-                dataset.save_episode()
+                dataset.save_episode(parallel_encoding=cfg.dataset.parallel_video_encoding)
                 recorded_episodes += 1
+    except Exception:
+        hold_after_runtime_error = getattr(robot, "hold_after_runtime_error", None)
+        if callable(hold_after_runtime_error):
+            hold_after_runtime_error()
+        raise
     finally:
         log_say("Stop recording", cfg.play_sounds, blocking=True)
-
-        if dataset:
-            dataset.finalize()
-
-        if robot.is_connected:
-            robot.disconnect()
-        if teleop and teleop.is_connected:
-            teleop.disconnect()
-
-        if not is_headless() and listener:
-            listener.stop()
+        try:
+            if dataset:
+                dataset.finalize()
+        finally:
+            try:
+                robot_bus_connected = bool(getattr(getattr(robot, "bus", None), "is_connected", False))
+                robot_camera_connected = any(
+                    cam.is_connected for cam in getattr(robot, "cameras", {}).values()
+                )
+                if robot.is_connected or robot_bus_connected or robot_camera_connected:
+                    try:
+                        robot.disconnect()
+                    except Exception:
+                        logging.exception("Robot cleanup failed after recording stopped.")
+            finally:
+                if teleop and teleop.is_connected:
+                    try:
+                        teleop.disconnect()
+                    except Exception:
+                        logging.exception("Teleoperator cleanup failed after recording stopped.")
+                if not is_headless() and listener:
+                    listener.stop()
 
         if cfg.dataset.push_to_hub:
             dataset.push_to_hub(tags=cfg.dataset.tags, private=cfg.dataset.private)

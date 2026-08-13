@@ -21,7 +21,7 @@ from lerobot.optim.schedulers import (
     CosineDecayWithWarmupSchedulerConfig,
 )
 from lerobot.policies.rtc.configuration_rtc import RTCConfig
-from lerobot.utils.constants import OBS_IMAGES
+from lerobot.utils.constants import OBS_DEPTHS, OBS_IMAGES
 
 
 @PreTrainedConfig.register_subclass("smolvla")
@@ -121,6 +121,13 @@ class SmolVLAConfig(PreTrainedConfig):
             )
 
     def validate_features(self) -> None:
+        if self.input_features:
+            raw_depth_prefix = f"{OBS_DEPTHS}."
+            self.input_features = {
+                key: feature
+                for key, feature in self.input_features.items()
+                if not key.startswith(raw_depth_prefix)
+            }
         for i in range(self.empty_cameras):
             key = f"{OBS_IMAGES}.empty_camera_{i}"
             empty_camera = PolicyFeature(

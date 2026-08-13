@@ -13,10 +13,10 @@ REPO_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
 
 # Local dataset folder to create/write. Example:
 # DATASET_ROOT="/home/r/datasets/rebot_b601_banana_bottle_rgbd"
-DATASET_ROOT="/home/r/ws/rebot_lerobot/datasets/rebot_b601_banana_bottle_rgbd_1"
+DATASET_ROOT="/home/r/ws/rebot_lerobot/datasets/rebot_b601_banana_bottle_rgbd_2"
 
 # Dataset id stored in metadata. Keep this identical when training locally.
-DATASET_REPO_ID="${HF_USER:-local}/rebot_b601_banana_bottle_rgbd_1"
+DATASET_REPO_ID="${HF_USER:-local}/rebot_b601_banana_bottle_rgbd_2"
 
 # reBot B601 motorbridge ports verified by the teleoperation setup.
 FOLLOWER_PORT="/dev/ttyACM0"
@@ -24,9 +24,22 @@ LEADER_PORT="/dev/ttyACM1"
 
 # Follower safety defaults for dataset collection. Keep these conservative
 # until the leader/follower pose mapping has been verified across the whole task.
-FOLLOWER_MAX_RELATIVE_TARGET=6.0
+FOLLOWER_MAX_RELATIVE_TARGET=12.0
 FOLLOWER_GRIPPER_MAX_RELATIVE_TARGET=30.0
 FOLLOWER_DISABLE_TORQUE_ON_DISCONNECT=false
+FOLLOWER_COMMAND_STREAM_ENABLED=true
+FOLLOWER_COMMAND_STREAM_HZ=100
+FOLLOWER_COMMAND_STREAM_MAX_FAILURES=5
+FOLLOWER_COMMAND_STREAM_MAX_GAP_S=0.25
+FOLLOWER_ABORT_ON_MOTOR_FAULT_STATUS=true
+FOLLOWER_MOTOR_FEEDBACK_MAX_MISSES=3
+FOLLOWER_RUNTIME_ERROR_HOLD_S=15
+LEADER_COMMAND_STREAM_ENABLED=true
+LEADER_COMMAND_STREAM_HZ=100
+LEADER_COMMAND_STREAM_MAX_FAILURES=5
+LEADER_COMMAND_STREAM_MAX_GAP_S=0.25
+LEADER_ABORT_ON_MOTOR_FAULT_STATUS=true
+LEADER_MOTOR_FEEDBACK_MAX_MISSES=3
 FOLLOWER_SAFETY_HOLD_ON_RELATIVE_CLAMP=true
 FOLLOWER_SAFETY_ABORT_EPISODE_ON_HOLD=true
 FOLLOWER_SAFETY_AUTO_RECOVER_TO_EPISODE_START=true
@@ -55,8 +68,8 @@ LINGBOT_MODEL="/home/r/ws/model.sm4"
 # Camera and recording timing.
 WIDTH=640
 HEIGHT=480
-FPS=10
-NUM_EPISODES=30
+FPS=15
+NUM_EPISODES=12
 EPISODE_TIME_S=210
 RESET_TIME_S=45
 
@@ -67,6 +80,9 @@ TASK="Arrange the banana model and the transparent plastic cola bottle back to t
 PUSH_TO_HUB=false
 DISPLAY_DATA=false
 VCODEC="h264"
+# Serialize the three camera video encoders so they do not compete with the
+# 100 Hz leader/follower command streams on Jetson Orin NX.
+PARALLEL_VIDEO_ENCODING=false
 
 # Top camera depth visualization range for observation.images.top_depth.
 TOP_DEPTH_MIN_MM=250
@@ -100,14 +116,39 @@ Optional command line overrides:
   --top-serial SERIAL         Orbbec Gemini 335L serial number.
   --wrist-serial SERIAL       Orbbec Gemini 305 serial number.
   --repo-id ID                Dataset repo id stored in metadata. Default: ${HF_USER:-local}/rebot_b601_banana_bottle_rgbd
-  --follower-port PORT        B601 follower motorbridge port. Default: /dev/ttyACM1
-  --leader-port PORT          B601 leader motorbridge port. Default: /dev/ttyACM0
+  --follower-port PORT        B601 follower motorbridge port. Default: User settings block.
+  --leader-port PORT          B601 leader motorbridge port. Default: User settings block.
   --follower-max-relative-target N
-                              Max follower joint step per control frame. Default: 6.0
+                              Max follower joint step per control frame. Default: 12.0
   --follower-gripper-max-relative-target N
                               Max follower gripper step per control frame. Default: 30.0
   --follower-disable-torque-on-disconnect true|false
                               Whether to disable follower torque when the script exits. Default: false.
+  --follower-command-stream-enabled true|false
+                              Keep sending the latest MIT target independently of camera I/O. Default: true.
+  --follower-command-stream-hz N
+                              Follower MIT command refresh frequency. Default: 100.
+  --follower-command-stream-max-failures N
+                              Consecutive stream failures before collection aborts. Default: 5.
+  --follower-command-stream-max-gap-s N
+                              Abort if no complete MIT refresh occurs for this many seconds. Default: 0.25.
+  --follower-abort-on-motor-fault-status true|false
+                              Abort on DM drive faults or unexpected disable during control. Default: true.
+  --follower-motor-feedback-max-misses N
+                              Consecutive missing feedback samples before aborting. Default: 3.
+  --follower-runtime-error-hold-s N
+                              Hold the last healthy pose this long after a recording exception. Default: 15.
+  --leader-command-stream-enabled true|false
+                              Keep leader gravity-comp MIT commands alive independently. Default: true.
+  --leader-command-stream-hz N Leader MIT command refresh frequency. Default: 100.
+  --leader-command-stream-max-failures N
+                              Consecutive leader stream failures before aborting. Default: 5.
+  --leader-command-stream-max-gap-s N
+                              Maximum leader MIT refresh gap. Default: 0.25.
+  --leader-abort-on-motor-fault-status true|false
+                              Abort collection on a persistent leader DM fault. Default: true.
+  --leader-motor-feedback-max-misses N
+                              Consecutive missing leader feedback samples before aborting. Default: 3.
   --follower-safety-abort-episode true|false
                               Abort and discard the current episode after safety hold. Default: true.
   --follower-safety-auto-recover true|false
@@ -133,12 +174,14 @@ Optional command line overrides:
   --fps N                     Dataset/control FPS. Default: 10 with EnhancedDepthFilter.
   --width N                   Camera width. Default: 640
   --height N                  Camera height. Default: 480
-  --num-episodes N            Number of episodes. Default: 50
-  --episode-time-s N          Seconds per episode. Default: 45
-  --reset-time-s N            Seconds between episodes. Default: 20
+  --num-episodes N            Number of episodes. Default: 30
+  --episode-time-s N          Seconds per episode. Default: 210
+  --reset-time-s N            Seconds between episodes. Default: 45
   --task TEXT                 Task prompt saved into every frame.
   --push-to-hub true|false    Upload dataset after recording. Default: false
   --display-data true|false   Show Rerun visualization. Default: false
+  --parallel-video-encoding true|false
+                              Encode camera videos concurrently. Default: false on Jetson.
   --top-depth-align-mode sw|hw Depth-to-color alignment mode. Default: sw.
   --top-warmup-s N            Top Orbbec warmup seconds. Default: 25.
   --top-timeout-ms N          Top Orbbec first-frame timeout. Default: 25000.
@@ -162,6 +205,19 @@ while [[ $# -gt 0 ]]; do
     --follower-max-relative-target) FOLLOWER_MAX_RELATIVE_TARGET="$2"; shift 2 ;;
     --follower-gripper-max-relative-target) FOLLOWER_GRIPPER_MAX_RELATIVE_TARGET="$2"; shift 2 ;;
     --follower-disable-torque-on-disconnect) FOLLOWER_DISABLE_TORQUE_ON_DISCONNECT="$2"; shift 2 ;;
+    --follower-command-stream-enabled) FOLLOWER_COMMAND_STREAM_ENABLED="$2"; shift 2 ;;
+    --follower-command-stream-hz) FOLLOWER_COMMAND_STREAM_HZ="$2"; shift 2 ;;
+    --follower-command-stream-max-failures) FOLLOWER_COMMAND_STREAM_MAX_FAILURES="$2"; shift 2 ;;
+    --follower-command-stream-max-gap-s) FOLLOWER_COMMAND_STREAM_MAX_GAP_S="$2"; shift 2 ;;
+    --follower-abort-on-motor-fault-status) FOLLOWER_ABORT_ON_MOTOR_FAULT_STATUS="$2"; shift 2 ;;
+    --follower-motor-feedback-max-misses) FOLLOWER_MOTOR_FEEDBACK_MAX_MISSES="$2"; shift 2 ;;
+    --follower-runtime-error-hold-s) FOLLOWER_RUNTIME_ERROR_HOLD_S="$2"; shift 2 ;;
+    --leader-command-stream-enabled) LEADER_COMMAND_STREAM_ENABLED="$2"; shift 2 ;;
+    --leader-command-stream-hz) LEADER_COMMAND_STREAM_HZ="$2"; shift 2 ;;
+    --leader-command-stream-max-failures) LEADER_COMMAND_STREAM_MAX_FAILURES="$2"; shift 2 ;;
+    --leader-command-stream-max-gap-s) LEADER_COMMAND_STREAM_MAX_GAP_S="$2"; shift 2 ;;
+    --leader-abort-on-motor-fault-status) LEADER_ABORT_ON_MOTOR_FAULT_STATUS="$2"; shift 2 ;;
+    --leader-motor-feedback-max-misses) LEADER_MOTOR_FEEDBACK_MAX_MISSES="$2"; shift 2 ;;
     --follower-safety-hold-on-relative-clamp) FOLLOWER_SAFETY_HOLD_ON_RELATIVE_CLAMP="$2"; shift 2 ;;
     --follower-safety-abort-episode) FOLLOWER_SAFETY_ABORT_EPISODE_ON_HOLD="$2"; shift 2 ;;
     --follower-safety-auto-recover) FOLLOWER_SAFETY_AUTO_RECOVER_TO_EPISODE_START="$2"; shift 2 ;;
@@ -186,6 +242,7 @@ while [[ $# -gt 0 ]]; do
     --task) TASK="$2"; shift 2 ;;
     --push-to-hub) PUSH_TO_HUB="$2"; shift 2 ;;
     --display-data) DISPLAY_DATA="$2"; shift 2 ;;
+    --parallel-video-encoding) PARALLEL_VIDEO_ENCODING="$2"; shift 2 ;;
     --vcodec) VCODEC="$2"; shift 2 ;;
     --top-depth-min-mm) TOP_DEPTH_MIN_MM="$2"; shift 2 ;;
     --top-depth-max-mm) TOP_DEPTH_MAX_MM="$2"; shift 2 ;;
@@ -311,6 +368,13 @@ lerobot-record \
   --robot.max_relative_target="${FOLLOWER_MAX_RELATIVE_TARGET}" \
   --robot.gripper_max_relative_target="${FOLLOWER_GRIPPER_MAX_RELATIVE_TARGET}" \
   --robot.disable_torque_on_disconnect="${FOLLOWER_DISABLE_TORQUE_ON_DISCONNECT}" \
+  --robot.command_stream_enabled="${FOLLOWER_COMMAND_STREAM_ENABLED}" \
+  --robot.command_stream_hz="${FOLLOWER_COMMAND_STREAM_HZ}" \
+  --robot.command_stream_max_consecutive_failures="${FOLLOWER_COMMAND_STREAM_MAX_FAILURES}" \
+  --robot.command_stream_max_gap_s="${FOLLOWER_COMMAND_STREAM_MAX_GAP_S}" \
+  --robot.abort_on_motor_fault_status="${FOLLOWER_ABORT_ON_MOTOR_FAULT_STATUS}" \
+  --robot.motor_feedback_max_consecutive_misses="${FOLLOWER_MOTOR_FEEDBACK_MAX_MISSES}" \
+  --robot.runtime_error_hold_s="${FOLLOWER_RUNTIME_ERROR_HOLD_S}" \
   --robot.safety_hold_on_relative_clamp="${FOLLOWER_SAFETY_HOLD_ON_RELATIVE_CLAMP}" \
   --robot.safety_abort_episode_on_hold="${FOLLOWER_SAFETY_ABORT_EPISODE_ON_HOLD}" \
   --robot.safety_auto_recover_to_episode_start="${FOLLOWER_SAFETY_AUTO_RECOVER_TO_EPISODE_START}" \
@@ -328,6 +392,12 @@ lerobot-record \
   --teleop.transport=motorbridge \
   --teleop.id=b601_leader \
   --teleop.manual_control_mode=gravity_comp \
+  --teleop.command_stream_enabled="${LEADER_COMMAND_STREAM_ENABLED}" \
+  --teleop.command_stream_hz="${LEADER_COMMAND_STREAM_HZ}" \
+  --teleop.command_stream_max_consecutive_failures="${LEADER_COMMAND_STREAM_MAX_FAILURES}" \
+  --teleop.command_stream_max_gap_s="${LEADER_COMMAND_STREAM_MAX_GAP_S}" \
+  --teleop.abort_on_motor_fault_status="${LEADER_ABORT_ON_MOTOR_FAULT_STATUS}" \
+  --teleop.motor_feedback_max_consecutive_misses="${LEADER_MOTOR_FEEDBACK_MAX_MISSES}" \
   --dataset.repo_id="${DATASET_REPO_ID}" \
   --dataset.root="${DATASET_ROOT}" \
   --dataset.fps="${FPS}" \
@@ -336,6 +406,7 @@ lerobot-record \
   --dataset.reset_time_s="${RESET_TIME_S}" \
   --dataset.single_task="${TASK}" \
   --dataset.vcodec="${VCODEC}" \
+  --dataset.parallel_video_encoding="${PARALLEL_VIDEO_ENCODING}" \
   --dataset.push_to_hub="${PUSH_TO_HUB}" \
   --display_data="${DISPLAY_DATA}" \
   "${EXTRA_ARGS[@]}"

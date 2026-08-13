@@ -27,13 +27,52 @@ from lerobot.processor import (
     NormalizerProcessorStep,
     PolicyAction,
     PolicyProcessorPipeline,
+    ProcessorStep,
     ProcessorStepRegistry,
     RenameObservationsProcessorStep,
     TokenizerProcessorStep,
+    TransitionKey,
     UnnormalizerProcessorStep,
 )
 from lerobot.processor.converters import policy_action_to_transition, transition_to_policy_action
-from lerobot.utils.constants import POLICY_POSTPROCESSOR_DEFAULT_NAME, POLICY_PREPROCESSOR_DEFAULT_NAME
+from lerobot.utils.constants import (
+    OBS_DEPTHS,
+    POLICY_POSTPROCESSOR_DEFAULT_NAME,
+    POLICY_PREPROCESSOR_DEFAULT_NAME,
+)
+
+
+@ProcessorStepRegistry.register(name="smolvla_raw_depth_filter")
+class SmolVLARawDepthFilterProcessor(ProcessorStep):
+    """Keep raw uint16 depth in the dataset without forwarding it to stock SmolVLA."""
+
+    def __call__(self, transition):
+        observation = transition.get(TransitionKey.OBSERVATION)
+        if not isinstance(observation, dict):
+            return transition
+
+        raw_depth_prefix = f"{OBS_DEPTHS}."
+        filtered_observation = {
+            key: value for key, value in observation.items() if not key.startswith(raw_depth_prefix)
+        }
+        if len(filtered_observation) == len(observation):
+            return transition
+
+        new_transition = transition.copy()
+        new_transition[TransitionKey.OBSERVATION] = filtered_observation
+        return new_transition
+
+    def transform_features(
+        self, features: dict[PipelineFeatureType, dict[str, PolicyFeature]]
+    ) -> dict[PipelineFeatureType, dict[str, PolicyFeature]]:
+        transformed = {feature_type: values.copy() for feature_type, values in features.items()}
+        observations = transformed.get(PipelineFeatureType.OBSERVATION)
+        if observations is not None:
+            raw_depth_prefix = f"{OBS_DEPTHS}."
+            transformed[PipelineFeatureType.OBSERVATION] = {
+                key: value for key, value in observations.items() if not key.startswith(raw_depth_prefix)
+            }
+        return transformed
 
 
 def make_smolvla_pre_post_processors(
@@ -67,6 +106,7 @@ def make_smolvla_pre_post_processors(
     """
 
     input_steps = [
+        SmolVLARawDepthFilterProcessor(),
         RenameObservationsProcessorStep(rename_map={}),  # To mimic the same processor as pretrained one
         AddBatchDimensionProcessorStep(),
         SmolVLANewLineProcessor(),

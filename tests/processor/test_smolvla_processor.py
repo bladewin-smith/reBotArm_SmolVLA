@@ -24,6 +24,7 @@ from lerobot.configs.types import FeatureType, NormalizationMode, PipelineFeatur
 from lerobot.policies.smolvla.configuration_smolvla import SmolVLAConfig
 from lerobot.policies.smolvla.processor_smolvla import (
     SmolVLANewLineProcessor,
+    SmolVLARawDepthFilterProcessor,
     make_smolvla_pre_post_processors,
 )
 from lerobot.processor import (
@@ -105,18 +106,37 @@ def test_make_smolvla_processor_basic():
     assert postprocessor.name == "policy_postprocessor"
 
     # Check steps in preprocessor
-    assert len(preprocessor.steps) == 6
-    assert isinstance(preprocessor.steps[0], RenameObservationsProcessorStep)
-    assert isinstance(preprocessor.steps[1], AddBatchDimensionProcessorStep)
-    assert isinstance(preprocessor.steps[2], SmolVLANewLineProcessor)
-    # Step 3 would be TokenizerProcessorStep but it's mocked
-    assert isinstance(preprocessor.steps[4], DeviceProcessorStep)
-    assert isinstance(preprocessor.steps[5], NormalizerProcessorStep)
+    assert len(preprocessor.steps) == 7
+    assert isinstance(preprocessor.steps[0], SmolVLARawDepthFilterProcessor)
+    assert isinstance(preprocessor.steps[1], RenameObservationsProcessorStep)
+    assert isinstance(preprocessor.steps[2], AddBatchDimensionProcessorStep)
+    assert isinstance(preprocessor.steps[3], SmolVLANewLineProcessor)
+    # Step 4 would be TokenizerProcessorStep but it's mocked
+    assert isinstance(preprocessor.steps[5], DeviceProcessorStep)
+    assert isinstance(preprocessor.steps[6], NormalizerProcessorStep)
 
     # Check steps in postprocessor
     assert len(postprocessor.steps) == 2
     assert isinstance(postprocessor.steps[0], UnnormalizerProcessorStep)
     assert isinstance(postprocessor.steps[1], DeviceProcessorStep)
+
+
+def test_smolvla_raw_depth_filter_keeps_depth_visualization():
+    processor = SmolVLARawDepthFilterProcessor()
+    raw_depth = torch.ones(1, 480, 640, dtype=torch.uint16)
+    depth_visualization = torch.ones(1, 3, 480, 640)
+    transition = create_transition(
+        observation={
+            OBS_STATE: torch.zeros(1, 8),
+            "observation.depths.top": raw_depth,
+            "observation.images.top_depth": depth_visualization,
+        }
+    )
+
+    result = processor(transition)
+
+    assert "observation.depths.top" not in result[TransitionKey.OBSERVATION]
+    assert result[TransitionKey.OBSERVATION]["observation.images.top_depth"] is depth_visualization
 
 
 def test_smolvla_newline_processor_single_task():
@@ -428,7 +448,7 @@ def test_smolvla_processor_bfloat16_device_float32_normalizer():
     preprocessor.steps = modified_steps
 
     # Verify initial normalizer configuration (SmolVLA has NormalizerProcessorStep at index 5)
-    normalizer_step = preprocessor.steps[5]  # NormalizerProcessorStep
+    normalizer_step = preprocessor.steps[6]  # NormalizerProcessorStep
     assert normalizer_step.dtype == torch.float32
 
     # Create test data with both state and visual observations

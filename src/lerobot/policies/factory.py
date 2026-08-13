@@ -53,6 +53,7 @@ from lerobot.processor.converters import (
 )
 from lerobot.utils.constants import (
     ACTION,
+    OBS_STATE,
     POLICY_POSTPROCESSOR_DEFAULT_NAME,
     POLICY_PREPROCESSOR_DEFAULT_NAME,
 )
@@ -242,6 +243,12 @@ def make_pre_post_processors(
             policy configuration type.
     """
     if pretrained_path:
+        smolvla_raw_depth_filter_cls = None
+        if isinstance(policy_cfg, SmolVLAConfig):
+            from lerobot.policies.smolvla.processor_smolvla import SmolVLARawDepthFilterProcessor
+
+            smolvla_raw_depth_filter_cls = SmolVLARawDepthFilterProcessor
+
         # TODO(Steven): Temporary patch, implement correctly the processors for Gr00t
         if isinstance(policy_cfg, GrootConfig):
             # GROOT handles normalization in groot_pack_inputs_v3 step
@@ -263,26 +270,30 @@ def make_pre_post_processors(
             kwargs["preprocessor_overrides"] = preprocessor_overrides
             kwargs["postprocessor_overrides"] = postprocessor_overrides
 
-        return (
-            PolicyProcessorPipeline.from_pretrained(
-                pretrained_model_name_or_path=pretrained_path,
-                config_filename=kwargs.get(
-                    "preprocessor_config_filename", f"{POLICY_PREPROCESSOR_DEFAULT_NAME}.json"
-                ),
-                overrides=kwargs.get("preprocessor_overrides", {}),
-                to_transition=batch_to_transition,
-                to_output=transition_to_batch,
+        preprocessor = PolicyProcessorPipeline.from_pretrained(
+            pretrained_model_name_or_path=pretrained_path,
+            config_filename=kwargs.get(
+                "preprocessor_config_filename", f"{POLICY_PREPROCESSOR_DEFAULT_NAME}.json"
             ),
-            PolicyProcessorPipeline.from_pretrained(
-                pretrained_model_name_or_path=pretrained_path,
-                config_filename=kwargs.get(
-                    "postprocessor_config_filename", f"{POLICY_POSTPROCESSOR_DEFAULT_NAME}.json"
-                ),
-                overrides=kwargs.get("postprocessor_overrides", {}),
-                to_transition=policy_action_to_transition,
-                to_output=transition_to_policy_action,
-            ),
+            overrides=kwargs.get("preprocessor_overrides", {}),
+            to_transition=batch_to_transition,
+            to_output=transition_to_batch,
         )
+        if smolvla_raw_depth_filter_cls is not None and not any(
+            isinstance(step, smolvla_raw_depth_filter_cls) for step in preprocessor.steps
+        ):
+            preprocessor.steps = [smolvla_raw_depth_filter_cls(), *preprocessor.steps]
+
+        postprocessor = PolicyProcessorPipeline.from_pretrained(
+            pretrained_model_name_or_path=pretrained_path,
+            config_filename=kwargs.get(
+                "postprocessor_config_filename", f"{POLICY_POSTPROCESSOR_DEFAULT_NAME}.json"
+            ),
+            overrides=kwargs.get("postprocessor_overrides", {}),
+            to_transition=policy_action_to_transition,
+            to_output=transition_to_policy_action,
+        )
+        return preprocessor, postprocessor
 
     # Create a new processor based on policy type
     if isinstance(policy_cfg, TDMPCConfig):
@@ -468,7 +479,17 @@ def make_policy(
         features = env_to_policy_features(env_cfg)
 
     cfg.output_features = {key: ft for key, ft in features.items() if ft.type is FeatureType.ACTION}
-    if not cfg.input_features:
+    if isinstance(cfg, SmolVLAConfig):
+        # SmolVLA base checkpoints use generic camera names and embodiment
+        # dimensions. Rebind those inputs to the current dataset while keeping
+        # the pretrained model weights. Raw uint16 depth remains archival data;
+        # its RGB visualization is the visual feature consumed by stock SmolVLA.
+        cfg.input_features = {
+            key: ft
+            for key, ft in features.items()
+            if ft.type is FeatureType.VISUAL or (ft.type is FeatureType.STATE and key == OBS_STATE)
+        }
+    elif not cfg.input_features:
         cfg.input_features = {key: ft for key, ft in features.items() if key not in cfg.output_features}
     kwargs["config"] = cfg
 

@@ -111,7 +111,8 @@ class RebotB601Leader(Teleoperator):
     def calibrate(self) -> None:
         if self.calibration:
             user_input = input(
-                f"Press ENTER to use calibration file for id {self.id}, or type 'c' and press ENTER to run calibration: "
+                f"Press ENTER to use calibration file for id {self.id}, "
+                "or type 'c' and press ENTER to run calibration: "
             )
             if user_input.strip().lower() != "c":
                 self.bus.write_calibration(self.calibration)
@@ -144,15 +145,51 @@ class RebotB601Leader(Teleoperator):
             self.bus.configure_motors()
             self.bus.disable_torque()
             self.bus.enable_torque(self._gravity_comp_enabled_joints())
+            time.sleep(0.05)
             states = self.bus.sync_read_all_states()
-            self._send_gravity_comp(states)
+            self._check_motorbridge_health()
+            commands = self._send_gravity_comp(states)
+            self._start_command_stream(commands)
         else:
             self.bus.configure_motors()
             states = self.bus.sync_read_all_states()
-            self._send_compliance(states)
+            self._check_motorbridge_health()
+            commands = self._send_compliance(states)
+            self._start_command_stream(commands)
+
+    def _start_command_stream(
+        self,
+        commands: dict[str, tuple[float, float, float, float, float]] | None,
+    ) -> None:
+        if (
+            commands is None
+            or self.config.transport != "motorbridge"
+            or not self.config.command_stream_enabled
+        ):
+            return
+        try:
+            self.bus.start_mit_command_stream(
+                commands,
+                hz=self.config.command_stream_hz,
+                max_consecutive_failures=self.config.command_stream_max_consecutive_failures,
+                max_gap_s=self.config.command_stream_max_gap_s,
+            )
+        except Exception:
+            self.bus.disable_torque()
+            raise
 
     def setup_motors(self) -> None:
         raise NotImplementedError("Use the Damiao/reBot vendor tools to configure B601-DM CAN IDs.")
+
+    def _check_motorbridge_health(self) -> None:
+        if self.config.transport == "motorbridge" and self.config.abort_on_motor_fault_status:
+            required_enabled_motors = None
+            if self.config.manual_control_mode == "gravity_comp":
+                required_enabled_motors = self._gravity_comp_enabled_joints()
+            self.bus.check_motor_status_codes(
+                max_feedback_misses=self.config.motor_feedback_max_consecutive_misses,
+                required_enabled_motors=required_enabled_motors,
+            )
 
     def _gain_for(self, values: list[float] | float, motor_name: str) -> float:
         if isinstance(values, list):
@@ -290,9 +327,12 @@ class RebotB601Leader(Teleoperator):
             return list(self.config.gravity_comp_torque_joints)
         return [motor_name for motor_name in self._gravity_comp_enabled_joints() if motor_name != "gripper"]
 
-    def _send_gravity_comp(self, states: dict[str, dict[str, Any]]) -> None:
+    def _send_gravity_comp(
+        self,
+        states: dict[str, dict[str, Any]],
+    ) -> dict[str, tuple[float, float, float, float, float]] | None:
         if self.config.manual_control_mode != "gravity_comp":
-            return
+            return None
         self._ensure_gravity_comp_ready()
 
         motor_names = list(self.bus.motors)
@@ -325,10 +365,14 @@ class RebotB601Leader(Teleoperator):
                 tau,
             )
         self.bus.sync_write_mit(commands)
+        return commands
 
-    def _send_compliance(self, states: dict[str, dict[str, Any]]) -> None:
+    def _send_compliance(
+        self,
+        states: dict[str, dict[str, Any]],
+    ) -> dict[str, tuple[float, float, float, float, float]] | None:
         if self.config.manual_control_mode == "disabled":
-            return
+            return None
 
         kp_values = self.config.stiff_kp if self.config.manual_control_mode == "stiff" else self.config.impedance_kp
         kd_values = self.config.stiff_kd if self.config.manual_control_mode == "stiff" else self.config.impedance_kd
@@ -345,13 +389,17 @@ class RebotB601Leader(Teleoperator):
                 0.0,
             )
         self.bus.sync_write_mit(commands)
+        return commands
 
     def get_action(self) -> RobotAction:
         start = time.perf_counter()
         if not self.is_connected:
             raise DeviceNotConnectedError(f"{self} is not connected.")
+        if self.config.transport == "motorbridge" and self.config.command_stream_enabled:
+            self.bus.check_mit_command_stream(max_gap_s=self.config.command_stream_max_gap_s)
 
         states = self.bus.sync_read_all_states()
+        self._check_motorbridge_health()
         if self.config.manual_control_mode == "gravity_comp":
             self._send_gravity_comp(states)
         elif self.config.manual_control_mode != "disabled":

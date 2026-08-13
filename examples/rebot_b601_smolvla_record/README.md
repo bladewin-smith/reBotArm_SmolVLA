@@ -256,6 +256,235 @@ enabled during normal teleoperation and recording.
 
 ## Follower Safety During Recording
 
+The follower MotorBridge backend runs a dedicated MIT command stream by
+default. The dataset loop only updates the target while the stream repeats the
+latest complete seven-motor command at 100 Hz. This is important because
+Orbbec frame waits, EnhancedDepthFilter processing, episode encoding, and
+dataset saving can all pause the main recording loop. Without an independent
+stream, a long pause can trigger a DM communication watchdog or protection
+state even when the leader and follower pose difference is small.
+
+The recording defaults are:
+
+```text
+FOLLOWER_COMMAND_STREAM_ENABLED=true
+FOLLOWER_COMMAND_STREAM_HZ=100
+FOLLOWER_COMMAND_STREAM_MAX_FAILURES=5
+FOLLOWER_COMMAND_STREAM_MAX_GAP_S=0.25
+FOLLOWER_ABORT_ON_MOTOR_FAULT_STATUS=true
+FOLLOWER_MOTOR_FEEDBACK_MAX_MISSES=3
+FOLLOWER_RUNTIME_ERROR_HOLD_S=15
+LEADER_COMMAND_STREAM_ENABLED=true
+LEADER_COMMAND_STREAM_HZ=100
+LEADER_COMMAND_STREAM_MAX_FAILURES=5
+LEADER_COMMAND_STREAM_MAX_GAP_S=0.25
+LEADER_ABORT_ON_MOTOR_FAULT_STATUS=true
+LEADER_MOTOR_FEEDBACK_MAX_MISSES=3
+```
+
+The stream fault is latched after five consecutive serial-send failures, and
+recording then exits instead of silently resuming. A completed MIT refresh that
+arrives just after the 0.25 s deadline is reported as a recovered-gap warning;
+one recovered scheduling spike is not treated as five serial failures. Five
+consecutive completed-gap violations still latch a fault, and a health check
+made while the stream is currently older than 0.25 s fails immediately. This
+keeps sustained command loss fatal without aborting a new episode because of a
+single already-recovered video-encoding or scheduler spike. A single recovered
+gap at least twice the configured limit (0.5 s with the defaults) also latches
+immediately because it is too long to treat as harmless scheduler jitter.
+
+MotorBridge follows the DM
+status definitions: `0x0` is `DISABLED`, `0x1` is `ENABLED`, and `0x8` through
+`0xE` are drive faults. Both normal states provide valid feedback. Before
+torque enable the handshake accepts `DISABLED`; while actively controlling the
+arm every commanded motor must report `ENABLED`. A drive fault preserves the
+last valid joint feedback and aborts collection. An unexpected transition to
+`DISABLED` during active control also aborts. The software deliberately does
+not automatically re-enable either condition. Three consecutive missing
+feedback samples from the same motor also abort collection instead of reusing
+an old joint angle indefinitely.
+
+The leader uses the same independent 100 Hz refresh for gravity compensation.
+Its gravity vector and gripper assist are updated from each new leader feedback
+sample, while the most recent complete command is repeated during camera and
+dataset stalls. This preserves the 100 Hz command cadence used by the standalone
+gravity-compensation test even when recording RGB-D at about 10 FPS.
+During shutdown, follower cameras are disconnected before the follower motor
+bus, so the command stream remains active through slow Orbbec SDK teardown.
+If a camera, encoder, or dataset operation raises while motor control is still
+healthy, the follower holds its last pose for 15 seconds before teardown. This
+is only time for the operator to support the arm or use the E-stop; it is not
+automatic fault recovery. The delay is skipped when the command stream or a DM
+status is already unhealthy.
+
+Before reconnecting the two Orbbec cameras, test the updated follower command
+stream with camera-free teleoperation while physically supporting the arm:
+
+First test the follower alone. This script deliberately sleeps its main thread
+for five seconds at a time; the follower should keep holding the safe starting
+pose through the independent stream. It disables torque on exit, so support the
+arm throughout the test:
+
+```shell
+python examples/rebot_b601_smolvla_record/debug_follower_command_stream.py \
+  --port /dev/ttyACM0 \
+  --duration-s 20 \
+  --stall-s 5 \
+  --stream-hz 100
+```
+
+Then test camera-free leader-to-follower teleoperation:
+
+```shell
+lerobot-teleoperate \
+  --robot.type=rebot_b601_follower \
+  --robot.port=/dev/ttyACM0 \
+  --robot.transport=motorbridge \
+  --robot.id=b601_follower \
+  --robot.command_stream_enabled=true \
+  --robot.command_stream_hz=100 \
+  --robot.command_stream_max_gap_s=0.25 \
+  --teleop.type=rebot_b601_leader \
+  --teleop.port=/dev/ttyACM1 \
+  --teleop.transport=motorbridge \
+  --teleop.id=b601_leader \
+  --teleop.manual_control_mode=gravity_comp \
+  --teleop.command_stream_enabled=true \
+  --teleop.command_stream_hz=100 \
+  --teleop.command_stream_max_gap_s=0.25 \
+  --fps=30 \
+  --teleop_time_s=60
+```
+
+Verify `/dev/ttyACM0` and `/dev/ttyACM1` on the actual Jetson before running;
+USB enumeration can swap them after reconnecting devices. Then run one short
+RGB-D episode before a full collection:
+
+```shell
+bash examples/rebot_b601_smolvla_record/record_b601_smolvla_rgbd.sh \
+  --num-episodes 1 \
+  --episode-time-s 20 \
+  --reset-time-s 10
+```
+
+If the arm still loses torque with the command stream active, do not raise Kp,
+Kd, torque limits, or relative-target thresholds. Preserve the complete log and
+look for `status_code`, `MIT command stream failure`, or `MIT command stream
+gap`. Also measure the follower 24 V rail during motion and inspect the E-stop,
+power supply current limit, serial/CAN bridge, motor power connectors, and
+joint temperature. A simultaneous whole-arm drop with clean pose tracking is
+more consistent with common power/communication loss than calibration error.
+
+`recovered after a 0.252s gap, exceeding 0.250s (completed-gap violation 1/5)`
+means the stream has already sent a fresh command and remains usable. It should
+not terminate recording by itself. Repeated warnings indicate Jetson CPU or I/O
+contention; keep RGB-D collection at 10 FPS, use H.264, close Rerun when it is
+not needed, and avoid running other CPU-heavy jobs during collection. The B601
+RGB-D script also defaults `PARALLEL_VIDEO_ENCODING=false`, so the three camera
+videos are encoded one at a time between episodes instead of starting three
+competing encoder processes. This can make the reset interval longer, but does
+not change the dataset schema, frames, or SmolVLA compatibility. A
+`command stream gap is ...` error means the stream is still late at the time of
+the health check and remains a hard stop. A latched serial-send, repeated-gap,
+DM status, or missing-feedback fault also remains a hard stop.
+
+If collection stops before a new episode receives its first frame, all episodes
+that were saved previously remain valid. Keep the same `DATASET_ROOT` and
+`DATASET_REPO_ID`, calculate `remaining = target_total - saved_total`, and
+resume with:
+
+```shell
+target_total=30
+saved_total=7
+remaining=$((target_total - saved_total))
+bash examples/rebot_b601_smolvla_record/record_b601_smolvla_rgbd.sh \
+  --num-episodes "${remaining}" \
+  --extra --resume=true
+```
+
+Read `meta/info.json` under the dataset root to confirm `total_episodes` before
+resuming. Here `--num-episodes` is the number of additional episodes for this
+process, not the final total stored in the dataset. Alternatively set
+`NUM_EPISODES` to the remaining count and `EXTRA_ARGS=(--resume=true)` in the
+script's user settings block.
+
+### Known Intermittent Jetson Command-Stream Stall
+
+An intermittent failure has been observed on Jetson Orin NX during this RGB-D
+collection workload. At an episode boundary, both MotorBridge command streams
+can be delayed long enough to trip the hard safety limit. One captured failure
+reported approximately 0.62-0.64 s gaps on the follower and leader streams,
+exceeding the 0.50 s hard recovered-gap limit. Stopping the failed process and
+restarting it with the same dataset root and `--resume=true` successfully
+continued from the missing episode and completed the remaining collection.
+
+The current working hypothesis is transient Jetson system load, I/O contention,
+USB power/bus pressure, thermal throttling, or platform power/current throttling
+while running two Orbbec streams, EnhancedDepthFilter, image writing, H.264
+encoding, and two 100 Hz MotorBridge streams. This is not yet a confirmed root
+cause. In the captured failure there was no DM `0xA (OVER_CURRENT)`, voltage,
+temperature, or communication fault status. Simultaneous gaps on both
+`/dev/ttyACM0` and `/dev/ttyACM1` point more strongly to a shared host-side
+stall than to one arm motor entering over-current protection. Jetson platform
+over-current and arm-drive over-current are separate conditions and must be
+diagnosed from their respective logs and power rails.
+
+Use the following operational workaround:
+
+1. Keep both arms supported and the E-stop ready. Allow the safety exception to
+   stop the process; do not disable the command-stream checks or increase the
+   hard limit merely to hide the interruption.
+2. Confirm how many episodes were committed in `meta/info.json`. The episode
+   named immediately before the exception might not have been saved, so use
+   metadata rather than the last console message as the source of truth.
+3. Close unnecessary applications and keep `DISPLAY_DATA=false`, H.264, and
+   `PARALLEL_VIDEO_ENCODING=false`. If recording was running at 15 FPS, retry at
+   10 FPS to leave more CPU, USB, and EnhancedDepthFilter headroom.
+4. Check Jetson cooling and input power. If USB power is suspected, test the
+   cameras on a suitable externally powered USB 3 hub while preserving enough
+   bandwidth, and separately inspect the 24 V arm supply and MotorBridge links.
+5. Restart with the same root/repository id, `--resume=true`, and only the
+   remaining number of episodes. For example:
+
+```shell
+bash examples/rebot_b601_smolvla_record/record_b601_smolvla_rgbd.sh \
+  --num-episodes 3 \
+  --fps 10 \
+  --parallel-video-encoding false \
+  --extra --resume=true
+```
+
+For root-cause investigation, collect synchronized system and application logs.
+Run these in separate terminals before starting collection:
+
+```shell
+mkdir -p ~/rebot_diag
+sudo tegrastats --interval 1000 2>&1 | tee ~/rebot_diag/tegrastats.log
+```
+
+```shell
+sudo journalctl -kf 2>&1 | tee ~/rebot_diag/kernel.log
+```
+
+Capture the recorder output as well:
+
+```shell
+set -o pipefail
+bash examples/rebot_b601_smolvla_record/record_b601_smolvla_rgbd.sh \
+  2>&1 | tee ~/rebot_diag/record.log
+```
+
+Correlate the timestamp of each `completed-send gap` with CPU load, clocks,
+temperature, throttling or over-current indications, USB/xHCI resets,
+`ttyACM` disconnects, and DM status codes. Also compare camera-free
+teleoperation, RGB-only recording, RGB-D without EnhancedDepthFilter, and the
+full workload to isolate which added load triggers the stall.
+
+This restart-and-resume procedure is a practical recovery path, not the final
+fix. Reproduction reports with synchronized logs, root-cause analyses, and
+patches that solve the underlying stall are very welcome so future users can
+run the complete collection without intermittent restarts.
+
 Do not continue recording if the follower arm repeatedly reports relative goal
 clamping on several arm joints. That means the leader command has moved far
 away from the follower's current pose, often because the follower is near a
@@ -265,10 +494,12 @@ current follower pose instead of chasing the unreachable target.
 
 This is a joint-command tracking safety mechanism. It detects large leader to
 follower position gaps through repeated relative-target clamping. It is not a
-full kinematic singularity detector, and the current MotorBridge feedback does
-not expose every DM drive fault code. A drive that has already disabled itself
-may therefore be unable to execute automatic recovery; that case stops the
-recording after the recovery timeout.
+full kinematic singularity detector. MotorBridge exposes a raw DM status code.
+This integration decodes the normal `DISABLED`/`ENABLED` states and the
+documented voltage, current, temperature, communication, and overload faults.
+A drive that has already disabled itself may be unable to execute automatic
+recovery; an unexpected `DISABLED` state or a real drive-fault status aborts
+recording without trying to re-enable it.
 
 At the start of every episode, the recorder stores the follower and leader arm
 joint positions. If an arm safety hold occurs during recording or environment
@@ -295,9 +526,22 @@ or `Esc` to cancel. Always use the hardware E-stop if motion is unsafe.
 For collection, the recording script uses conservative follower defaults:
 
 ```text
-FOLLOWER_MAX_RELATIVE_TARGET=6.0
+FOLLOWER_MAX_RELATIVE_TARGET=12.0
 FOLLOWER_GRIPPER_MAX_RELATIVE_TARGET=30.0
 FOLLOWER_DISABLE_TORQUE_ON_DISCONNECT=false
+FOLLOWER_COMMAND_STREAM_ENABLED=true
+FOLLOWER_COMMAND_STREAM_HZ=100
+FOLLOWER_COMMAND_STREAM_MAX_FAILURES=5
+FOLLOWER_COMMAND_STREAM_MAX_GAP_S=0.25
+FOLLOWER_ABORT_ON_MOTOR_FAULT_STATUS=true
+FOLLOWER_MOTOR_FEEDBACK_MAX_MISSES=3
+FOLLOWER_RUNTIME_ERROR_HOLD_S=15
+LEADER_COMMAND_STREAM_ENABLED=true
+LEADER_COMMAND_STREAM_HZ=100
+LEADER_COMMAND_STREAM_MAX_FAILURES=5
+LEADER_COMMAND_STREAM_MAX_GAP_S=0.25
+LEADER_ABORT_ON_MOTOR_FAULT_STATUS=true
+LEADER_MOTOR_FEEDBACK_MAX_MISSES=3
 FOLLOWER_SAFETY_HOLD_ON_RELATIVE_CLAMP=true
 FOLLOWER_SAFETY_ABORT_EPISODE_ON_HOLD=true
 FOLLOWER_SAFETY_AUTO_RECOVER_TO_EPISODE_START=true
@@ -624,7 +868,31 @@ lerobot-train \
 
 The raw depth tensor is stored in the dataset but is not consumed by the stock
 SmolVLA visual encoder. Use `observation.images.top_depth` for depth-aware
-training without modifying SmolVLA internals.
+training without modifying SmolVLA internals. The SmolVLA preprocessor removes
+`observation.depths.*` before device transfer, so the preserved uint16 tensor
+does not consume GPU memory during stock SmolVLA training or edge inference.
+When loading `lerobot/smolvla_base`, the policy factory also rebinds its generic
+`camera1`/`camera2`/`camera3` and six-dimensional embodiment features to this
+dataset's `wrist`/`top`/`top_depth`, 21-dimensional state, and seven-dimensional
+action features while retaining the pretrained weights.
+
+Before a full cloud run, start a short training smoke test:
+
+```shell
+bash examples/rebot_b601_smolvla_record/train_smolvla_local.sh \
+  --dataset-root /path/to/rebot_b601_rgbd_dataset \
+  --repo-id local/rebot_b601_rgbd_dataset \
+  --output-dir /tmp/rebot_b601_smolvla_smoke \
+  --batch-size 2 \
+  --steps 2 \
+  --save-freq 2 \
+  --num-workers 0
+```
+
+The startup log must bind `observation.state` with shape `(21,)`, the visual
+keys `observation.images.wrist`, `observation.images.top`, and
+`observation.images.top_depth`, plus `action` with shape `(7,)`. Stop if the
+base checkpoint's generic `camera1`/`camera2`/`camera3` keys remain.
 
 ## LingBot EnhancedDepthFilter Notes
 
