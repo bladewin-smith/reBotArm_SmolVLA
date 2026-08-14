@@ -67,6 +67,72 @@ class RebotB601Follower(Robot):
         self._safety_fault_active = False
         self._episode_start_pos: dict[str, float] | None = None
         self._runtime_error_hold_done = False
+        self._gripper_contact_hold_pos: float | None = None
+        self._gripper_closing_started_s: float | None = None
+        self._gripper_contact_samples = 0
+        self._validate_gripper_control_config()
+        self._validate_safety_config()
+
+    def _validate_gripper_control_config(self) -> None:
+        if self.config.gripper_control_mode not in {"position", "torque_limited_close"}:
+            raise ValueError("gripper_control_mode must be 'position' or 'torque_limited_close'.")
+
+        nonnegative_values = {
+            "gripper_close_kd": self.config.gripper_close_kd,
+            "gripper_contact_min_closing_error_deg": self.config.gripper_contact_min_closing_error_deg,
+            "gripper_contact_max_velocity_deg_s": self.config.gripper_contact_max_velocity_deg_s,
+            "gripper_contact_min_torque": self.config.gripper_contact_min_torque,
+            "gripper_contact_detection_delay_s": self.config.gripper_contact_detection_delay_s,
+            "gripper_contact_hold_kp": self.config.gripper_contact_hold_kp,
+            "gripper_contact_hold_kd": self.config.gripper_contact_hold_kd,
+            "gripper_contact_hold_torque": self.config.gripper_contact_hold_torque,
+            "gripper_contact_release_hysteresis_deg": self.config.gripper_contact_release_hysteresis_deg,
+        }
+        invalid = {
+            name: value
+            for name, value in nonnegative_values.items()
+            if not math.isfinite(float(value)) or float(value) < 0
+        }
+        if invalid:
+            raise ValueError(f"Gripper control values must be finite and nonnegative: {invalid}")
+        if not math.isfinite(float(self.config.gripper_max_torque)) or self.config.gripper_max_torque <= 0:
+            raise ValueError("gripper_max_torque must be positive and finite.")
+        bounded_torques = {
+            "gripper_close_torque": self.config.gripper_close_torque,
+            "gripper_contact_hold_torque": self.config.gripper_contact_hold_torque,
+        }
+        invalid_torques = {
+            name: value
+            for name, value in bounded_torques.items()
+            if not math.isfinite(float(value))
+            or float(value) < 0
+            or float(value) > float(self.config.gripper_max_torque)
+        }
+        if invalid_torques:
+            raise ValueError(
+                "Follower gripper torque values must be between zero and "
+                f"gripper_max_torque={self.config.gripper_max_torque}: {invalid_torques}"
+            )
+        if self.config.gripper_contact_detection_samples < 1:
+            raise ValueError("gripper_contact_detection_samples must be at least 1.")
+
+    def _reset_gripper_contact_state(self) -> None:
+        self._gripper_contact_hold_pos = None
+        self._gripper_closing_started_s = None
+        self._gripper_contact_samples = 0
+
+    def _validate_safety_config(self) -> None:
+        coupled_thresholds = {
+            "safety_coupled_joint_2_min_deg": self.config.safety_coupled_joint_2_min_deg,
+            "safety_coupled_joint_3_max_deg": self.config.safety_coupled_joint_3_max_deg,
+        }
+        invalid = {
+            name: value
+            for name, value in coupled_thresholds.items()
+            if not math.isfinite(float(value))
+        }
+        if invalid:
+            raise ValueError(f"Follower coupled-pose safety thresholds must be finite: {invalid}")
 
     @property
     def _state_ft(self) -> dict[str, type]:
@@ -129,6 +195,7 @@ class RebotB601Follower(Robot):
                     hz=self.config.command_stream_hz,
                     max_consecutive_failures=self.config.command_stream_max_consecutive_failures,
                     max_gap_s=self.config.command_stream_max_gap_s,
+                    hard_gap_s=self.config.command_stream_hard_gap_s,
                 )
             else:
                 self.bus.sync_write_mit(initial_commands)
@@ -235,12 +302,36 @@ class RebotB601Follower(Robot):
         self._runtime_error_hold_done = True
         if not self.bus.is_connected or not self.bus.mit_command_stream_active:
             return
+        arm_motors = [motor for motor in self.bus.motors if motor != "gripper"]
         try:
             self.bus.check_mit_command_stream(max_gap_s=self.config.command_stream_max_gap_s)
-            self._check_motorbridge_health()
+            self.bus.check_motor_status_codes(
+                max_feedback_misses=self.config.motor_feedback_max_consecutive_misses,
+                required_enabled_motors=arm_motors,
+            )
         except Exception as exc:
             logger.error("Cannot hold follower after runtime error because motor control is unhealthy: %s", exc)
             return
+
+        gripper_enabled = self.bus.motor_status_codes().get("gripper") == 0x1
+        if gripper_enabled:
+            gripper_state = self.bus.sync_read_all_states("gripper")["gripper"]
+            self.bus.sync_write_mit(
+                {
+                    "gripper": (
+                        float(self.config.gripper_contact_hold_kp),
+                        float(self.config.gripper_contact_hold_kd),
+                        float(gripper_state["position"]),
+                        0.0,
+                        0.0,
+                    )
+                }
+            )
+        else:
+            logger.critical(
+                "The follower gripper is disabled, but all six arm joints are still enabled. "
+                "Continuing the arm command stream during the operator hold window."
+            )
 
         logger.critical(
             "Recording failed while follower control is still healthy. Holding the last pose for %.1fs; "
@@ -248,9 +339,18 @@ class RebotB601Follower(Robot):
             hold_s,
         )
         deadline_s = time.monotonic() + hold_s
+        next_health_check_s = 0.0
         while time.monotonic() < deadline_s:
             try:
                 self.bus.check_mit_command_stream(max_gap_s=self.config.command_stream_max_gap_s)
+                now_s = time.monotonic()
+                if now_s >= next_health_check_s:
+                    self.bus.sync_read_all_states()
+                    self.bus.check_motor_status_codes(
+                        max_feedback_misses=self.config.motor_feedback_max_consecutive_misses,
+                        required_enabled_motors=arm_motors,
+                    )
+                    next_health_check_s = now_s + 0.25
             except Exception as exc:
                 logger.error("Follower runtime-error hold ended early: %s", exc)
                 break
@@ -306,6 +406,97 @@ class RebotB601Follower(Robot):
             )
             for motor_name, position_degrees in goal_pos.items()
         }
+
+    def _gripper_close_direction(self) -> float:
+        close_pos = self.config.gripper_follower_close_pos
+        open_pos = self.config.gripper_follower_open_pos
+        if close_pos is not None and open_pos is not None and close_pos != open_pos:
+            return 1.0 if close_pos > open_pos else -1.0
+        return 1.0
+
+    def _torque_limited_gripper_command(
+        self,
+        requested_target: float,
+        limited_target: float,
+    ) -> tuple[float, float, float, float, float] | None:
+        if self.config.gripper_control_mode != "torque_limited_close":
+            self._reset_gripper_contact_state()
+            return None
+
+        state = self._last_observation_states.get("gripper")
+        if state is None:
+            return None
+
+        current_pos = float(state.get("position", limited_target))
+        velocity = float(state.get("velocity", 0.0))
+        torque = float(state.get("torque", 0.0))
+        close_direction = self._gripper_close_direction()
+        now_s = time.monotonic()
+
+        if self._gripper_contact_hold_pos is not None:
+            opening_from_contact = close_direction * (
+                requested_target - self._gripper_contact_hold_pos
+            ) < -float(self.config.gripper_contact_release_hysteresis_deg)
+            if opening_from_contact:
+                logger.info("%s follower gripper contact hold released by an opening command.", self.name)
+                self._reset_gripper_contact_state()
+                return None
+            return (
+                float(self.config.gripper_contact_hold_kp),
+                float(self.config.gripper_contact_hold_kd),
+                self._gripper_contact_hold_pos,
+                0.0,
+                close_direction * float(self.config.gripper_contact_hold_torque),
+            )
+
+        closing_error = close_direction * (requested_target - current_pos)
+        if closing_error <= float(self.config.gripper_contact_min_closing_error_deg):
+            self._gripper_closing_started_s = None
+            self._gripper_contact_samples = 0
+            return None
+
+        if self._gripper_closing_started_s is None:
+            self._gripper_closing_started_s = now_s
+
+        detection_ready = (
+            now_s - self._gripper_closing_started_s
+            >= float(self.config.gripper_contact_detection_delay_s)
+        )
+        contact_sample = (
+            detection_ready
+            and abs(velocity) <= float(self.config.gripper_contact_max_velocity_deg_s)
+            and abs(torque) >= float(self.config.gripper_contact_min_torque)
+        )
+        self._gripper_contact_samples = self._gripper_contact_samples + 1 if contact_sample else 0
+
+        if self._gripper_contact_samples >= self.config.gripper_contact_detection_samples:
+            self._gripper_contact_hold_pos = current_pos
+            logger.info(
+                "%s follower gripper contact detected at %.2f deg "
+                "(requested=%.2f, velocity=%.2f deg/s, torque=%.2f); "
+                "switching to bounded hold torque %.2f Nm.",
+                self.name,
+                current_pos,
+                requested_target,
+                velocity,
+                torque,
+                self.config.gripper_contact_hold_torque,
+            )
+            return (
+                float(self.config.gripper_contact_hold_kp),
+                float(self.config.gripper_contact_hold_kd),
+                current_pos,
+                0.0,
+                close_direction * float(self.config.gripper_contact_hold_torque),
+            )
+
+        return (
+            0.0,
+            float(self.config.gripper_close_kd),
+            limited_target,
+            0.0,
+            close_direction * float(self.config.gripper_close_torque),
+        )
 
     def recover_to_episode_start_pose(
         self,
@@ -522,6 +713,43 @@ class RebotB601Follower(Robot):
             details,
         )
 
+    def _coupled_pose_guard_triggered(self, goal_pos: dict[str, float]) -> bool:
+        if not self.config.safety_coupled_pose_guard_enabled:
+            return False
+        if "joint_2" not in goal_pos or "joint_3" not in goal_pos:
+            return False
+        return (
+            float(goal_pos["joint_2"]) <= float(self.config.safety_coupled_joint_2_min_deg)
+            and float(goal_pos["joint_3"]) >= float(self.config.safety_coupled_joint_3_max_deg)
+        )
+
+    def _apply_coupled_pose_guard(
+        self,
+        goal_pos: dict[str, float],
+        present_pos: dict[str, float],
+    ) -> tuple[dict[str, float], bool]:
+        if not self._coupled_pose_guard_triggered(goal_pos):
+            return goal_pos, False
+
+        self._safety_hold_active = True
+        self._safety_fault_active = True
+        logger.error(
+            "%s coupled-pose safety hold: refusing target joint_2=%.2f deg, joint_3=%.2f deg "
+            "because joint_2<=%.2f and joint_3>=%.2f describes the configured high-load, "
+            "near-straight envelope. Holding the current arm pose and rerecording the episode.",
+            self.name,
+            float(goal_pos["joint_2"]),
+            float(goal_pos["joint_3"]),
+            float(self.config.safety_coupled_joint_2_min_deg),
+            float(self.config.safety_coupled_joint_3_max_deg),
+        )
+        hold_joints = set(self.config.safety_hold_joints)
+        guarded_goal = {
+            motor: float(present_pos[motor]) if motor in hold_joints else target_pos
+            for motor, target_pos in goal_pos.items()
+        }
+        return self._clamp_to_joint_limits(guarded_goal), True
+
     def send_action(self, action: RobotAction) -> RobotAction:
         if not self.is_connected:
             raise DeviceNotConnectedError(f"{self} is not connected.")
@@ -533,7 +761,9 @@ class RebotB601Follower(Robot):
             goal_pos["gripper"] = self._map_gripper_goal(float(goal_pos["gripper"]))
 
         goal_pos = self._clamp_to_joint_limits(goal_pos)
+        requested_goal_pos = goal_pos.copy()
         safety_hold = False
+        present_pos: dict[str, float] | None = None
 
         if self.config.max_relative_target is not None:
             present_pos = (
@@ -564,10 +794,28 @@ class RebotB601Follower(Robot):
         else:
             self._safety_hold_active = False
 
+        if not safety_hold and self.config.safety_coupled_pose_guard_enabled:
+            if present_pos is None:
+                present_pos = (
+                    {motor: state["position"] for motor, state in self._last_observation_states.items()}
+                    if self._last_observation_states
+                    else self.bus.sync_read("Present_Position")
+                )
+            goal_pos, safety_hold = self._apply_coupled_pose_guard(goal_pos, present_pos)
+
         commands = self._build_mit_commands(
             goal_pos,
             position_kp_scale=self.config.safety_hold_position_kp_scale if safety_hold else 1.0,
         )
+        if "gripper" in goal_pos:
+            gripper_command = self._torque_limited_gripper_command(
+                requested_goal_pos["gripper"],
+                goal_pos["gripper"],
+            )
+            if gripper_command is not None:
+                commands["gripper"] = gripper_command
+                if self._gripper_contact_hold_pos is not None:
+                    goal_pos["gripper"] = self._gripper_contact_hold_pos
         self.bus.sync_write_mit(commands)
         return {f"{motor}.pos": val for motor, val in goal_pos.items()}
 
@@ -582,4 +830,5 @@ class RebotB601Follower(Robot):
                 logger.warning("Failed to disconnect %s while keeping follower control active: %s", cam, exc)
         if self.bus.is_connected:
             self.bus.disconnect(self.config.disable_torque_on_disconnect)
+        self._reset_gripper_contact_state()
         logger.info(f"{self} disconnected.")

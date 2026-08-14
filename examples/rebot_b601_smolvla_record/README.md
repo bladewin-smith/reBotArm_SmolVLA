@@ -73,13 +73,13 @@ Use the same neutral zero pose for the leader and follower.
 ```shell
 lerobot-calibrate \
   --robot.type=rebot_b601_follower \
-  --robot.port=/dev/ttyACM1 \
+  --robot.port=/dev/ttyACM0 \
   --robot.transport=motorbridge \
   --robot.id=b601_follower
 
 lerobot-calibrate \
   --teleop.type=rebot_b601_leader \
-  --teleop.port=/dev/ttyACM0 \
+  --teleop.port=/dev/ttyACM1 \
   --teleop.transport=motorbridge \
   --teleop.id=b601_leader
 ```
@@ -231,6 +231,7 @@ cameras or dataset writing. The tuned B601 defaults include:
 - follower gripper endpoint mapping: leader `5 -> -310` maps to follower `10 -> -320`
 - follower gripper command range: `-330` to `10`
 - follower gripper gains: `kp=35.0`, `kd=0.8`
+- follower gripper close mode: torque-limited close at `1.0 Nm`, then contact hold at `0.30 Nm`
 - leader gripper force assist: `kp=0`, `kd=0`, `open_bias_torque=0.09`, `torque_limit=0.15`
 
 ```shell
@@ -258,7 +259,8 @@ enabled during normal teleoperation and recording.
 
 The follower MotorBridge backend runs a dedicated MIT command stream by
 default. The dataset loop only updates the target while the stream repeats the
-latest complete seven-motor command at 100 Hz. This is important because
+latest complete seven-motor command at 500 Hz, matching Seeed's
+`reBotArm_control_py/config/rebotarm_dm.yaml`. This is important because
 Orbbec frame waits, EnhancedDepthFilter processing, episode encoding, and
 dataset saving can all pause the main recording loop. Without an independent
 stream, a long pause can trigger a DM communication watchdog or protection
@@ -268,30 +270,31 @@ The recording defaults are:
 
 ```text
 FOLLOWER_COMMAND_STREAM_ENABLED=true
-FOLLOWER_COMMAND_STREAM_HZ=100
+FOLLOWER_COMMAND_STREAM_HZ=500
 FOLLOWER_COMMAND_STREAM_MAX_FAILURES=5
-FOLLOWER_COMMAND_STREAM_MAX_GAP_S=0.25
+FOLLOWER_COMMAND_STREAM_MAX_GAP_S=0.05
+FOLLOWER_COMMAND_STREAM_HARD_GAP_S=0.5
 FOLLOWER_ABORT_ON_MOTOR_FAULT_STATUS=true
 FOLLOWER_MOTOR_FEEDBACK_MAX_MISSES=3
 FOLLOWER_RUNTIME_ERROR_HOLD_S=15
 LEADER_COMMAND_STREAM_ENABLED=true
-LEADER_COMMAND_STREAM_HZ=100
+LEADER_COMMAND_STREAM_HZ=500
 LEADER_COMMAND_STREAM_MAX_FAILURES=5
-LEADER_COMMAND_STREAM_MAX_GAP_S=0.25
+LEADER_COMMAND_STREAM_MAX_GAP_S=0.05
+LEADER_COMMAND_STREAM_HARD_GAP_S=0.5
 LEADER_ABORT_ON_MOTOR_FAULT_STATUS=true
 LEADER_MOTOR_FEEDBACK_MAX_MISSES=3
 ```
 
 The stream fault is latched after five consecutive serial-send failures, and
 recording then exits instead of silently resuming. A completed MIT refresh that
-arrives just after the 0.25 s deadline is reported as a recovered-gap warning;
-one recovered scheduling spike is not treated as five serial failures. Five
-consecutive completed-gap violations still latch a fault, and a health check
-made while the stream is currently older than 0.25 s fails immediately. This
-keeps sustained command loss fatal without aborting a new episode because of a
-single already-recovered video-encoding or scheduler spike. A single recovered
-gap at least twice the configured limit (0.5 s with the defaults) also latches
-immediately because it is too long to treat as harmless scheduler jitter.
+arrives after the 0.05 s warning deadline is reported as a recovered-gap
+warning. Five consecutive completed-gap violations still latch a fault, and a
+health check made while the stream is currently older than 0.05 s fails
+immediately. The separate 0.5 s hard-gap threshold latches one exceptionally
+long recovered gap. Keeping warning and hard thresholds separate prevents a
+145-190 ms, already-recovered H.264 scheduling spike from being reported only
+when the next episode begins, while 0.5 s command loss remains fatal.
 
 MotorBridge follows the DM
 status definitions: `0x0` is `DISABLED`, `0x1` is `ENABLED`, and `0x8` through
@@ -304,11 +307,107 @@ not automatically re-enable either condition. Three consecutive missing
 feedback samples from the same motor also abort collection instead of reusing
 an old joint angle indefinitely.
 
-The leader uses the same independent 100 Hz refresh for gravity compensation.
+### Several Follower Motors Become DISABLED Together
+
+If several follower motors change from `ENABLED` to `DISABLED` in one
+observation, treat it as a possible whole-arm watchdog, shared power, E-stop,
+MotorBridge, or serial/CAN event. State feedback is polled in motor order. For
+example, if `joint_1` and `joint_2` were read immediately before a common
+disable event, their cached status can still show `ENABLED` while `joint_3`
+through `gripper` already show `DISABLED`; this does not prove that the first
+two motors stayed powered. Zero temperature fields in a disabled report are
+also not evidence that the motors were cold because some DM disabled-state
+frames do not populate every diagnostic field.
+
+Seeed's DM hardware configuration runs its control loop at 500 Hz. The LeRobot
+integration therefore also defaults both MotorBridge streams to 500 Hz and
+uses a 50 ms completed-send warning threshold plus a separate 500 ms hard
+threshold. Each status transition and unexpected-disable exception now includes:
+
+- command-stream age and configured frequency;
+- total completed command batches;
+- latest and maximum seven-motor send duration;
+- maximum interval between completed command batches;
+- elapsed time since the maximum and most recent warning-level gap;
+- age of the latest high-level target update and the target position currently
+  being refreshed for every motor;
+- consecutive send failures and completed-gap violations.
+
+If `max_completed_gap_ms` is near or above 50 ms, investigate host scheduling,
+USB/serial contention, and the RGB-D workload first. If the maximum gap remains
+well below 50 ms but motors still disable together, inspect the 24 V rail under
+load, supply current limit, E-stop chain, MotorBridge firmware/link, daisy-chain
+power and CAN connectors, and any drive-side watchdog or protection history.
+Do not automatically re-enable the arm after either case.
+
+`max_completed_gap_ms` is cumulative from stream startup and does not establish
+that the maximum happened immediately before a motor fault. Use
+`max_completed_gap_ago_ms` and `last_gap_violation_ago_ms` to correlate it with
+the status transition. A small current `age_ms` plus a warning that occurred
+many seconds earlier means the Python sender had already recovered and the
+shared disable should be investigated on the power, bridge, firmware, E-stop,
+or competing-process side.
+
+### Follower Gripper Changes From ENABLED to DISABLED
+
+If only the follower `gripper` changes from `0x1 (ENABLED)` to `0x0
+(DISABLED)` while joints 1-6 remain enabled, do not classify it as the shared
+Jetson command-stream stall described below. `0x0` says that the drive has
+already disabled; it does not by itself preserve the preceding reason. A
+gripper-only transition is more consistent with local gripper protection,
+sustained mechanical load, a gripper power/communication connector problem, or
+an explicit disable than with calibration error or whole-board overload.
+
+The earlier follower controller continuously applied position control with
+`kp=35` toward the fully closed endpoint. When an object stopped the jaws near,
+for example, `-97 deg` while the requested endpoint remained near `10 deg`, the
+large persistent position error could keep loading the DM4310. The recording
+controller now follows Seeed's working `reBot-DevArm-Grasp` strategy:
+
+- opening and unloaded position moves still use the tuned position controller;
+- closing uses bounded MIT feedforward torque (`1.0 Nm`) with damping;
+- low velocity for three samples after the startup delay is treated as contact;
+- contact switches to `kp=5`, `kd=1`, and `0.30 Nm` holding torque;
+- an opening command releases contact hold;
+- close and hold torque cannot exceed the configured `1.5 Nm` software cap.
+
+The unexpected-disable check remains enabled, and the code never automatically
+re-enables the gripper. If only the gripper disables, the six healthy arm joints
+continue receiving their 500 Hz hold commands for the configured 15-second
+operator response window. Support the arm and use the E-stop as needed.
+
+Before recording again, test without cameras. Keep hands out of the jaws; use a
+soft test object for the second command:
+
+```shell
+python examples/rebot_b601_smolvla_record/debug_follower_gripper_command.py \
+  --port /dev/ttyACM0 \
+  --target -320 \
+  --duration-s 4
+
+python examples/rebot_b601_smolvla_record/debug_follower_gripper_command.py \
+  --port /dev/ttyACM0 \
+  --target 10 \
+  --duration-s 6 \
+  --control-mode torque_limited_close \
+  --close-torque 1.0 \
+  --hold-torque 0.30
+```
+
+On object contact, expect `follower gripper contact detected` and continued
+`status=0x1`. The debug output and any later disable warning now include
+position, velocity, torque, MOS temperature, and rotor temperature. If `0x0`
+still occurs, preserve those lines and inspect the gripper linkage/hard stops,
+motor connector, MotorBridge connector, and 24 V rail. Do not increase torque
+to mask the fault. The Seeed defaults use `tau_max=1.5`, close torque `1.0`, and
+hold torque `0.30`; start below those values when the mechanism is unusually
+tight.
+
+The leader uses the same independent 500 Hz refresh for gravity compensation.
 Its gravity vector and gripper assist are updated from each new leader feedback
 sample, while the most recent complete command is repeated during camera and
-dataset stalls. This preserves the 100 Hz command cadence used by the standalone
-gravity-compensation test even when recording RGB-D at about 10 FPS.
+dataset stalls. This preserves the command cadence used by Seeed's DM SDK even
+when recording RGB-D at about 10 FPS.
 During shutdown, follower cameras are disconnected before the follower motor
 bus, so the command stream remains active through slow Orbbec SDK teardown.
 If a camera, encoder, or dataset operation raises while motor control is still
@@ -328,9 +427,10 @@ arm throughout the test:
 ```shell
 python examples/rebot_b601_smolvla_record/debug_follower_command_stream.py \
   --port /dev/ttyACM0 \
-  --duration-s 20 \
+  --duration-s 60 \
   --stall-s 5 \
-  --stream-hz 100
+  --stream-hz 500 \
+  --max-gap-s 0.05
 ```
 
 Then test camera-free leader-to-follower teleoperation:
@@ -342,19 +442,82 @@ lerobot-teleoperate \
   --robot.transport=motorbridge \
   --robot.id=b601_follower \
   --robot.command_stream_enabled=true \
-  --robot.command_stream_hz=100 \
-  --robot.command_stream_max_gap_s=0.25 \
+  --robot.command_stream_hz=500 \
+  --robot.command_stream_max_gap_s=0.05 \
+  --robot.command_stream_hard_gap_s=0.5 \
   --teleop.type=rebot_b601_leader \
   --teleop.port=/dev/ttyACM1 \
   --teleop.transport=motorbridge \
   --teleop.id=b601_leader \
   --teleop.manual_control_mode=gravity_comp \
   --teleop.command_stream_enabled=true \
-  --teleop.command_stream_hz=100 \
-  --teleop.command_stream_max_gap_s=0.25 \
+  --teleop.command_stream_hz=500 \
+  --teleop.command_stream_max_gap_s=0.05 \
+  --teleop.command_stream_hard_gap_s=0.5 \
   --fps=30 \
   --teleop_time_s=60
 ```
+
+If camera-free teleoperation is stable, run a static combined-load test before
+collecting another episode. This keeps the follower at its current pose, opens
+the same wrist RGB and top RGB plus enhanced-depth streams used by recording,
+and reads observations at 10 Hz. It does not connect the leader, write images,
+or encode video:
+
+```shell
+python examples/rebot_b601_smolvla_record/debug_follower_camera_load.py \
+  --port /dev/ttyACM0 \
+  --camera-mode pair \
+  --bridge /home/r/ws/rebot_lerobot/lerobot/src/lerobot/cameras/orbbec/cpp/build/orbbec_rgbd_bridge \
+  --wrist-serial CV2TC5100075 \
+  --top-serial CP3L44P0001N \
+  --enhanced-depth-model /home/r/ws/model.sm4 \
+  --camera-fps 10 \
+  --poll-hz 10 \
+  --stream-hz 500 \
+  --duration-s 120
+```
+
+Run the test with the arm physically supported. Every status must remain
+`0x1`. If the pair fails, repeat with `--camera-mode wrist`, then
+`--camera-mode top`, and repeat top with `--no-enhanced-depth`. A failure in
+this static test isolates the problem to the follower power/bridge or the
+camera, USB, and Jetson workload; it is independent of leader mapping, dataset
+writing, H.264 encoding, and arm trajectory. If all static modes pass but full
+recording fails, investigate the added motion, image-writer, and encoder load.
+
+Do not resume an existing dataset while changing camera modes: the feature
+schema would no longer match. These modes are diagnostic only and do not save
+a dataset.
+
+After the two-minute static pair test passes, add the leader to test actual
+motion with both cameras and EnhancedDepthFilter active, but still without any
+dataset image writing or video encoding. Put both arms in closely matching,
+supported poses before pressing Enter:
+
+```shell
+python examples/rebot_b601_smolvla_record/debug_follower_camera_load.py \
+  --port /dev/ttyACM0 \
+  --leader-port /dev/ttyACM1 \
+  --camera-mode pair \
+  --bridge /home/r/ws/rebot_lerobot/lerobot/src/lerobot/cameras/orbbec/cpp/build/orbbec_rgbd_bridge \
+  --wrist-serial CV2TC5100075 \
+  --top-serial CP3L44P0001N \
+  --enhanced-depth-model /home/r/ws/model.sm4 \
+  --camera-fps 10 \
+  --poll-hz 10 \
+  --stream-hz 500 \
+  --initial-pose-tolerance-deg 8 \
+  --max-relative-target 12 \
+  --duration-s 120
+```
+
+The script checks all six initial joint differences before sending the first
+follower target. If this motion test fails while the static test passes, inspect
+the follower 24 V rail, supply current limit, E-stop/MotorBridge chain, and
+simultaneous multi-joint acceleration. If this test also passes, the remaining
+variable in full collection is dataset writing and between-episode video
+encoding.
 
 Verify `/dev/ttyACM0` and `/dev/ttyACM1` on the actual Jetson before running;
 USB enumeration can swap them after reconnecting devices. Then run one short
@@ -375,15 +538,22 @@ power supply current limit, serial/CAN bridge, motor power connectors, and
 joint temperature. A simultaneous whole-arm drop with clean pose tracking is
 more consistent with common power/communication loss than calibration error.
 
-`recovered after a 0.252s gap, exceeding 0.250s (completed-gap violation 1/5)`
+`recovered after a 0.190s gap, exceeding 0.050s (completed-gap violation 1/5)`
 means the stream has already sent a fresh command and remains usable. It should
 not terminate recording by itself. Repeated warnings indicate Jetson CPU or I/O
 contention; keep RGB-D collection at 10 FPS, use H.264, close Rerun when it is
 not needed, and avoid running other CPU-heavy jobs during collection. The B601
 RGB-D script also defaults `PARALLEL_VIDEO_ENCODING=false`, so the three camera
 videos are encoded one at a time between episodes instead of starting three
-competing encoder processes. This can make the reset interval longer, but does
-not change the dataset schema, frames, or SmolVLA compatibility. A
+competing encoder processes. It also exports
+`LEROBOT_VIDEO_ENCODING_THREADS=1`; without this limit, libx264 selected seven
+threads on the tested Orin NX and briefly starved both MotorBridge streams.
+PNG writing during active capture is moved from eight threads in the control
+process to one subprocess with one thread per camera. The corresponding script
+defaults are `IMAGE_WRITER_PROCESSES=1` and
+`IMAGE_WRITER_THREADS_PER_CAMERA=1`.
+These limits can make the reset interval longer, but do not change the dataset
+schema, frames, or SmolVLA compatibility. A
 `command stream gap is ...` error means the stream is still late at the time of
 the health check and remains a hard stop. A latched serial-send, repeated-gap,
 DM status, or missing-feedback fault also remains a hard stop.
@@ -412,22 +582,92 @@ script's user settings block.
 
 An intermittent failure has been observed on Jetson Orin NX during this RGB-D
 collection workload. At an episode boundary, both MotorBridge command streams
-can be delayed long enough to trip the hard safety limit. One captured failure
-reported approximately 0.62-0.64 s gaps on the follower and leader streams,
-exceeding the 0.50 s hard recovered-gap limit. Stopping the failed process and
-restarting it with the same dataset root and `--resume=true` successfully
-continued from the missing episode and completed the remaining collection.
+can be delayed by dataset mapping and H.264 encoding. One run showed recovered
+follower/leader gaps of 0.145/0.190 s while libx264 selected seven threads. Both
+streams had already returned to roughly 1 ms age and the motors had not
+disabled, but the previous 0.10 s hard threshold remained latched and was only
+reported by `_mark_episode_start_pose()` at the next episode. The separate hard
+threshold is now 0.50 s and each H.264 encoder defaults to one thread on the
+Jetson collection script.
 
-The current working hypothesis is transient Jetson system load, I/O contention,
-USB power/bus pressure, thermal throttling, or platform power/current throttling
-while running two Orbbec streams, EnhancedDepthFilter, image writing, H.264
-encoding, and two 100 Hz MotorBridge streams. This is not yet a confirmed root
-cause. In the captured failure there was no DM `0xA (OVER_CURRENT)`, voltage,
-temperature, or communication fault status. Simultaneous gaps on both
-`/dev/ttyACM0` and `/dev/ttyACM1` point more strongly to a shared host-side
-stall than to one arm motor entering over-current protection. Jetson platform
-over-current and arm-drive over-current are separate conditions and must be
-diagnosed from their respective logs and power rails.
+A different captured failure reported approximately 0.62-0.64 s gaps. Those
+still exceed the 0.50 s hard threshold and remain fatal. Stopping the failed
+process and restarting it with the same dataset root and `--resume=true`
+successfully continued from the missing episode and completed the remaining
+collection.
+
+Another run disabled `joint_2` through `gripper` during active recording while
+the current stream age was about 1.3 ms and the effective rate was about 476 Hz.
+The reported 60.5 ms maximum was cumulative and may have been the warning seen
+while the leader connected roughly 37 seconds earlier. `joint_1` was polled
+first and can retain a just-before-event cached `ENABLED` state when a shared
+disable happens between sequential reads. No normal recording path calls
+`disable_all()`. Check that only the recording process owns `/dev/ttyACM0`, then
+inspect the follower 24 V rail, E-stop, MotorBridge USB/firmware, and arm power
+and CAN connections. The added gap-age diagnostics distinguish a recent host
+stall from an older, unrelated maximum on the next reproduction.
+
+A later reproduction disabled `joint_2` through `gripper` about 27 seconds
+into an episode while the follower sender was healthy: current stream age was
+about 2 ms, effective rate about 482 Hz, and the latest 97 ms warning was from
+startup 27 seconds earlier. The last feedback included `joint_2=-127.68 deg`
+and `joint_3=-8.01 deg`, a low-shoulder, nearly straight-elbow posture that can
+create a high-load or near-singular arm configuration. This correlation does
+not prove that pose or current draw caused the shared disable, because a 24 V
+drop, bridge reset, E-stop event, or firmware rule can also return only
+`DISABLED` after the original reason has disappeared.
+
+The follower has a configurable coupled-pose guard for testing that envelope.
+A subsequent reproduction showed the same shared disable at moderate software
+targets: `joint_2=-54.19 deg` and `joint_3=-45.04 deg`, with a current stream
+age of about 1-2 ms. This disproves the captured pose as a sufficient root
+cause, so the guard is now disabled by default. When explicitly enabled, it
+holds the current arm pose, marks the episode for discard, and uses the existing
+episode-start recovery. Its thresholds are empirical values, not manufacturer
+hard limits. Verify them at low speed with the arm supported and adjust
+`--follower-safety-coupled-joint-2-min-deg` and
+`--follower-safety-coupled-joint-3-max-deg` only after checking the required
+workspace. The next MotorBridge fault report also includes
+`target_positions_deg`, which shows whether software was commanding the
+captured pose when the drives disabled.
+
+Both moderate-pose reproductions occurred roughly 3-4 seconds after the
+follower detected gripper contact and changed from 1.0 Nm closing torque to
+the Seeed-style contact hold. That timing is a correlation, not proof that the
+gripper controller issued a disable: the normal recording path still does not
+call `disable_all()`, and Seeed's reference hold also uses position feedback
+plus bounded feedforward torque. Before another full RGB-D run, isolate the
+load using the all-motor gripper monitor with the arm mechanically supported
+and a soft expendable object between the jaws:
+
+```shell
+python examples/rebot_b601_smolvla_record/debug_follower_gripper_command.py \
+  --port /dev/ttyACM0 \
+  --target 10 \
+  --duration-s 15 \
+  --max-torque 0.8 \
+  --close-torque 0.5 \
+  --hold-kp 2.0 \
+  --hold-kd 0.5 \
+  --hold-torque 0.12
+```
+
+The script now polls all seven status codes throughout contact hold. If several
+motors become `0x0` here without cameras or dataset writing, investigate the
+follower 24 V supply/current limit, gripper wiring or mechanical stall,
+MotorBridge firmware, E-stop chain, and arm power/CAN harness before recording
+again. If this 15-second test survives, repeat it with the original
+`--close-torque 1.0 --hold-kp 5.0 --hold-kd 1.0 --hold-torque 0.30` to determine
+whether the disable follows load level.
+
+The remaining hypotheses include follower power/current limitation, a
+gripper-correlated load or wiring event, MotorBridge/E-stop/firmware behavior,
+and Jetson I/O or power pressure under the full RGB-D workload. None is yet a
+confirmed root cause. The newest active-recording failure had no recent sender
+gap and no preserved DM `0xA (OVER_CURRENT)`, voltage, temperature, or
+communication fault status. A power or bridge reset can return only `DISABLED`
+after erasing the preceding reason, so Jetson telemetry and the follower 24 V
+rail must be measured separately.
 
 Use the following operational workaround:
 
@@ -448,9 +688,10 @@ Use the following operational workaround:
 
 ```shell
 bash examples/rebot_b601_smolvla_record/record_b601_smolvla_rgbd.sh \
-  --num-episodes 3 \
+  --num-episodes 1 \
   --fps 10 \
   --parallel-video-encoding false \
+  --video-encoding-threads 1 \
   --extra --resume=true
 ```
 
@@ -528,18 +769,24 @@ For collection, the recording script uses conservative follower defaults:
 ```text
 FOLLOWER_MAX_RELATIVE_TARGET=12.0
 FOLLOWER_GRIPPER_MAX_RELATIVE_TARGET=30.0
+FOLLOWER_GRIPPER_CONTROL_MODE="torque_limited_close"
+FOLLOWER_GRIPPER_MAX_TORQUE=1.5
+FOLLOWER_GRIPPER_CLOSE_TORQUE=1.0
+FOLLOWER_GRIPPER_CONTACT_HOLD_TORQUE=0.30
 FOLLOWER_DISABLE_TORQUE_ON_DISCONNECT=false
 FOLLOWER_COMMAND_STREAM_ENABLED=true
-FOLLOWER_COMMAND_STREAM_HZ=100
+FOLLOWER_COMMAND_STREAM_HZ=500
 FOLLOWER_COMMAND_STREAM_MAX_FAILURES=5
-FOLLOWER_COMMAND_STREAM_MAX_GAP_S=0.25
+FOLLOWER_COMMAND_STREAM_MAX_GAP_S=0.05
+FOLLOWER_COMMAND_STREAM_HARD_GAP_S=0.5
 FOLLOWER_ABORT_ON_MOTOR_FAULT_STATUS=true
 FOLLOWER_MOTOR_FEEDBACK_MAX_MISSES=3
 FOLLOWER_RUNTIME_ERROR_HOLD_S=15
 LEADER_COMMAND_STREAM_ENABLED=true
-LEADER_COMMAND_STREAM_HZ=100
+LEADER_COMMAND_STREAM_HZ=500
 LEADER_COMMAND_STREAM_MAX_FAILURES=5
-LEADER_COMMAND_STREAM_MAX_GAP_S=0.25
+LEADER_COMMAND_STREAM_MAX_GAP_S=0.05
+LEADER_COMMAND_STREAM_HARD_GAP_S=0.5
 LEADER_ABORT_ON_MOTOR_FAULT_STATUS=true
 LEADER_MOTOR_FEEDBACK_MAX_MISSES=3
 FOLLOWER_SAFETY_HOLD_ON_RELATIVE_CLAMP=true
@@ -682,24 +929,24 @@ the follower gripper directly before changing teleoperation parameters:
 
 ```shell
 python examples/rebot_b601_smolvla_record/debug_follower_gripper_command.py \
-  --port /dev/ttyACM1 \
-  --target -80 \
-  --min-pos -90 \
-  --max-pos 5
+  --port /dev/ttyACM0 \
+  --target -320 \
+  --min-pos -330 \
+  --max-pos 10
 
 python examples/rebot_b601_smolvla_record/debug_follower_gripper_command.py \
-  --port /dev/ttyACM1 \
-  --target 0 \
-  --min-pos -90 \
-  --max-pos 5
+  --port /dev/ttyACM0 \
+  --target 10 \
+  --min-pos -330 \
+  --max-pos 10
 ```
 
 If the direct command reaches the desired physical open/close range, expose the
 same range during teleoperation:
 
 ```shell
---robot.gripper_min_pos=-90 \
---robot.gripper_max_pos=5
+--robot.gripper_min_pos=-330 \
+--robot.gripper_max_pos=10
 ```
 
 ## Record

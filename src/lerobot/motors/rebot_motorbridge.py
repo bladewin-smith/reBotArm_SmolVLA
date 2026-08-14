@@ -68,14 +68,25 @@ class RebotMotorbridgeBus:
         self._mit_stream_stop = threading.Event()
         self._mit_stream_thread: threading.Thread | None = None
         self._mit_stream_commands: dict[str, tuple[float, float, float, float, float]] = {}
+        self._mit_stream_commands_updated_s: float | None = None
         self._mit_stream_hz = 0.0
-        self._mit_stream_max_gap_s = 0.25
+        self._mit_stream_max_gap_s = 0.05
+        self._mit_stream_hard_gap_s = 0.5
         self._mit_stream_max_failures = 5
         self._mit_stream_consecutive_failures = 0
         self._mit_stream_consecutive_gap_violations = 0
         self._mit_stream_error: Exception | None = None
         self._mit_stream_fault: Exception | None = None
         self._mit_stream_last_send_s: float | None = None
+        self._mit_stream_started_s: float | None = None
+        self._mit_stream_total_sends = 0
+        self._mit_stream_last_send_duration_s = 0.0
+        self._mit_stream_max_send_duration_s = 0.0
+        self._mit_stream_max_send_duration_at_s: float | None = None
+        self._mit_stream_max_completed_gap_s = 0.0
+        self._mit_stream_max_completed_gap_at_s: float | None = None
+        self._mit_stream_last_gap_violation_s: float | None = None
+        self._mit_stream_last_gap_violation_duration_s = 0.0
         self._last_motor_status_codes = {name: 0 for name in self.motors}
         self._feedback_miss_counts = {name: 0 for name in self.motors}
         self._last_known_states: dict[str, dict[str, float]] = {
@@ -272,25 +283,7 @@ class RebotMotorbridgeBus:
         previous_status = self._last_motor_status_codes[motor_name]
         self._last_motor_status_codes[motor_name] = status_code
         self._last_known_states[motor_name]["status_code"] = float(status_code)
-        if status_code not in DM_NORMAL_STATUS_CODES:
-            if status_code != previous_status:
-                logger.error(
-                    "Motorbridge feedback fault for %s: status_code=0x%X (%s). "
-                    "Keeping the last valid state; do not automatically re-enable the motor.",
-                    motor_name,
-                    status_code,
-                    DM_STATUS_NAMES.get(status_code, "UNKNOWN"),
-                )
-            return
-        if status_code != previous_status:
-            log = logger.warning if status_code == 0x0 and previous_status == 0x1 else logger.info
-            log(
-                "Motorbridge motor %s changed state: status_code=0x%X (%s).",
-                motor_name,
-                status_code,
-                DM_STATUS_NAMES[status_code],
-            )
-        self._last_known_states[motor_name] = {
+        feedback_snapshot = {
             "position": math.degrees(float(getattr(state, "pos", 0.0))),
             "velocity": math.degrees(float(getattr(state, "vel", 0.0))),
             "torque": float(getattr(state, "torq", 0.0)),
@@ -298,6 +291,40 @@ class RebotMotorbridgeBus:
             "temp_rotor": float(getattr(state, "t_rotor", getattr(state, "temp_rotor", 0.0))),
             "status_code": float(status_code),
         }
+        if status_code not in DM_NORMAL_STATUS_CODES:
+            if status_code != previous_status:
+                logger.error(
+                    "Motorbridge feedback fault for %s: status_code=0x%X (%s). "
+                    "Fault-frame feedback: pos=%.2f deg, vel=%.2f deg/s, torque=%.2f, "
+                    "MOS=%.1f C, rotor=%.1f C. Keeping the last valid state; "
+                    "do not automatically re-enable the motor.",
+                    motor_name,
+                    status_code,
+                    DM_STATUS_NAMES.get(status_code, "UNKNOWN"),
+                    feedback_snapshot["position"],
+                    feedback_snapshot["velocity"],
+                    feedback_snapshot["torque"],
+                    feedback_snapshot["temp_mos"],
+                    feedback_snapshot["temp_rotor"],
+                )
+            return
+        if status_code != previous_status:
+            log = logger.warning if status_code == 0x0 and previous_status == 0x1 else logger.info
+            log(
+                "Motorbridge motor %s changed state: status_code=0x%X (%s); "
+                "pos=%.2f deg, vel=%.2f deg/s, torque=%.2f, MOS=%.1f C, rotor=%.1f C; "
+                "MIT stream=%s.",
+                motor_name,
+                status_code,
+                DM_STATUS_NAMES[status_code],
+                feedback_snapshot["position"],
+                feedback_snapshot["velocity"],
+                feedback_snapshot["torque"],
+                feedback_snapshot["temp_mos"],
+                feedback_snapshot["temp_rotor"],
+                self.mit_command_stream_diagnostics(),
+            )
+        self._last_known_states[motor_name] = feedback_snapshot
 
     def motor_status_codes(self) -> dict[str, int]:
         return self._last_motor_status_codes.copy()
@@ -326,14 +353,23 @@ class RebotMotorbridgeBus:
             if unknown_motors:
                 raise ValueError(f"Unknown motors required to be enabled: {unknown_motors}")
             disabled_motors = {
-                motor_name: "0x0 (DISABLED)"
+                motor_name: (
+                    "0x0 (DISABLED), "
+                    f"pos={self._last_known_states[motor_name]['position']:.2f} deg, "
+                    f"vel={self._last_known_states[motor_name]['velocity']:.2f} deg/s, "
+                    f"torque={self._last_known_states[motor_name]['torque']:.2f}, "
+                    f"MOS={self._last_known_states[motor_name]['temp_mos']:.1f} C, "
+                    f"rotor={self._last_known_states[motor_name]['temp_rotor']:.1f} C"
+                )
                 for motor_name in required_motors
                 if self._last_motor_status_codes[motor_name] == 0x0
             }
             if disabled_motors:
                 raise RuntimeError(
                     "Motorbridge motors unexpectedly disabled during active control "
-                    f"{disabled_motors}. Support the arm; automatic re-enable is disabled."
+                    f"{disabled_motors}. MIT stream diagnostics: "
+                    f"{self.mit_command_stream_diagnostics()}. Support the arm; "
+                    "automatic re-enable is disabled."
                 )
         missing_feedback = {
             motor_name: miss_count
@@ -385,6 +421,7 @@ class RebotMotorbridgeBus:
                 self._mit_stream_commands.update(normalized_commands)
             else:
                 self._mit_stream_commands = normalized_commands.copy()
+            self._mit_stream_commands_updated_s = time.monotonic()
         if not self.mit_command_stream_active:
             self._send_mit_commands(normalized_commands)
 
@@ -411,13 +448,61 @@ class RebotMotorbridgeBus:
     def mit_command_stream_last_send_s(self) -> float | None:
         return self._mit_stream_last_send_s
 
+    def mit_command_stream_diagnostics(self) -> dict[str, Any]:
+        with self._mit_stream_lock:
+            now_s = time.monotonic()
+            last_send_s = self._mit_stream_last_send_s
+            started_s = self._mit_stream_started_s
+            commands_updated_s = self._mit_stream_commands_updated_s
+            max_send_at_s = self._mit_stream_max_send_duration_at_s
+            max_gap_at_s = self._mit_stream_max_completed_gap_at_s
+            last_gap_violation_s = self._mit_stream_last_gap_violation_s
+            target_positions_deg = {
+                motor_name: command[2]
+                for motor_name, command in self._mit_stream_commands.items()
+            }
+            elapsed_s = None if started_s is None else max(0.0, now_s - started_s)
+            return {
+                "active": self.mit_command_stream_active,
+                "configured_hz": self._mit_stream_hz,
+                "warning_gap_ms": 1000.0 * self._mit_stream_max_gap_s,
+                "hard_gap_ms": 1000.0 * self._mit_stream_hard_gap_s,
+                "total_sends": self._mit_stream_total_sends,
+                "effective_hz": (
+                    None
+                    if elapsed_s is None or elapsed_s <= 0
+                    else self._mit_stream_total_sends / elapsed_s
+                ),
+                "age_ms": None if last_send_s is None else 1000.0 * (now_s - last_send_s),
+                "last_send_duration_ms": 1000.0 * self._mit_stream_last_send_duration_s,
+                "max_send_duration_ms": 1000.0 * self._mit_stream_max_send_duration_s,
+                "max_send_duration_ago_ms": (
+                    None if max_send_at_s is None else 1000.0 * (now_s - max_send_at_s)
+                ),
+                "max_completed_gap_ms": 1000.0 * self._mit_stream_max_completed_gap_s,
+                "max_completed_gap_ago_ms": (
+                    None if max_gap_at_s is None else 1000.0 * (now_s - max_gap_at_s)
+                ),
+                "last_gap_violation_ms": 1000.0 * self._mit_stream_last_gap_violation_duration_s,
+                "last_gap_violation_ago_ms": (
+                    None if last_gap_violation_s is None else 1000.0 * (now_s - last_gap_violation_s)
+                ),
+                "command_update_age_ms": (
+                    None if commands_updated_s is None else 1000.0 * (now_s - commands_updated_s)
+                ),
+                "target_positions_deg": target_positions_deg,
+                "consecutive_failures": self._mit_stream_consecutive_failures,
+                "consecutive_gap_violations": self._mit_stream_consecutive_gap_violations,
+            }
+
     def start_mit_command_stream(
         self,
         commands: dict[str, tuple[float, float, float, float, float]],
         *,
-        hz: float = 100.0,
+        hz: float = 500.0,
         max_consecutive_failures: int = 5,
-        max_gap_s: float = 0.25,
+        max_gap_s: float = 0.05,
+        hard_gap_s: float = 0.5,
     ) -> None:
         if not self.is_connected:
             raise DeviceNotConnectedError(f"{self} is not connected.")
@@ -427,6 +512,8 @@ class RebotMotorbridgeBus:
             raise ValueError("MIT command stream max_consecutive_failures must be at least 1.")
         if not math.isfinite(max_gap_s) or max_gap_s <= 0:
             raise ValueError("MIT command stream max_gap_s must be positive and finite.")
+        if not math.isfinite(hard_gap_s) or hard_gap_s < max_gap_s:
+            raise ValueError("MIT command stream hard_gap_s must be finite and at least max_gap_s.")
 
         self.stop_mit_command_stream()
         normalized_commands = {
@@ -435,19 +522,31 @@ class RebotMotorbridgeBus:
         }
         with self._mit_stream_lock:
             self._mit_stream_commands = normalized_commands.copy()
+            self._mit_stream_commands_updated_s = time.monotonic()
             self._mit_stream_hz = float(hz)
             self._mit_stream_max_gap_s = float(max_gap_s)
+            self._mit_stream_hard_gap_s = float(hard_gap_s)
             self._mit_stream_max_failures = int(max_consecutive_failures)
             self._mit_stream_consecutive_failures = 0
             self._mit_stream_consecutive_gap_violations = 0
             self._mit_stream_error = None
             self._mit_stream_fault = None
             self._mit_stream_last_send_s = None
+            self._mit_stream_started_s = None
+            self._mit_stream_total_sends = 0
+            self._mit_stream_last_send_duration_s = 0.0
+            self._mit_stream_max_send_duration_s = 0.0
+            self._mit_stream_max_send_duration_at_s = None
+            self._mit_stream_max_completed_gap_s = 0.0
+            self._mit_stream_max_completed_gap_at_s = None
+            self._mit_stream_last_gap_violation_s = None
+            self._mit_stream_last_gap_violation_duration_s = 0.0
 
         # Prime the motors before returning so the stream always starts from a
         # valid hold target instead of a default zero position.
         self._send_mit_commands(normalized_commands)
         self._mit_stream_last_send_s = time.monotonic()
+        self._mit_stream_started_s = self._mit_stream_last_send_s
         self._mit_stream_stop.clear()
         self._mit_stream_thread = threading.Thread(
             target=self._mit_command_stream_loop,
@@ -465,19 +564,34 @@ class RebotMotorbridgeBus:
                 commands = self._mit_stream_commands.copy()
                 last_send_s = self._mit_stream_last_send_s
                 max_gap_s = self._mit_stream_max_gap_s
+                hard_gap_s = self._mit_stream_hard_gap_s
             try:
                 if commands:
+                    send_started_s = time.monotonic()
                     self._send_mit_commands(commands)
                     completed_send_s = time.monotonic()
+                    send_duration_s = completed_send_s - send_started_s
                     completed_gap_s = None if last_send_s is None else completed_send_s - last_send_s
                     with self._mit_stream_lock:
                         self._mit_stream_last_send_s = completed_send_s
+                        self._mit_stream_total_sends += 1
+                        self._mit_stream_last_send_duration_s = send_duration_s
+                        if send_duration_s > self._mit_stream_max_send_duration_s:
+                            self._mit_stream_max_send_duration_s = send_duration_s
+                            self._mit_stream_max_send_duration_at_s = completed_send_s
+                        if (
+                            completed_gap_s is not None
+                            and completed_gap_s > self._mit_stream_max_completed_gap_s
+                        ):
+                            self._mit_stream_max_completed_gap_s = completed_gap_s
+                            self._mit_stream_max_completed_gap_at_s = completed_send_s
                         self._mit_stream_consecutive_failures = 0
                         self._mit_stream_error = None
                         if completed_gap_s is not None and completed_gap_s > max_gap_s:
+                            self._mit_stream_last_gap_violation_s = completed_send_s
+                            self._mit_stream_last_gap_violation_duration_s = completed_gap_s
                             self._mit_stream_consecutive_gap_violations += 1
                             gap_violations = self._mit_stream_consecutive_gap_violations
-                            hard_gap_s = max_gap_s * 2.0
                             if completed_gap_s >= hard_gap_s and self._mit_stream_fault is None:
                                 self._mit_stream_fault = RuntimeError(
                                     f"single completed-send gap was {completed_gap_s:.3f}s, exceeding "
@@ -547,9 +661,15 @@ class RebotMotorbridgeBus:
             max_failures = self._mit_stream_max_failures
             last_send_s = self._mit_stream_last_send_s
         if fault is not None:
-            raise RuntimeError(f"Motorbridge MIT command stream latched a safety fault: {fault}")
+            raise RuntimeError(
+                "Motorbridge MIT command stream latched a safety fault: "
+                f"{fault}. Diagnostics: {self.mit_command_stream_diagnostics()}"
+            )
         if failures >= max_failures:
-            raise RuntimeError(f"Motorbridge MIT command stream failed {failures} consecutive times: {error}")
+            raise RuntimeError(
+                f"Motorbridge MIT command stream failed {failures} consecutive times: {error}. "
+                f"Diagnostics: {self.mit_command_stream_diagnostics()}"
+            )
         if max_gap_s is not None:
             if not math.isfinite(max_gap_s) or max_gap_s <= 0:
                 raise ValueError("MIT command stream max_gap_s must be positive and finite.")
@@ -558,7 +678,8 @@ class RebotMotorbridgeBus:
             gap_s = time.monotonic() - last_send_s
             if gap_s > max_gap_s:
                 raise RuntimeError(
-                    f"Motorbridge MIT command stream gap is {gap_s:.3f}s, exceeding {max_gap_s:.3f}s."
+                    f"Motorbridge MIT command stream gap is {gap_s:.3f}s, exceeding {max_gap_s:.3f}s. "
+                    f"Diagnostics: {self.mit_command_stream_diagnostics()}"
                 )
 
     def stop_mit_command_stream(self) -> None:
@@ -569,10 +690,21 @@ class RebotMotorbridgeBus:
         self._mit_stream_thread = None
         with self._mit_stream_lock:
             self._mit_stream_commands = {}
+            self._mit_stream_commands_updated_s = None
             self._mit_stream_hz = 0.0
-            self._mit_stream_max_gap_s = 0.25
+            self._mit_stream_max_gap_s = 0.05
+            self._mit_stream_hard_gap_s = 0.5
             self._mit_stream_consecutive_failures = 0
             self._mit_stream_consecutive_gap_violations = 0
             self._mit_stream_error = None
             self._mit_stream_fault = None
             self._mit_stream_last_send_s = None
+            self._mit_stream_started_s = None
+            self._mit_stream_total_sends = 0
+            self._mit_stream_last_send_duration_s = 0.0
+            self._mit_stream_max_send_duration_s = 0.0
+            self._mit_stream_max_send_duration_at_s = None
+            self._mit_stream_max_completed_gap_s = 0.0
+            self._mit_stream_max_completed_gap_at_s = None
+            self._mit_stream_last_gap_violation_s = None
+            self._mit_stream_last_gap_violation_duration_s = 0.0

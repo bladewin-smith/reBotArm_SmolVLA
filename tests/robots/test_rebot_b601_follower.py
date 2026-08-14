@@ -48,6 +48,74 @@ def test_safety_hold_freezes_arm_but_not_gripper(follower: RebotB601Follower) ->
     assert commands["gripper"][2] == -60.0
 
 
+def test_coupled_pose_guard_holds_before_low_shoulder_straight_elbow_pose(
+    follower: RebotB601Follower,
+) -> None:
+    follower.config.max_relative_target = None
+    follower._last_observation_states = _states(
+        {joint: 0.0 for joint in follower.bus.motors}
+        | {"joint_2": -105.0, "joint_3": -20.0}
+    )
+
+    sent_action = follower.send_action(
+        {"joint_2.pos": -115.0, "joint_3.pos": -10.0, "gripper.pos": -310.0}
+    )
+
+    assert follower.safety_fault_active
+    assert sent_action["joint_2.pos"] == -105.0
+    assert sent_action["joint_3.pos"] == -20.0
+    assert sent_action["gripper.pos"] == -320.0
+    commands = follower.bus.sync_write_mit.call_args.args[0]
+    assert commands["joint_2"][2] == -105.0
+    assert commands["joint_3"][2] == -20.0
+
+
+def test_coupled_pose_guard_allows_low_shoulder_with_bent_elbow(
+    follower: RebotB601Follower,
+) -> None:
+    follower.config.max_relative_target = None
+    follower._last_observation_states = _states({joint: 0.0 for joint in follower.bus.motors})
+
+    sent_action = follower.send_action({"joint_2.pos": -115.0, "joint_3.pos": -30.0})
+
+    assert not follower.safety_fault_active
+    assert sent_action == {"joint_2.pos": -115.0, "joint_3.pos": -30.0}
+
+
+def test_gripper_closes_with_bounded_feedforward_torque(follower: RebotB601Follower) -> None:
+    follower._last_observation_states = _states({"gripper": -100.0})
+
+    sent_action = follower.send_action({"gripper.pos": 5.0})
+
+    assert sent_action["gripper.pos"] == -40.0
+    command = follower.bus.sync_write_mit.call_args.args[0]["gripper"]
+    assert command == (0.0, 0.5, -40.0, 0.0, 1.0)
+
+
+def test_gripper_contact_switches_to_bounded_hold_and_releases_on_open(
+    follower: RebotB601Follower,
+) -> None:
+    follower.config.gripper_contact_detection_delay_s = 0.0
+    follower.config.gripper_contact_detection_samples = 2
+    follower._last_observation_states = {
+        "gripper": {"position": -100.0, "velocity": 0.0, "torque": 0.5}
+    }
+
+    follower.send_action({"gripper.pos": 5.0})
+    held_action = follower.send_action({"gripper.pos": 5.0})
+
+    assert held_action["gripper.pos"] == -100.0
+    hold_command = follower.bus.sync_write_mit.call_args.args[0]["gripper"]
+    assert hold_command == (5.0, 1.0, -100.0, 0.0, 0.3)
+
+    released_action = follower.send_action({"gripper.pos": -310.0})
+
+    assert follower._gripper_contact_hold_pos is None
+    assert released_action["gripper.pos"] == -160.0
+    release_command = follower.bus.sync_write_mit.call_args.args[0]["gripper"]
+    assert release_command == (35.0, 0.8, -160.0, 0.0, 0.0)
+
+
 def test_recover_to_episode_start_pose_uses_bounded_steps(follower: RebotB601Follower) -> None:
     positions = {joint: 0.0 for joint in follower.bus.motors}
     follower._episode_start_pos = positions | {"joint_1": 2.0}

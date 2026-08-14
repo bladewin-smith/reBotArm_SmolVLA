@@ -16,8 +16,9 @@ def main() -> None:
     parser.add_argument("--id", default="b601_follower_stream_test")
     parser.add_argument("--duration-s", type=float, default=20.0)
     parser.add_argument("--stall-s", type=float, default=5.0)
-    parser.add_argument("--stream-hz", type=float, default=100.0)
-    parser.add_argument("--max-gap-s", type=float, default=0.25)
+    parser.add_argument("--stream-hz", type=float, default=500.0)
+    parser.add_argument("--max-gap-s", type=float, default=0.05)
+    parser.add_argument("--hard-gap-s", type=float, default=0.5)
     parser.add_argument("--max-feedback-misses", type=int, default=3)
     args = parser.parse_args()
 
@@ -34,6 +35,7 @@ def main() -> None:
             command_stream_enabled=True,
             command_stream_hz=args.stream_hz,
             command_stream_max_gap_s=args.max_gap_s,
+            command_stream_hard_gap_s=args.hard_gap_s,
             motor_feedback_max_consecutive_misses=args.max_feedback_misses,
             disable_torque_on_disconnect=True,
         )
@@ -70,7 +72,8 @@ def main() -> None:
             )
             print(
                 f"stall survived: {time.monotonic() - stall_start_s:.2f}s, "
-                f"max pose drift={max_drift:.2f} deg, stream age={stream_age_ms:.1f} ms"
+                f"max pose drift={max_drift:.2f} deg, stream age={stream_age_ms:.1f} ms, "
+                f"stream diagnostics={robot.bus.mit_command_stream_diagnostics()}"
             )
     except KeyboardInterrupt:
         print("\nCommand-stream test interrupted.")

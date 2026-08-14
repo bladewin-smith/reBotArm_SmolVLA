@@ -50,9 +50,10 @@ class RebotB601FollowerConfigBase:
     can_data_bitrate: int = 5000000
     disable_torque_on_disconnect: bool = True
     command_stream_enabled: bool = True
-    command_stream_hz: float = 100.0
+    command_stream_hz: float = 500.0
     command_stream_max_consecutive_failures: int = 5
-    command_stream_max_gap_s: float = 0.25
+    command_stream_max_gap_s: float = 0.05
+    command_stream_hard_gap_s: float = 0.5
     abort_on_motor_fault_status: bool = True
     motor_feedback_max_consecutive_misses: int = 3
     runtime_error_hold_s: float = 15.0
@@ -66,6 +67,12 @@ class RebotB601FollowerConfigBase:
     safety_hold_joints: list[str] = field(
         default_factory=lambda: ["joint_1", "joint_2", "joint_3", "joint_4", "joint_5", "joint_6"]
     )
+    # Avoid the high-load, near-straight posture observed immediately before a
+    # shared follower disable: shoulder joint_2 low while elbow joint_3 is
+    # almost straight. These thresholds are expressed in calibrated degrees.
+    safety_coupled_pose_guard_enabled: bool = False
+    safety_coupled_joint_2_min_deg: float = -110.0
+    safety_coupled_joint_3_max_deg: float = -15.0
     safety_abort_episode_on_hold: bool = True
     safety_auto_recover_to_episode_start: bool = True
     safety_recovery_joints: list[str] = field(
@@ -90,6 +97,22 @@ class RebotB601FollowerConfigBase:
     gripper_max_pos: float | None = 10.0
     gripper_position_kp: float | None = 35.0
     gripper_position_kd: float | None = 0.8
+    # Seeed's working grasp driver closes the DM gripper with bounded MIT
+    # feedforward torque, then switches to a lower holding torque on contact.
+    # Keep ``position`` available for comparison and hardware diagnosis.
+    gripper_control_mode: str = "torque_limited_close"
+    gripper_max_torque: float = 1.5
+    gripper_close_torque: float = 1.0
+    gripper_close_kd: float = 0.5
+    gripper_contact_min_closing_error_deg: float = 8.0
+    gripper_contact_max_velocity_deg_s: float = 3.0
+    gripper_contact_min_torque: float = 0.0
+    gripper_contact_detection_delay_s: float = 0.25
+    gripper_contact_detection_samples: int = 3
+    gripper_contact_hold_kp: float = 5.0
+    gripper_contact_hold_kd: float = 1.0
+    gripper_contact_hold_torque: float = 0.30
+    gripper_contact_release_hysteresis_deg: float = 8.0
     cameras: dict[str, CameraConfig] = field(default_factory=dict)
 
     motor_config: dict[str, tuple[int, int, str]] = field(default_factory=lambda: DEFAULT_MOTOR_CONFIG.copy())

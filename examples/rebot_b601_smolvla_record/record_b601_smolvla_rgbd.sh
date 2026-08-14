@@ -13,10 +13,10 @@ REPO_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
 
 # Local dataset folder to create/write. Example:
 # DATASET_ROOT="/home/r/datasets/rebot_b601_banana_bottle_rgbd"
-DATASET_ROOT="/home/r/ws/rebot_lerobot/datasets/rebot_b601_banana_bottle_rgbd_2"
+DATASET_ROOT="/home/r/ws/rebot_lerobot/datasets/rebot_b601_banana_bottle_rgbd_3"
 
 # Dataset id stored in metadata. Keep this identical when training locally.
-DATASET_REPO_ID="${HF_USER:-local}/rebot_b601_banana_bottle_rgbd_2"
+DATASET_REPO_ID="${HF_USER:-local}/rebot_b601_banana_bottle_rgbd_3"
 
 # reBot B601 motorbridge ports verified by the teleoperation setup.
 FOLLOWER_PORT="/dev/ttyACM0"
@@ -26,21 +26,44 @@ LEADER_PORT="/dev/ttyACM1"
 # until the leader/follower pose mapping has been verified across the whole task.
 FOLLOWER_MAX_RELATIVE_TARGET=12.0
 FOLLOWER_GRIPPER_MAX_RELATIVE_TARGET=30.0
+# Seeed-style follower gripper close control: bounded feedforward torque while
+# closing, followed by a lower holding torque when contact/stall is detected.
+FOLLOWER_GRIPPER_CONTROL_MODE="torque_limited_close"
+FOLLOWER_GRIPPER_MAX_TORQUE=1.5
+FOLLOWER_GRIPPER_CLOSE_TORQUE=1.0
+FOLLOWER_GRIPPER_CLOSE_KD=0.5
+FOLLOWER_GRIPPER_CONTACT_MIN_ERROR_DEG=8.0
+FOLLOWER_GRIPPER_CONTACT_MAX_VELOCITY_DEG_S=3.0
+FOLLOWER_GRIPPER_CONTACT_MIN_TORQUE=0.0
+FOLLOWER_GRIPPER_CONTACT_DETECTION_DELAY_S=0.25
+FOLLOWER_GRIPPER_CONTACT_DETECTION_SAMPLES=3
+FOLLOWER_GRIPPER_CONTACT_HOLD_KP=5.0
+FOLLOWER_GRIPPER_CONTACT_HOLD_KD=1.0
+FOLLOWER_GRIPPER_CONTACT_HOLD_TORQUE=0.30
+FOLLOWER_GRIPPER_CONTACT_RELEASE_HYSTERESIS_DEG=8.0
 FOLLOWER_DISABLE_TORQUE_ON_DISCONNECT=false
 FOLLOWER_COMMAND_STREAM_ENABLED=true
-FOLLOWER_COMMAND_STREAM_HZ=100
+FOLLOWER_COMMAND_STREAM_HZ=500
 FOLLOWER_COMMAND_STREAM_MAX_FAILURES=5
-FOLLOWER_COMMAND_STREAM_MAX_GAP_S=0.25
+FOLLOWER_COMMAND_STREAM_MAX_GAP_S=0.05
+FOLLOWER_COMMAND_STREAM_HARD_GAP_S=0.5
 FOLLOWER_ABORT_ON_MOTOR_FAULT_STATUS=true
 FOLLOWER_MOTOR_FEEDBACK_MAX_MISSES=3
 FOLLOWER_RUNTIME_ERROR_HOLD_S=15
 LEADER_COMMAND_STREAM_ENABLED=true
-LEADER_COMMAND_STREAM_HZ=100
+LEADER_COMMAND_STREAM_HZ=500
 LEADER_COMMAND_STREAM_MAX_FAILURES=5
-LEADER_COMMAND_STREAM_MAX_GAP_S=0.25
+LEADER_COMMAND_STREAM_MAX_GAP_S=0.05
+LEADER_COMMAND_STREAM_HARD_GAP_S=0.5
 LEADER_ABORT_ON_MOTOR_FAULT_STATUS=true
 LEADER_MOTOR_FEEDBACK_MAX_MISSES=3
 FOLLOWER_SAFETY_HOLD_ON_RELATIVE_CLAMP=true
+# Optional empirical joint_2/joint_3 envelope guard. A later reproduction
+# disabled in a different, moderate pose, so this is off by default and must
+# not be treated as the root-cause fix for the shared disable.
+FOLLOWER_SAFETY_COUPLED_POSE_GUARD=false
+FOLLOWER_SAFETY_COUPLED_JOINT_2_MIN_DEG=-110
+FOLLOWER_SAFETY_COUPLED_JOINT_3_MAX_DEG=-15
 FOLLOWER_SAFETY_ABORT_EPISODE_ON_HOLD=true
 FOLLOWER_SAFETY_AUTO_RECOVER_TO_EPISODE_START=true
 FOLLOWER_SAFETY_RECOVERY_STEP_DEG=1.5
@@ -68,9 +91,9 @@ LINGBOT_MODEL="/home/r/ws/model.sm4"
 # Camera and recording timing.
 WIDTH=640
 HEIGHT=480
-FPS=15
-NUM_EPISODES=12
-EPISODE_TIME_S=210
+FPS=10
+NUM_EPISODES=20
+EPISODE_TIME_S=300
 RESET_TIME_S=45
 
 # Task prompt saved in every frame.
@@ -81,8 +104,15 @@ PUSH_TO_HUB=false
 DISPLAY_DATA=false
 VCODEC="h264"
 # Serialize the three camera video encoders so they do not compete with the
-# 100 Hz leader/follower command streams on Jetson Orin NX.
+# 500 Hz leader/follower command streams on Jetson Orin NX.
 PARALLEL_VIDEO_ENCODING=false
+# libx264 otherwise selects seven worker threads on Orin NX and can briefly
+# starve the motor command threads at every episode boundary.
+VIDEO_ENCODING_THREADS=1
+# Keep PIL/PNG work outside the control process. With zero processes, the
+# previous default created eight Python writer threads for two cameras.
+IMAGE_WRITER_PROCESSES=1
+IMAGE_WRITER_THREADS_PER_CAMERA=1
 
 # Top camera depth visualization range for observation.images.top_depth.
 TOP_DEPTH_MIN_MM=250
@@ -122,16 +152,26 @@ Optional command line overrides:
                               Max follower joint step per control frame. Default: 12.0
   --follower-gripper-max-relative-target N
                               Max follower gripper step per control frame. Default: 30.0
+  --follower-gripper-control-mode position|torque_limited_close
+                              Follower gripper close controller. Default: torque_limited_close.
+  --follower-gripper-max-torque N
+                              Hard software cap for close/hold torque. Default: 1.5 Nm.
+  --follower-gripper-close-torque N
+                              Bounded closing feedforward torque in Nm. Default: 1.0.
+  --follower-gripper-hold-torque N
+                              Contact holding feedforward torque in Nm. Default: 0.30.
   --follower-disable-torque-on-disconnect true|false
                               Whether to disable follower torque when the script exits. Default: false.
   --follower-command-stream-enabled true|false
                               Keep sending the latest MIT target independently of camera I/O. Default: true.
   --follower-command-stream-hz N
-                              Follower MIT command refresh frequency. Default: 100.
+                              Follower MIT command refresh frequency. Default: 500 (Seeed DM SDK rate).
   --follower-command-stream-max-failures N
                               Consecutive stream failures before collection aborts. Default: 5.
   --follower-command-stream-max-gap-s N
-                              Abort if no complete MIT refresh occurs for this many seconds. Default: 0.25.
+                              Warn/check if no complete MIT refresh occurs for this many seconds. Default: 0.05.
+  --follower-command-stream-hard-gap-s N
+                              Latch one recovered command-stream gap at this duration. Default: 0.5.
   --follower-abort-on-motor-fault-status true|false
                               Abort on DM drive faults or unexpected disable during control. Default: true.
   --follower-motor-feedback-max-misses N
@@ -140,17 +180,25 @@ Optional command line overrides:
                               Hold the last healthy pose this long after a recording exception. Default: 15.
   --leader-command-stream-enabled true|false
                               Keep leader gravity-comp MIT commands alive independently. Default: true.
-  --leader-command-stream-hz N Leader MIT command refresh frequency. Default: 100.
+  --leader-command-stream-hz N Leader MIT command refresh frequency. Default: 500.
   --leader-command-stream-max-failures N
                               Consecutive leader stream failures before aborting. Default: 5.
   --leader-command-stream-max-gap-s N
-                              Maximum leader MIT refresh gap. Default: 0.25.
+                              Leader MIT refresh warning/check threshold. Default: 0.05.
+  --leader-command-stream-hard-gap-s N
+                              Latch one recovered leader stream gap at this duration. Default: 0.5.
   --leader-abort-on-motor-fault-status true|false
                               Abort collection on a persistent leader DM fault. Default: true.
   --leader-motor-feedback-max-misses N
                               Consecutive missing leader feedback samples before aborting. Default: 3.
   --follower-safety-abort-episode true|false
                               Abort and discard the current episode after safety hold. Default: true.
+  --follower-safety-coupled-pose-guard true|false
+                              Guard the configured joint_2/joint_3 envelope. Default: false.
+  --follower-safety-coupled-joint-2-min-deg N
+                              Guard when joint_2 is at or below this value. Default: -110.
+  --follower-safety-coupled-joint-3-max-deg N
+                              Guard when joint_3 is at or above this value at the same time. Default: -15.
   --follower-safety-auto-recover true|false
                               Recover follower arm joints to the episode start pose after safety hold. Default: true.
   --follower-safety-recovery-step-deg N
@@ -182,6 +230,10 @@ Optional command line overrides:
   --display-data true|false   Show Rerun visualization. Default: false
   --parallel-video-encoding true|false
                               Encode camera videos concurrently. Default: false on Jetson.
+  --video-encoding-threads N Limit each video encoder to this many CPU threads. Default: 1 on Jetson.
+  --image-writer-processes N Move PNG writing into this many subprocesses. Default: 1.
+  --image-writer-threads-per-camera N
+                              PNG writer threads per camera in each process. Default: 1.
   --top-depth-align-mode sw|hw Depth-to-color alignment mode. Default: sw.
   --top-warmup-s N            Top Orbbec warmup seconds. Default: 25.
   --top-timeout-ms N          Top Orbbec first-frame timeout. Default: 25000.
@@ -204,11 +256,16 @@ while [[ $# -gt 0 ]]; do
     --leader-port) LEADER_PORT="$2"; shift 2 ;;
     --follower-max-relative-target) FOLLOWER_MAX_RELATIVE_TARGET="$2"; shift 2 ;;
     --follower-gripper-max-relative-target) FOLLOWER_GRIPPER_MAX_RELATIVE_TARGET="$2"; shift 2 ;;
+    --follower-gripper-control-mode) FOLLOWER_GRIPPER_CONTROL_MODE="$2"; shift 2 ;;
+    --follower-gripper-max-torque) FOLLOWER_GRIPPER_MAX_TORQUE="$2"; shift 2 ;;
+    --follower-gripper-close-torque) FOLLOWER_GRIPPER_CLOSE_TORQUE="$2"; shift 2 ;;
+    --follower-gripper-hold-torque) FOLLOWER_GRIPPER_CONTACT_HOLD_TORQUE="$2"; shift 2 ;;
     --follower-disable-torque-on-disconnect) FOLLOWER_DISABLE_TORQUE_ON_DISCONNECT="$2"; shift 2 ;;
     --follower-command-stream-enabled) FOLLOWER_COMMAND_STREAM_ENABLED="$2"; shift 2 ;;
     --follower-command-stream-hz) FOLLOWER_COMMAND_STREAM_HZ="$2"; shift 2 ;;
     --follower-command-stream-max-failures) FOLLOWER_COMMAND_STREAM_MAX_FAILURES="$2"; shift 2 ;;
     --follower-command-stream-max-gap-s) FOLLOWER_COMMAND_STREAM_MAX_GAP_S="$2"; shift 2 ;;
+    --follower-command-stream-hard-gap-s) FOLLOWER_COMMAND_STREAM_HARD_GAP_S="$2"; shift 2 ;;
     --follower-abort-on-motor-fault-status) FOLLOWER_ABORT_ON_MOTOR_FAULT_STATUS="$2"; shift 2 ;;
     --follower-motor-feedback-max-misses) FOLLOWER_MOTOR_FEEDBACK_MAX_MISSES="$2"; shift 2 ;;
     --follower-runtime-error-hold-s) FOLLOWER_RUNTIME_ERROR_HOLD_S="$2"; shift 2 ;;
@@ -216,9 +273,13 @@ while [[ $# -gt 0 ]]; do
     --leader-command-stream-hz) LEADER_COMMAND_STREAM_HZ="$2"; shift 2 ;;
     --leader-command-stream-max-failures) LEADER_COMMAND_STREAM_MAX_FAILURES="$2"; shift 2 ;;
     --leader-command-stream-max-gap-s) LEADER_COMMAND_STREAM_MAX_GAP_S="$2"; shift 2 ;;
+    --leader-command-stream-hard-gap-s) LEADER_COMMAND_STREAM_HARD_GAP_S="$2"; shift 2 ;;
     --leader-abort-on-motor-fault-status) LEADER_ABORT_ON_MOTOR_FAULT_STATUS="$2"; shift 2 ;;
     --leader-motor-feedback-max-misses) LEADER_MOTOR_FEEDBACK_MAX_MISSES="$2"; shift 2 ;;
     --follower-safety-hold-on-relative-clamp) FOLLOWER_SAFETY_HOLD_ON_RELATIVE_CLAMP="$2"; shift 2 ;;
+    --follower-safety-coupled-pose-guard) FOLLOWER_SAFETY_COUPLED_POSE_GUARD="$2"; shift 2 ;;
+    --follower-safety-coupled-joint-2-min-deg) FOLLOWER_SAFETY_COUPLED_JOINT_2_MIN_DEG="$2"; shift 2 ;;
+    --follower-safety-coupled-joint-3-max-deg) FOLLOWER_SAFETY_COUPLED_JOINT_3_MAX_DEG="$2"; shift 2 ;;
     --follower-safety-abort-episode) FOLLOWER_SAFETY_ABORT_EPISODE_ON_HOLD="$2"; shift 2 ;;
     --follower-safety-auto-recover) FOLLOWER_SAFETY_AUTO_RECOVER_TO_EPISODE_START="$2"; shift 2 ;;
     --follower-safety-recovery-step-deg) FOLLOWER_SAFETY_RECOVERY_STEP_DEG="$2"; shift 2 ;;
@@ -243,6 +304,9 @@ while [[ $# -gt 0 ]]; do
     --push-to-hub) PUSH_TO_HUB="$2"; shift 2 ;;
     --display-data) DISPLAY_DATA="$2"; shift 2 ;;
     --parallel-video-encoding) PARALLEL_VIDEO_ENCODING="$2"; shift 2 ;;
+    --video-encoding-threads) VIDEO_ENCODING_THREADS="$2"; shift 2 ;;
+    --image-writer-processes) IMAGE_WRITER_PROCESSES="$2"; shift 2 ;;
+    --image-writer-threads-per-camera) IMAGE_WRITER_THREADS_PER_CAMERA="$2"; shift 2 ;;
     --vcodec) VCODEC="$2"; shift 2 ;;
     --top-depth-min-mm) TOP_DEPTH_MIN_MM="$2"; shift 2 ;;
     --top-depth-max-mm) TOP_DEPTH_MAX_MM="$2"; shift 2 ;;
@@ -302,6 +366,23 @@ if [[ ! -r "${LINGBOT_MODEL}" ]]; then
   exit 2
 fi
 
+if [[ ! "${VIDEO_ENCODING_THREADS}" =~ ^[1-9][0-9]*$ ]]; then
+  echo "Error: VIDEO_ENCODING_THREADS must be a positive integer: ${VIDEO_ENCODING_THREADS}" >&2
+  exit 2
+fi
+
+if [[ ! "${IMAGE_WRITER_PROCESSES}" =~ ^[1-9][0-9]*$ ]]; then
+  echo "Error: IMAGE_WRITER_PROCESSES must be a positive integer: ${IMAGE_WRITER_PROCESSES}" >&2
+  exit 2
+fi
+
+if [[ ! "${IMAGE_WRITER_THREADS_PER_CAMERA}" =~ ^[1-9][0-9]*$ ]]; then
+  echo "Error: IMAGE_WRITER_THREADS_PER_CAMERA must be a positive integer: ${IMAGE_WRITER_THREADS_PER_CAMERA}" >&2
+  exit 2
+fi
+
+export LEROBOT_VIDEO_ENCODING_THREADS="${VIDEO_ENCODING_THREADS}"
+
 CAMERAS_CONFIG=$(cat <<EOF
 {
   wrist: {
@@ -356,6 +437,9 @@ echo "  leader       : ${LEADER_PORT}"
 echo "  top serial   : ${TOP_SERIAL}"
 echo "  wrist serial : ${WRIST_SERIAL}"
 echo "  FPS          : ${FPS}"
+echo "  video threads: ${VIDEO_ENCODING_THREADS}"
+echo "  image writer : ${IMAGE_WRITER_PROCESSES} process(es), ${IMAGE_WRITER_THREADS_PER_CAMERA} thread(s)/camera"
+echo "  pose guard   : ${FOLLOWER_SAFETY_COUPLED_POSE_GUARD} (joint_2<=${FOLLOWER_SAFETY_COUPLED_JOINT_2_MIN_DEG}, joint_3>=${FOLLOWER_SAFETY_COUPLED_JOINT_3_MAX_DEG})"
 echo
 
 cd "${REPO_ROOT}"
@@ -367,15 +451,32 @@ lerobot-record \
   --robot.id=b601_follower \
   --robot.max_relative_target="${FOLLOWER_MAX_RELATIVE_TARGET}" \
   --robot.gripper_max_relative_target="${FOLLOWER_GRIPPER_MAX_RELATIVE_TARGET}" \
+  --robot.gripper_control_mode="${FOLLOWER_GRIPPER_CONTROL_MODE}" \
+  --robot.gripper_max_torque="${FOLLOWER_GRIPPER_MAX_TORQUE}" \
+  --robot.gripper_close_torque="${FOLLOWER_GRIPPER_CLOSE_TORQUE}" \
+  --robot.gripper_close_kd="${FOLLOWER_GRIPPER_CLOSE_KD}" \
+  --robot.gripper_contact_min_closing_error_deg="${FOLLOWER_GRIPPER_CONTACT_MIN_ERROR_DEG}" \
+  --robot.gripper_contact_max_velocity_deg_s="${FOLLOWER_GRIPPER_CONTACT_MAX_VELOCITY_DEG_S}" \
+  --robot.gripper_contact_min_torque="${FOLLOWER_GRIPPER_CONTACT_MIN_TORQUE}" \
+  --robot.gripper_contact_detection_delay_s="${FOLLOWER_GRIPPER_CONTACT_DETECTION_DELAY_S}" \
+  --robot.gripper_contact_detection_samples="${FOLLOWER_GRIPPER_CONTACT_DETECTION_SAMPLES}" \
+  --robot.gripper_contact_hold_kp="${FOLLOWER_GRIPPER_CONTACT_HOLD_KP}" \
+  --robot.gripper_contact_hold_kd="${FOLLOWER_GRIPPER_CONTACT_HOLD_KD}" \
+  --robot.gripper_contact_hold_torque="${FOLLOWER_GRIPPER_CONTACT_HOLD_TORQUE}" \
+  --robot.gripper_contact_release_hysteresis_deg="${FOLLOWER_GRIPPER_CONTACT_RELEASE_HYSTERESIS_DEG}" \
   --robot.disable_torque_on_disconnect="${FOLLOWER_DISABLE_TORQUE_ON_DISCONNECT}" \
   --robot.command_stream_enabled="${FOLLOWER_COMMAND_STREAM_ENABLED}" \
   --robot.command_stream_hz="${FOLLOWER_COMMAND_STREAM_HZ}" \
   --robot.command_stream_max_consecutive_failures="${FOLLOWER_COMMAND_STREAM_MAX_FAILURES}" \
   --robot.command_stream_max_gap_s="${FOLLOWER_COMMAND_STREAM_MAX_GAP_S}" \
+  --robot.command_stream_hard_gap_s="${FOLLOWER_COMMAND_STREAM_HARD_GAP_S}" \
   --robot.abort_on_motor_fault_status="${FOLLOWER_ABORT_ON_MOTOR_FAULT_STATUS}" \
   --robot.motor_feedback_max_consecutive_misses="${FOLLOWER_MOTOR_FEEDBACK_MAX_MISSES}" \
   --robot.runtime_error_hold_s="${FOLLOWER_RUNTIME_ERROR_HOLD_S}" \
   --robot.safety_hold_on_relative_clamp="${FOLLOWER_SAFETY_HOLD_ON_RELATIVE_CLAMP}" \
+  --robot.safety_coupled_pose_guard_enabled="${FOLLOWER_SAFETY_COUPLED_POSE_GUARD}" \
+  --robot.safety_coupled_joint_2_min_deg="${FOLLOWER_SAFETY_COUPLED_JOINT_2_MIN_DEG}" \
+  --robot.safety_coupled_joint_3_max_deg="${FOLLOWER_SAFETY_COUPLED_JOINT_3_MAX_DEG}" \
   --robot.safety_abort_episode_on_hold="${FOLLOWER_SAFETY_ABORT_EPISODE_ON_HOLD}" \
   --robot.safety_auto_recover_to_episode_start="${FOLLOWER_SAFETY_AUTO_RECOVER_TO_EPISODE_START}" \
   --robot.safety_recovery_step_deg="${FOLLOWER_SAFETY_RECOVERY_STEP_DEG}" \
@@ -396,6 +497,7 @@ lerobot-record \
   --teleop.command_stream_hz="${LEADER_COMMAND_STREAM_HZ}" \
   --teleop.command_stream_max_consecutive_failures="${LEADER_COMMAND_STREAM_MAX_FAILURES}" \
   --teleop.command_stream_max_gap_s="${LEADER_COMMAND_STREAM_MAX_GAP_S}" \
+  --teleop.command_stream_hard_gap_s="${LEADER_COMMAND_STREAM_HARD_GAP_S}" \
   --teleop.abort_on_motor_fault_status="${LEADER_ABORT_ON_MOTOR_FAULT_STATUS}" \
   --teleop.motor_feedback_max_consecutive_misses="${LEADER_MOTOR_FEEDBACK_MAX_MISSES}" \
   --dataset.repo_id="${DATASET_REPO_ID}" \
@@ -407,6 +509,9 @@ lerobot-record \
   --dataset.single_task="${TASK}" \
   --dataset.vcodec="${VCODEC}" \
   --dataset.parallel_video_encoding="${PARALLEL_VIDEO_ENCODING}" \
+  --dataset.num_image_writer_processes="${IMAGE_WRITER_PROCESSES}" \
+  --dataset.num_image_writer_threads_per_camera="${IMAGE_WRITER_THREADS_PER_CAMERA}" \
   --dataset.push_to_hub="${PUSH_TO_HUB}" \
   --display_data="${DISPLAY_DATA}" \
   "${EXTRA_ARGS[@]}"
+

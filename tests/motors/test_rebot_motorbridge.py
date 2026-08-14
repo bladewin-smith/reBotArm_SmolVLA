@@ -45,6 +45,18 @@ def test_mit_stream_repeats_latest_target_while_main_thread_waits(bus: RebotMoto
 
     assert sent_targets.count(1.0) >= 2
     assert sent_targets.count(8.0) >= 2
+    diagnostics = bus.mit_command_stream_diagnostics()
+    assert diagnostics["active"]
+    assert diagnostics["configured_hz"] == 200.0
+    assert diagnostics["warning_gap_ms"] == 50.0
+    assert diagnostics["hard_gap_ms"] == 500.0
+    assert diagnostics["total_sends"] >= 2
+    assert diagnostics["effective_hz"] > 0
+    assert diagnostics["max_completed_gap_ms"] > 0
+    assert diagnostics["max_completed_gap_ago_ms"] is not None
+    assert diagnostics["max_send_duration_ago_ms"] is not None
+    assert diagnostics["command_update_age_ms"] is not None
+    assert diagnostics["target_positions_deg"] == {"joint_1": 8.0}
 
 
 def test_mit_stream_latches_consecutive_send_failure(bus: RebotMotorbridgeBus) -> None:
@@ -122,6 +134,7 @@ def test_mit_stream_latches_one_hard_completed_gap(bus: RebotMotorbridgeBus) -> 
         hz=200.0,
         max_consecutive_failures=5,
         max_gap_s=0.01,
+        hard_gap_s=0.02,
     )
     deadline = time.monotonic() + 0.2
     while bus._mit_stream_fault is None and time.monotonic() < deadline:
@@ -129,6 +142,15 @@ def test_mit_stream_latches_one_hard_completed_gap(bus: RebotMotorbridgeBus) -> 
 
     with pytest.raises(RuntimeError, match="single completed-send gap.*hard recovered-gap limit"):
         bus.check_mit_command_stream()
+
+
+def test_mit_stream_rejects_hard_gap_below_warning_gap(bus: RebotMotorbridgeBus) -> None:
+    with pytest.raises(ValueError, match="hard_gap_s must be finite and at least max_gap_s"):
+        bus.start_mit_command_stream(
+            {"joint_1": (10.0, 1.0, 1.0, 0.0, 0.0)},
+            max_gap_s=0.1,
+            hard_gap_s=0.05,
+        )
 
 
 def test_enabled_motor_status_updates_feedback(bus: RebotMotorbridgeBus) -> None:
@@ -142,15 +164,21 @@ def test_enabled_motor_status_updates_feedback(bus: RebotMotorbridgeBus) -> None
     bus.check_motor_status_codes(required_enabled_motors=["joint_1"])
 
 
-def test_disabled_status_is_valid_until_motor_is_required_enabled(bus: RebotMotorbridgeBus) -> None:
-    bus._update_state_cache(
-        "joint_1",
-        SimpleNamespace(pos=0.5, vel=0.1, torq=0.2, status_code=0),
-    )
+def test_disabled_status_is_valid_until_motor_is_required_enabled(
+    bus: RebotMotorbridgeBus, caplog: pytest.LogCaptureFixture
+) -> None:
+    with caplog.at_level(logging.WARNING):
+        bus._last_motor_status_codes["joint_1"] = 1
+        bus._update_state_cache(
+            "joint_1",
+            SimpleNamespace(pos=0.5, vel=0.1, torq=0.2, t_mos=42, t_rotor=43, status_code=0),
+        )
 
     bus.check_motor_status_codes()
-    with pytest.raises(RuntimeError, match="joint_1.*DISABLED"):
+    with pytest.raises(RuntimeError, match="joint_1.*DISABLED.*pos=28.65.*MOS=42.0"):
         bus.check_motor_status_codes(required_enabled_motors=["joint_1"])
+    assert "pos=28.65 deg" in caplog.text
+    assert "MOS=42.0 C" in caplog.text
 
 
 def test_fault_motor_status_keeps_last_valid_feedback(bus: RebotMotorbridgeBus) -> None:

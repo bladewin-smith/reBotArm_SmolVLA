@@ -16,6 +16,7 @@
 import glob
 import importlib
 import logging
+import os
 import shutil
 import subprocess
 import tempfile
@@ -372,6 +373,15 @@ def encode_video_frames(
     # Create and open output file (overwrite by default)
     with av.open(str(video_path), "w") as output:
         output_stream = output.add_stream(vcodec, fps, options=video_options)
+        encoding_threads_env = os.getenv("LEROBOT_VIDEO_ENCODING_THREADS")
+        if encoding_threads_env:
+            try:
+                encoding_threads = int(encoding_threads_env)
+            except ValueError as exc:
+                raise ValueError("LEROBOT_VIDEO_ENCODING_THREADS must be a positive integer.") from exc
+            if encoding_threads < 1:
+                raise ValueError("LEROBOT_VIDEO_ENCODING_THREADS must be a positive integer.")
+            output_stream.codec_context.thread_count = encoding_threads
         output_stream.pix_fmt = pix_fmt
         output_stream.width = width
         output_stream.height = height

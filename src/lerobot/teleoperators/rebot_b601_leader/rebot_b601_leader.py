@@ -173,6 +173,7 @@ class RebotB601Leader(Teleoperator):
                 hz=self.config.command_stream_hz,
                 max_consecutive_failures=self.config.command_stream_max_consecutive_failures,
                 max_gap_s=self.config.command_stream_max_gap_s,
+                hard_gap_s=self.config.command_stream_hard_gap_s,
             )
         except Exception:
             self.bus.disable_torque()
