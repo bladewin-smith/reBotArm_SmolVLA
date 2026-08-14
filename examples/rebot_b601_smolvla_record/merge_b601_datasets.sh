@@ -11,20 +11,22 @@ REPO_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
 # new local LeRobot dataset directory.
 
 # Output dataset directory and repo id for training.
-OUTPUT_ROOT="/home/r/ws/rebot_lerobot/datasets/rebot_b601_banana_bottle_rgbd_merged"
-OUTPUT_REPO_ID="${HF_USER:-local}/rebot_b601_banana_bottle_rgbd_merged"
+OUTPUT_ROOT="/media/r/系统/ws/rebot_lerobot/datasets/rebot_b601_banana_bottle_rgbd_merged"
+OUTPUT_REPO_ID="local/rebot_b601_banana_bottle_rgbd_merged"
 
 # Source dataset directories. Each directory must contain data/, meta/, videos/.
 SOURCE_ROOTS=(
-  "/home/r/ws/rebot_lerobot/datasets/rebot_b601_banana_bottle_rgbd_batch01"
-  "/home/r/ws/rebot_lerobot/datasets/rebot_b601_banana_bottle_rgbd_batch02"
+  "/home/r/ws/rebot_lerobot/datasets/rebot_b601_banana_bottle_rgbd_1_fps10"
+  "/home/r/ws/rebot_lerobot/datasets/rebot_b601_banana_bottle_rgbd_2"
+  "/home/r/ws/rebot_lerobot/datasets/rebot_b601_banana_bottle_rgbd_3"
 )
 
 # Source repo ids recorded into each dataset. These may be identical or unique,
 # but the list length must match SOURCE_ROOTS.
 SOURCE_REPO_IDS=(
-  "local/rebot_b601_banana_bottle_rgbd_batch01"
-  "local/rebot_b601_banana_bottle_rgbd_batch02"
+  "local/rebot_b601_banana_bottle_rgbd_1_fps10"
+  "local/rebot_b601_banana_bottle_rgbd_2"
+  "local/rebot_b601_banana_bottle_rgbd_3"
 )
 
 # Set true only after you have verified the merged local dataset.
@@ -50,6 +52,10 @@ Notes:
   All source datasets must have the same fps, robot_type, feature keys, shapes,
   video/image layout, and depth settings. Use this for batches collected with
   the same record_b601_smolvla_rgbd.sh visual/robot configuration.
+
+  If batches use different frame rates, first downsample the higher-FPS batch
+  with resample_b601_dataset.py. Do not only edit meta/info.json: that leaves
+  frame timestamps, actions, robot state, and videos inconsistent.
 EOF
 }
 
@@ -111,11 +117,15 @@ cd "${REPO_ROOT}"
 
 python - "$repo_ids_python" "$roots_python" "$OUTPUT_REPO_ID" "$OUTPUT_ROOT" "$PUSH_TO_HUB" <<'PY'
 import json
+import shlex
 import sys
 from pathlib import Path
 
+import datasets
+import pyarrow.parquet as pq
+
 from lerobot.datasets.aggregate import aggregate_datasets
-from lerobot.datasets.lerobot_dataset import LeRobotDataset
+from lerobot.datasets.lerobot_dataset import LeRobotDataset, LeRobotDatasetMetadata
 
 repo_ids = json.loads(sys.argv[1])
 roots = [Path(p) for p in json.loads(sys.argv[2])]
@@ -123,19 +133,94 @@ output_repo_id = sys.argv[3]
 output_root = Path(sys.argv[4])
 push_to_hub = sys.argv[5].lower() == "true"
 
-aggregate_datasets(
-    repo_ids=repo_ids,
-    roots=roots,
-    aggr_repo_id=output_repo_id,
-    aggr_root=output_root,
+metadata = [
+    LeRobotDatasetMetadata(repo_id, root=root)
+    for repo_id, root in zip(repo_ids, roots, strict=True)
+]
+print("Source metadata:")
+for index, (repo_id, root, meta) in enumerate(zip(repo_ids, roots, metadata, strict=True)):
+    print(
+        f"  [{index}] fps={meta.fps}, episodes={meta.total_episodes}, "
+        f"frames={meta.total_frames}: {repo_id} -> {root}"
+    )
+
+fps_values = {meta.fps for meta in metadata}
+if len(fps_values) != 1:
+    target_fps = min(fps_values)
+    print(
+        f"\nError: source FPS values differ: {sorted(fps_values)}. "
+        f"Downsample every source above {target_fps} FPS before merging.",
+        file=sys.stderr,
+    )
+    for repo_id, root, meta in zip(repo_ids, roots, metadata, strict=True):
+        if meta.fps == target_fps:
+            continue
+        suggested_root = root.with_name(f"{root.name}_fps{target_fps}")
+        suggested_repo_id = f"{repo_id}_fps{target_fps}"
+        command = [
+            "python",
+            "examples/rebot_b601_smolvla_record/resample_b601_dataset.py",
+            "--source-root",
+            str(root),
+            "--source-repo-id",
+            repo_id,
+            "--output-root",
+            str(suggested_root),
+            "--output-repo-id",
+            suggested_repo_id,
+            "--target-fps",
+            str(target_fps),
+        ]
+        print("\nSuggested command:", file=sys.stderr)
+        print("  " + " ".join(shlex.quote(part) for part in command), file=sys.stderr)
+        print(
+            f"After conversion, replace {root} / {repo_id} in SOURCE_ROOTS and "
+            f"SOURCE_REPO_IDS with {suggested_root} / {suggested_repo_id}.",
+            file=sys.stderr,
+        )
+    raise SystemExit(2)
+
+print()
+
+try:
+    aggregate_datasets(
+        repo_ids=repo_ids,
+        roots=roots,
+        aggr_repo_id=output_repo_id,
+        aggr_root=output_root,
+    )
+except Exception:
+    print(
+        f"\nMerge failed. Partial output was left at {output_root}; "
+        "move/delete that directory manually before retrying.",
+        file=sys.stderr,
+    )
+    raise
+
+merged_metadata = LeRobotDatasetMetadata(output_repo_id, root=output_root)
+print(
+    f"Merged dataset ready: episodes={merged_metadata.total_episodes}, "
+    f"frames={merged_metadata.total_frames}, fps={merged_metadata.fps}"
 )
 
-dataset = LeRobotDataset(output_repo_id, root=output_root)
-print(
-    f"Merged dataset ready: episodes={dataset.meta.total_episodes}, "
-    f"frames={dataset.meta.total_frames}, fps={dataset.fps}"
-)
+depth_keys = [
+    key
+    for key, feature in merged_metadata.features.items()
+    if feature["dtype"] == "uint16" and len(feature["shape"]) == 2
+]
+if depth_keys:
+    parquet_path = next((output_root / "data").rglob("*.parquet"))
+    parquet_features = datasets.Features.from_arrow_schema(pq.read_schema(parquet_path))
+    for depth_key in depth_keys:
+        depth_feature = parquet_features[depth_key]
+        if not isinstance(depth_feature, datasets.Array2D) or depth_feature.dtype != "uint16":
+            raise RuntimeError(
+                f"Merged depth schema is invalid for {depth_key}: {depth_feature}. "
+                "Expected Array2D(uint16)."
+            )
+        print(f"Verified depth schema: {depth_key} -> {depth_feature}")
 
 if push_to_hub:
+    dataset = LeRobotDataset(output_repo_id, root=output_root)
     dataset.push_to_hub()
 PY

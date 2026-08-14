@@ -17,10 +17,14 @@
 from unittest.mock import patch
 
 import datasets
+import numpy as np
+import pandas as pd
+import pyarrow.parquet as pq
 import torch
 
-from lerobot.datasets.aggregate import aggregate_datasets
+from lerobot.datasets.aggregate import aggregate_datasets, append_or_create_parquet_file
 from lerobot.datasets.lerobot_dataset import LeRobotDataset
+from lerobot.datasets.utils import DEFAULT_DATA_PATH, get_hf_features_from_features
 from tests.fixtures.constants import DUMMY_REPO_ID
 
 
@@ -32,6 +36,87 @@ def assert_episode_and_frame_counts(aggr_ds, expected_episodes, expected_frames)
     assert aggr_ds.num_frames == expected_frames, (
         f"Expected {expected_frames} frames, got {aggr_ds.num_frames}"
     )
+
+
+def test_append_parquet_preserves_uint16_array2d_without_images(tmp_path):
+    """Video datasets still need schema-aware parquet I/O for raw depth arrays."""
+    depth_key = "observation.depths.top"
+    features = datasets.Features(
+        {
+            depth_key: datasets.Array2D(shape=(2, 3), dtype="uint16"),
+            "index": datasets.Value("int64"),
+        }
+    )
+    source = datasets.Dataset.from_dict(
+        {
+            depth_key: [
+                np.arange(6, dtype=np.uint16).reshape(2, 3),
+                np.full((2, 3), 42, dtype=np.uint16),
+            ],
+            "index": [0, 1],
+        },
+        features=features,
+    )
+    src_path = tmp_path / "source.parquet"
+    source.to_parquet(src_path)
+
+    output_root = tmp_path / "merged"
+    idx, destination = append_or_create_parquet_file(
+        source.to_pandas(),
+        src_path,
+        {"chunk": 0, "file": 0},
+        max_mb=100,
+        chunk_size=1000,
+        default_path=DEFAULT_DATA_PATH,
+        contains_images=False,
+        aggr_root=output_root,
+        hf_features=features,
+    )
+
+    assert idx == {"chunk": 0, "file": 0}
+    assert destination == (0, 0)
+
+    idx, destination = append_or_create_parquet_file(
+        source.to_pandas(),
+        src_path,
+        idx,
+        max_mb=100,
+        chunk_size=1000,
+        default_path=DEFAULT_DATA_PATH,
+        contains_images=False,
+        aggr_root=output_root,
+        hf_features=features,
+    )
+
+    assert idx == {"chunk": 0, "file": 0}
+    assert destination == (0, 0)
+    output_path = output_root / DEFAULT_DATA_PATH.format(chunk_index=0, file_index=0)
+    merged = pd.read_parquet(output_path)
+    merged_features = datasets.Features.from_arrow_schema(pq.read_schema(output_path))
+    assert len(merged) == 4
+    assert isinstance(merged_features[depth_key], datasets.Array2D)
+    assert merged_features[depth_key].dtype == "uint16"
+    np.testing.assert_array_equal(
+        np.asarray(merged.iloc[0][depth_key], dtype=np.uint16),
+        np.arange(6, dtype=np.uint16).reshape(2, 3),
+    )
+
+
+def test_hf_features_accept_json_list_shapes():
+    features = get_hf_features_from_features(
+        {
+            "timestamp": {"dtype": "float32", "shape": [1], "names": None},
+            "observation.depths.top": {
+                "dtype": "uint16",
+                "shape": [2, 3],
+                "names": ["height", "width"],
+            },
+        }
+    )
+
+    assert isinstance(features["timestamp"], datasets.Value)
+    assert isinstance(features["observation.depths.top"], datasets.Array2D)
+    assert features["observation.depths.top"].shape == (2, 3)
 
 
 def assert_dataset_content_integrity(aggr_ds, ds_0, ds_1):

@@ -232,6 +232,7 @@ cameras or dataset writing. The tuned B601 defaults include:
 - follower gripper command range: `-330` to `10`
 - follower gripper gains: `kp=35.0`, `kd=0.8`
 - follower gripper close mode: torque-limited close at `1.0 Nm`, then contact hold at `0.30 Nm`
+- follower gripper contact detection: at least `17 deg` of closing travel before a stall can latch
 - leader gripper force assist: `kp=0`, `kd=0`, `open_bias_torque=0.09`, `torque_limit=0.15`
 
 ```shell
@@ -366,7 +367,8 @@ controller now follows Seeed's working `reBot-DevArm-Grasp` strategy:
 
 - opening and unloaded position moves still use the tuned position controller;
 - closing uses bounded MIT feedforward torque (`1.0 Nm`) with damping;
-- low velocity for three samples after the startup delay is treated as contact;
+- after at least `17 deg` of closing travel, low velocity for three samples
+  after the startup delay is treated as contact;
 - contact switches to `kp=5`, `kd=1`, and `0.30 Nm` holding torque;
 - an opening command releases contact hold;
 - close and hold torque cannot exceed the configured `1.5 Nm` software cap.
@@ -402,6 +404,18 @@ motor connector, MotorBridge connector, and 24 V rail. Do not increase torque
 to mask the fault. The Seeed defaults use `tau_max=1.5`, close torque `1.0`, and
 hold torque `0.30`; start below those values when the mechanism is unusually
 tight.
+
+An earlier contact detector could latch while the follower was still at its
+fully open endpoint: zero travel, zero velocity, and the configured zero
+minimum feedback-torque threshold satisfied its contact test. A subsequent
+closing command could not release that hold because release was defined only
+in the opening direction. The controller now mirrors Seeed's startup-distance
+guard and requires `gripper_contact_min_travel_deg=17.0` before contact can
+latch. `debug_follower_camera_load.py` prints leader, mapped, sent, and actual
+gripper positions plus `contact_hold` once per second. If the mechanism still
+does not move and `contact_hold=none`, repeat the test with
+`--gripper-control-mode position`; that distinguishes endpoint mapping from
+insufficient or reversed closing torque.
 
 The leader uses the same independent 500 Hz refresh for gravity compensation.
 Its gravity vector and gripper assist are updated from each new leader feedback
@@ -669,6 +683,43 @@ communication fault status. A power or bridge reset can return only `DISABLED`
 after erasing the preceding reason, so Jetson telemetry and the follower 24 V
 rail must be measured separately.
 
+The latest field isolation adds two higher-priority hardware possibilities.
+A two-minute static test held the follower while reading wrist RGB, top RGB,
+and EnhancedDepthFilter depth at 10 FPS. It completed 1200 observations with all
+seven motors continuously `0x1`, an effective MotorBridge rate of about 485 Hz,
+and a maximum completed command gap of 40.7 ms. Jetson telemetry showed no
+thermal, memory, or input-power overload, and no ACM/USB event occurred during
+the test. This makes the static camera and EnhancedDepthFilter workload alone
+an unlikely sufficient cause.
+
+Moving the two arm power supplies to separate independent power outlets/feeds
+then made the full program run noticeably longer than in earlier attempts. This
+does not prove a supply fault because the failure is intermittent, but it raises
+the priority of shared outlet or extension-strip contact resistance, voltage
+sag, supply current limiting, connector quality, and grounding. Keep the two
+arm supplies on known-good independent feeds during diagnosis and measure the
+follower 24 V input at the arm under simultaneous multi-joint motion. Jetson
+`tegrastats` reports Jetson module input power only; it cannot confirm that the
+arm's 24 V rail stayed healthy.
+
+Another high-risk possibility is follower data-cable pinching in a particular
+part of the workspace. Joint or base motion can compress, sharply bend, or pull
+the MotorBridge USB/serial cable or an arm CAN/data harness. A momentary link
+interruption can trigger a bridge/drive watchdog, leave several drives reporting
+only `DISABLED`, make the safety checks terminate recording, and allow an
+unsupported follower to fall. The absence of a host-side USB disconnect does
+not exclude a connector or downstream arm-harness interruption.
+
+Before the next powered motion test, move the arm through its intended workspace
+with power disabled and inspect the full cable route. Remove every pinch point,
+respect cable bend radius, add strain relief to fixed structure rather than a
+moving joint, leave enough service loop for the full range, and keep cables away
+from joint gaps and base edges. Replace suspect data cables with short,
+shielded, known-good cables and repeat the camera-loaded teleoperation test while
+capturing `dmesg`, `udevadm`, and MotorBridge status. Do not perform a powered
+"wiggle test" with an unsupported arm and do not automatically re-enable after
+a communication event.
+
 Use the following operational workaround:
 
 1. Keep both arms supported and the E-stop ready. Allow the safety exception to
@@ -682,7 +733,9 @@ Use the following operational workaround:
    10 FPS to leave more CPU, USB, and EnhancedDepthFilter headroom.
 4. Check Jetson cooling and input power. If USB power is suspected, test the
    cameras on a suitable externally powered USB 3 hub while preserving enough
-   bandwidth, and separately inspect the 24 V arm supply and MotorBridge links.
+   bandwidth. Power the two arms from known-good independent feeds, separately
+   inspect the follower 24 V rail and MotorBridge links, and verify that no data
+   or CAN cable is compressed or tensioned anywhere in the task workspace.
 5. Restart with the same root/repository id, `--resume=true`, and only the
    remaining number of episodes. For example:
 
@@ -1087,6 +1140,86 @@ Before running it, edit `SOURCE_ROOTS`, `SOURCE_REPO_IDS`, `OUTPUT_ROOT`, and
 `OUTPUT_REPO_ID` in the script. Use the merged `OUTPUT_ROOT` and
 `OUTPUT_REPO_ID` when training.
 
+### Resolve mixed-FPS batches
+
+`aggregate_datasets` requires every source to use exactly the same FPS. If the
+merge preflight reports values such as `15` and `10`, keep the 10 FPS batches
+unchanged and convert each 15 FPS batch to a new 10 FPS dataset. Do not change
+only `meta/info.json`: doing so does not resample timestamps or videos and can
+misalign images, depth, robot state, and actions.
+
+Example:
+
+```shell
+python examples/rebot_b601_smolvla_record/resample_b601_dataset.py \
+  --source-root /home/r/ws/rebot_lerobot/datasets/rebot_b601_banana_bottle_rgbd_1 \
+  --source-repo-id local/rebot_b601_banana_bottle_rgbd_1 \
+  --output-root /home/r/ws/rebot_lerobot/datasets/rebot_b601_banana_bottle_rgbd_1_fps10 \
+  --output-repo-id local/rebot_b601_banana_bottle_rgbd_1_fps10 \
+  --target-fps 10
+```
+
+The converter uses the same nearest source-frame index for wrist RGB, top RGB,
+enhanced top depth, raw depth, joint state, and action data. It does not modify
+the source dataset and refuses to overwrite an existing output directory. On
+Jetson, lower `--decode-batch-size` from its default of 16 if memory is tight.
+Torchvision/PyAV returns decoded video as channel-first float tensors, while
+recorded B601 metadata uses channel-last image shapes; the converter restores
+the metadata layout before writing. It also safely casts Hugging Face's loaded
+`int64` depth arrays back to the declared `uint16` millimeter representation.
+On Jetson, FFmpeg may report that no accelerated `yuv420p` to `rgb24`
+conversion is available. This is a nonfatal CPU-fallback notice; the converter
+hides it by default. Pass `--show-ffmpeg-warnings` only when diagnosing the
+decoder itself.
+After conversion, replace the corresponding entries in `SOURCE_ROOTS` and
+`SOURCE_REPO_IDS` with the new `_fps10` dataset, then run the merge script
+again. The merge preflight prints every source's FPS, episode count, and frame
+count before it creates the output dataset.
+
+### Resolve `ArrowTypeError` for `observation.depths.top`
+
+If an older checkout fails during `Copy data and videos` with
+`Conversion failed for column observation.depths.top with type array[uint16]`,
+update this repository before retrying. The B601 dataset stores RGB streams as
+videos but stores raw top depth as a Hugging Face `Array2D(uint16)` parquet
+column. The merge implementation must therefore use the complete dataset schema
+even when there are no image-encoded columns in parquet.
+
+A failed merge leaves an incomplete `OUTPUT_ROOT`. Move it aside for inspection
+or remove it after confirming the path, then rerun the same merge command. The
+source datasets are read-only during this operation and do not need to be
+resampled again.
+
+The merge reader uses direct parquet I/O for video-backed datasets with raw
+depth. Do not replace it with `Dataset.from_parquet()` merely to preserve the
+depth type: that API materializes duplicate Arrow files under
+`~/.cache/huggingface/datasets` for every input parquet and can fill Jetson's
+root partition. The destination writer restores `Array2D(uint16)` from the
+explicit feature schema without that read cache. The final local verification
+also inspects parquet metadata without loading the complete merged dataset.
+
+### Resolve `No space left on device` during merge
+
+Older merge code may print repeated `Generating train split` messages and fill
+`~/.cache/huggingface/datasets` before the first source finishes. Stop the merge,
+confirm no Python/LeRobot process is using the cache, and remove that regenerable
+Datasets cache. Also remove or move the incomplete merge `OUTPUT_ROOT` before
+retrying. Do not delete the parent `~/.cache/huggingface` directory because it
+may also contain Hub model weights and other application state.
+
+Before retrying, verify that the output path is on the intended external mount:
+
+```shell
+findmnt -T "/media/r/系统"
+df -hT / "/media/r/系统"
+```
+
+If `findmnt` reports `/` instead of the external filesystem, mount the disk
+before merging; otherwise the output itself will consume Jetson's root storage.
+With the cache-free reader, normal progress can still include
+`Creating parquet from Arrow format`, but it should not repeatedly create a
+cached train split for every source parquet.
+
 ## Train SmolVLA
 
 Recommended script:
@@ -1161,6 +1294,42 @@ not valid, recording stops instead of falling back to raw depth.
 If the LingBot-Depth license has already been written into the camera, leave
 `enhanced_depth_license_check_command` unset. OrbbecSDK reads and validates the
 device license when the C++ bridge creates and runs `EnhancedDepthFilter`.
+
+The device license check also depends on the Jetson wall clock. A cold boot
+without working RTC backup or network time synchronization can leave the system
+at `1970-01-01`. In that state OrbbecSDK can report:
+
+```text
+lic_license_verify_from_memory failed: 2003 (License not yet valid)
+```
+
+This message means that the official device-stored license validation was
+executed, but the current system time is earlier than the license validity
+window. It is not a missing-camera-frame, USB bandwidth, or robot power fault.
+No episode is added when this happens during camera connection. Check and repair
+time before retrying:
+
+```shell
+date -Is
+timedatectl status
+sudo timedatectl set-timezone Asia/Shanghai
+sudo timedatectl set-ntp true
+```
+
+Wait until `date -Is` shows the correct current date and time. If the Jetson is
+offline, temporarily disable NTP and set the actual current local time manually:
+
+```shell
+sudo timedatectl set-ntp false
+sudo timedatectl set-time "YYYY-MM-DD HH:MM:SS"
+date -Is
+```
+
+For reliable offline collection, configure a reachable local NTP source or the
+carrier board's supported RTC backup. Verify time after every cold boot. The
+recording shell script and Python Orbbec camera now reject dates before
+2024-01-01 before connecting the bridge, so this failure is reported directly
+instead of appearing later as repeated frame-read errors.
 
 If your SDK release also provides an external LicenseTool and you want an
 extra preflight check before starting the bridge, configure

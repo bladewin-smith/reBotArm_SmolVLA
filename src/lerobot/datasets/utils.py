@@ -585,24 +585,27 @@ def get_hf_features_from_features(features: dict) -> datasets.Features:
     """
     hf_features = {}
     for key, ft in features.items():
+        # Shapes loaded from info.json are lists, while in-memory feature
+        # definitions generally use tuples. Normalize them before dispatching.
+        shape = tuple(ft["shape"])
         if ft["dtype"] == "video":
             continue
         elif ft["dtype"] == "image":
             hf_features[key] = datasets.Image()
-        elif ft["shape"] == (1,):
+        elif shape == (1,):
             hf_features[key] = datasets.Value(dtype=ft["dtype"])
-        elif len(ft["shape"]) == 1:
+        elif len(shape) == 1:
             hf_features[key] = datasets.Sequence(
-                length=ft["shape"][0], feature=datasets.Value(dtype=ft["dtype"])
+                length=shape[0], feature=datasets.Value(dtype=ft["dtype"])
             )
-        elif len(ft["shape"]) == 2:
-            hf_features[key] = datasets.Array2D(shape=ft["shape"], dtype=ft["dtype"])
-        elif len(ft["shape"]) == 3:
-            hf_features[key] = datasets.Array3D(shape=ft["shape"], dtype=ft["dtype"])
-        elif len(ft["shape"]) == 4:
-            hf_features[key] = datasets.Array4D(shape=ft["shape"], dtype=ft["dtype"])
-        elif len(ft["shape"]) == 5:
-            hf_features[key] = datasets.Array5D(shape=ft["shape"], dtype=ft["dtype"])
+        elif len(shape) == 2:
+            hf_features[key] = datasets.Array2D(shape=shape, dtype=ft["dtype"])
+        elif len(shape) == 3:
+            hf_features[key] = datasets.Array3D(shape=shape, dtype=ft["dtype"])
+        elif len(shape) == 4:
+            hf_features[key] = datasets.Array4D(shape=shape, dtype=ft["dtype"])
+        elif len(shape) == 5:
+            hf_features[key] = datasets.Array5D(shape=shape, dtype=ft["dtype"])
         else:
             raise ValueError(f"Corresponding feature is not valid: {ft}")
 
@@ -1239,14 +1242,15 @@ def validate_episode_buffer(episode_buffer: dict, total_episodes: int, features:
 def to_parquet_with_hf_images(
     df: pandas.DataFrame, path: Path, features: datasets.Features | None = None
 ) -> None:
-    """This function correctly writes to parquet a panda DataFrame that contains images encoded by HF dataset.
-    This way, it can be loaded by HF dataset and correctly formatted images are returned.
+    """Write a DataFrame while preserving Hugging Face extension features.
+
+    This covers encoded images as well as multidimensional numeric features such
+    as ``Array2D(uint16)`` depth maps.
 
     Args:
         df: DataFrame to write to parquet.
         path: Path to write the parquet file.
-        features: Optional HuggingFace Features schema. If provided, ensures image columns
-                  are properly typed as Image() in the parquet schema.
+        features: Optional Hugging Face schema used to preserve extension column types.
     """
     # TODO(qlhoest): replace this weird synthax by `df.to_parquet(path)` only
     ds = datasets.Dataset.from_dict(df.to_dict(orient="list"), features=features)

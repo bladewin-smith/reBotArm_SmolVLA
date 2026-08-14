@@ -455,8 +455,10 @@ def aggregate_data(src_meta, dst_meta, data_idx, data_files_size_in_mb, chunk_si
     unique_chunk_file_ids = sorted(unique_chunk_file_ids)
     contains_images = len(dst_meta.image_keys) > 0
 
-    # retrieve features schema for proper image typing in parquet
-    hf_features = get_hf_features_from_features(dst_meta.features) if contains_images else None
+    # Preserve the complete frame schema, including multidimensional numeric
+    # features such as uint16 depth maps. Video-backed RGB keys are omitted by
+    # get_hf_features_from_features because they are stored outside parquet.
+    hf_features = get_hf_features_from_features(dst_meta.features)
 
     # Track source to destination file mapping for metadata update
     # This is critical for handling datasets that are already results of a merge
@@ -467,10 +469,13 @@ def aggregate_data(src_meta, dst_meta, data_idx, data_files_size_in_mb, chunk_si
             chunk_index=src_chunk_idx, file_index=src_file_idx
         )
         if contains_images:
-            # Use HuggingFace datasets to read source data to preserve image format
+            # Embedded HF Image columns need their extension metadata decoded.
             src_ds = datasets.Dataset.from_parquet(str(src_path))
             df = src_ds.to_pandas()
         else:
+            # Direct parquet reads avoid materializing a duplicate Arrow cache.
+            # The explicit hf_features schema below restores Array2D depth types
+            # when the destination parquet is written.
             df = pd.read_parquet(src_path)
         df = update_data_df(df, src_meta, dst_meta)
 
@@ -566,7 +571,8 @@ def append_or_create_parquet_file(
     """Appends data to an existing parquet file or creates a new one based on size constraints.
 
     Manages file rotation when size limits are exceeded to prevent individual files
-    from becoming too large. Handles both regular parquet files and those containing images.
+    from becoming too large. Handles regular parquet files and Hugging Face extension
+    features such as images and multidimensional arrays.
 
     Args:
         df: DataFrame to write to the parquet file.
@@ -576,8 +582,9 @@ def append_or_create_parquet_file(
         chunk_size: Maximum number of files per chunk before incrementing chunk index.
         default_path: Format string for generating file paths.
         contains_images: Whether the data contains images requiring special handling.
+            Retained for compatibility; passing ``hf_features`` also enables schema-aware I/O.
         aggr_root: Root path for the aggregated dataset.
-        hf_features: Optional HuggingFace Features schema for proper image typing.
+        hf_features: Optional HuggingFace Features schema for preserving extension types.
 
     Returns:
         tuple: (updated_idx, (dst_chunk, dst_file)) where updated_idx is the index dict
@@ -585,10 +592,11 @@ def append_or_create_parquet_file(
     """
     dst_chunk, dst_file = idx["chunk"], idx["file"]
     dst_path = aggr_root / default_path.format(chunk_index=dst_chunk, file_index=dst_file)
+    use_hf_schema = contains_images or hf_features is not None
 
     if not dst_path.exists():
         dst_path.parent.mkdir(parents=True, exist_ok=True)
-        if contains_images:
+        if use_hf_schema:
             to_parquet_with_hf_images(df, dst_path, features=hf_features)
         else:
             df.to_parquet(dst_path)
@@ -606,15 +614,17 @@ def append_or_create_parquet_file(
         target_path = new_path
     else:
         if contains_images:
-            # Use HuggingFace datasets to read existing data to preserve image format
+            # Embedded image columns require Hugging Face decoding.
             existing_ds = datasets.Dataset.from_parquet(str(dst_path))
             existing_df = existing_ds.to_pandas()
         else:
+            # Numeric extension columns can be read directly; hf_features is
+            # applied again by the schema-aware writer below.
             existing_df = pd.read_parquet(dst_path)
         final_df = pd.concat([existing_df, df], ignore_index=True)
         target_path = dst_path
 
-    if contains_images:
+    if use_hf_schema:
         to_parquet_with_hf_images(final_df, target_path, features=hf_features)
     else:
         final_df.to_parquet(target_path)
