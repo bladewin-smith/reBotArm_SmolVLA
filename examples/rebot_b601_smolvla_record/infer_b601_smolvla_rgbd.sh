@@ -18,11 +18,11 @@ fi
 # ==============================
 # Copy one cloud checkpoint's `pretrained_model` directory to the Jetson and
 # point this variable at that directory, not at the parent `checkpoints` folder.
-POLICY_PATH="/home/r/ws/rebot_lerobot/rebot_smolvla_b601_20260815_023709/checkpoints/007000/pretrained_model/"
+POLICY_PATH="/home/r/models/rebot_smolvla_b601_14000/pretrained_model"
 
 # SmolVLA still needs the local SmolVLM2 config, tokenizer, and processor files
 # while constructing the model. Keeping the full local directory is simplest.
-VLM_PATH="/home/r/ws/rebot_lerobot/lerobot/models/SmolVLM2-500M-Video-Instruct/"
+VLM_PATH="/home/r/models/SmolVLM2-500M-Video-Instruct"
 
 # Every run records one local evaluation rollout so that camera streams and
 # actions can be inspected afterwards. Use a new path/repo id for every run.
