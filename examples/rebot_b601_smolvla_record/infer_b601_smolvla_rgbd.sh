@@ -18,7 +18,7 @@ fi
 # ==============================
 # Copy one cloud checkpoint's `pretrained_model` directory to the Jetson and
 # point this variable at that directory, not at the parent `checkpoints` folder.
-POLICY_PATH="/home/r/ws/rebot_lerobot/rebot_smolvla_b601_20260815_023709/checkpoints/014000/pretrained_model/"
+POLICY_PATH="/home/r/ws/rebot_lerobot/rebot_smolvla_b601_20260815_023709/checkpoints/007000/pretrained_model/"
 
 # SmolVLA still needs the local SmolVLM2 config, tokenizer, and processor files
 # while constructing the model. Keeping the full local directory is simplest.

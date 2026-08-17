@@ -15,12 +15,13 @@
 # limitations under the License.
 """Tests for SmolVLA policy processor."""
 
-from unittest.mock import patch
+from unittest.mock import MagicMock, patch
 
 import pytest
 import torch
 
 from lerobot.configs.types import FeatureType, NormalizationMode, PipelineFeatureType, PolicyFeature
+from lerobot.policies.factory import make_pre_post_processors
 from lerobot.policies.smolvla.configuration_smolvla import SmolVLAConfig
 from lerobot.policies.smolvla.processor_smolvla import (
     SmolVLANewLineProcessor,
@@ -119,6 +120,36 @@ def test_make_smolvla_processor_basic():
     assert len(postprocessor.steps) == 2
     assert isinstance(postprocessor.steps[0], UnnormalizerProcessorStep)
     assert isinstance(postprocessor.steps[1], DeviceProcessorStep)
+
+
+def test_pretrained_smolvla_processor_uses_configured_vlm_tokenizer():
+    config = create_default_config()
+    config.vlm_model_name = "/models/SmolVLM2-500M-Video-Instruct"
+    stats = create_default_stats()
+    preprocessor = MagicMock()
+    preprocessor.steps = []
+    postprocessor = MagicMock()
+
+    with patch(
+        "lerobot.policies.factory.PolicyProcessorPipeline.from_pretrained",
+        side_effect=[preprocessor, postprocessor],
+    ) as from_pretrained:
+        make_pre_post_processors(config, pretrained_path="/models/smolvla_base", dataset_stats=stats)
+
+    preprocessor_overrides = from_pretrained.call_args_list[0].kwargs["overrides"]
+    assert preprocessor_overrides["tokenizer_processor"]["tokenizer_name"] == config.vlm_model_name
+    assert preprocessor_overrides["normalizer_processor"]["features"] == {
+        **config.input_features,
+        **config.output_features,
+    }
+    assert preprocessor_overrides["normalizer_processor"]["stats"] is stats
+    assert preprocessor_overrides["normalizer_processor"]["device"] == config.device
+
+    postprocessor_overrides = from_pretrained.call_args_list[1].kwargs["overrides"]
+    assert postprocessor_overrides["unnormalizer_processor"]["features"] == config.output_features
+    assert postprocessor_overrides["unnormalizer_processor"]["stats"] is stats
+    assert postprocessor_overrides["unnormalizer_processor"]["device"] == config.device
+    assert preprocessor.steps[0].__class__ is SmolVLARawDepthFilterProcessor
 
 
 def test_smolvla_raw_depth_filter_keeps_depth_visualization():

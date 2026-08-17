@@ -12,25 +12,42 @@ REPO_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
 # directly after changing the values below.
 
 # Local LeRobot dataset root copied from the robot/Jetson recording machine.
-DATASET_ROOT="/home/r/datasets/rebot_b601_banana_bottle_rgbd"
+DATASET_ROOT="/root/gpufree-data/datasets/rebot_b601_banana_bottle_rgbd_merged"
 
 # Must match the repo id used while recording the local dataset.
-DATASET_REPO_ID="${HF_USER:-local}/rebot_b601_banana_bottle_rgbd"
+DATASET_REPO_ID="local/rebot_b601_banana_bottle_rgbd_merged"
 
 # Base SmolVLA policy or a local checkpoint path.
 POLICY_PATH="lerobot/smolvla_base"
 
-# Training output folder. If empty, a timestamped folder is created under outputs/train.
-OUTPUT_DIR="/home/r/outputs/rebot_b601_smolvla"
+# Optional local SmolVLM backbone directory for an offline cloud machine.
+# Leave empty when Hugging Face Hub access is available.
+VLM_PATH=""
 
-# RTX 4090 24GB starting point. Lower BATCH_SIZE to 16 if CUDA memory is tight.
-BATCH_SIZE=32
-STEPS=80000
-SAVE_FREQ=10000
+# Training output folder. If empty, a timestamped folder is created under outputs/train.
+OUTPUT_DIR="/root/gpufree-data/datasets/outputs/rebot_b601_smolvla"
+
+# RTX 4090 24GB starting point for three 512x512 SmolVLA visual inputs.
+# Lower BATCH_SIZE to 4 if CUDA memory is tight.
+BATCH_SIZE=8
+STEPS=20000
+SAVE_FREQ=5000
 LOG_FREQ=100
-NUM_WORKERS=4
+NUM_WORKERS=8
 DEVICE="cuda"
 USE_AMP=true
+
+# Conservative first-stage fine-tuning. Raw uint16 depth remains archival;
+# wrist, top, and top_depth are the three visual inputs consumed by SmolVLA.
+FREEZE_VISION_ENCODER=true
+TRAIN_EXPERT_ONLY=true
+OPTIMIZER_LR=1e-4
+SCHEDULER_WARMUP_STEPS=1000
+SCHEDULER_DECAY_STEPS=20000
+
+# The model still learns a 50-step action chunk, but executes/replans every
+# 10 actions by default. At 10 FPS this is a one-second execution horizon.
+N_ACTION_STEPS=10
 
 # Offline/local defaults.
 POLICY_PUSH_TO_HUB=false
@@ -52,16 +69,23 @@ Recommended:
 
 Optional command line overrides:
   --dataset-root PATH          Local LeRobot dataset root copied from recording.
-  --repo-id ID                 Dataset repo id used during recording. Default: ${HF_USER:-local}/rebot_b601_banana_bottle_rgbd
+  --repo-id ID                 Dataset repo id. Default: local/rebot_b601_banana_bottle_rgbd_merged
   --policy-path ID_OR_PATH     Base policy or local checkpoint. Default: lerobot/smolvla_base
+  --vlm-path PATH              Optional local SmolVLM2 backbone for offline training.
   --output-dir PATH            Training output directory. Default: outputs/train/rebot_b601_smolvla_YYYYmmdd_HHMMSS
-  --batch-size N               Per-GPU batch size. Default: 32 for RTX 4090 24GB.
-  --steps N                    Training steps. Default: 80000
-  --save-freq N                Checkpoint save frequency. Default: 10000
+  --batch-size N               Per-GPU batch size. Default: 8 for RTX 4090 24GB.
+  --steps N                    Training steps. Default: 20000
+  --save-freq N                Checkpoint save frequency. Default: 5000
   --log-freq N                 Log frequency. Default: 100
-  --num-workers N              Dataloader workers. Default: 4
+  --num-workers N              Dataloader workers. Default: 8
   --device DEVICE              Training device. Default: cuda
   --use-amp true|false         Mixed precision. Default: true
+  --freeze-vision-encoder true|false
+  --train-expert-only true|false
+  --optimizer-lr FLOAT
+  --scheduler-warmup-steps N
+  --scheduler-decay-steps N
+  --n-action-steps N           Actions executed before replanning. Default: 10
   --wandb-enable true|false    Enable Weights & Biases. Default: false
   --policy-push-to-hub true|false
                               Push trained policy to Hub. Default: false
@@ -75,6 +99,7 @@ while [[ $# -gt 0 ]]; do
     --dataset-root) DATASET_ROOT="$2"; shift 2 ;;
     --repo-id) DATASET_REPO_ID="$2"; shift 2 ;;
     --policy-path) POLICY_PATH="$2"; shift 2 ;;
+    --vlm-path) VLM_PATH="$2"; shift 2 ;;
     --output-dir) OUTPUT_DIR="$2"; shift 2 ;;
     --batch-size) BATCH_SIZE="$2"; shift 2 ;;
     --steps) STEPS="$2"; shift 2 ;;
@@ -83,6 +108,12 @@ while [[ $# -gt 0 ]]; do
     --num-workers) NUM_WORKERS="$2"; shift 2 ;;
     --device) DEVICE="$2"; shift 2 ;;
     --use-amp) USE_AMP="$2"; shift 2 ;;
+    --freeze-vision-encoder) FREEZE_VISION_ENCODER="$2"; shift 2 ;;
+    --train-expert-only) TRAIN_EXPERT_ONLY="$2"; shift 2 ;;
+    --optimizer-lr) OPTIMIZER_LR="$2"; shift 2 ;;
+    --scheduler-warmup-steps) SCHEDULER_WARMUP_STEPS="$2"; shift 2 ;;
+    --scheduler-decay-steps) SCHEDULER_DECAY_STEPS="$2"; shift 2 ;;
+    --n-action-steps) N_ACTION_STEPS="$2"; shift 2 ;;
     --wandb-enable) WANDB_ENABLE="$2"; shift 2 ;;
     --policy-push-to-hub) POLICY_PUSH_TO_HUB="$2"; shift 2 ;;
     --job-name) JOB_NAME="$2"; shift 2 ;;
@@ -103,25 +134,55 @@ if [[ ! -d "${DATASET_ROOT}" ]]; then
   exit 2
 fi
 
+if [[ -n "${VLM_PATH}" && ! -d "${VLM_PATH}" ]]; then
+  echo "Error: local VLM path does not exist: ${VLM_PATH}" >&2
+  exit 2
+fi
+
+if [[ -n "${VLM_PATH}" ]]; then
+  EXTRA_ARGS+=("--policy.vlm_model_name=${VLM_PATH}")
+fi
+
 if [[ -z "${OUTPUT_DIR}" ]]; then
   OUTPUT_DIR="${REPO_ROOT}/outputs/train/${JOB_NAME}_$(date +%Y%m%d_%H%M%S)"
+fi
+
+# Always import LeRobot from this checkout. This keeps a copied cloud checkout
+# from accidentally using a stale editable install that points to another path.
+export PYTHONPATH="${REPO_ROOT}/src${PYTHONPATH:+:${PYTHONPATH}}"
+PYTHON_BIN="${PYTHON_BIN:-python}"
+
+if [[ ! -f "${REPO_ROOT}/src/lerobot/scripts/lerobot_train.py" ]]; then
+  echo "Error: could not find the LeRobot training module under ${REPO_ROOT}/src." >&2
+  exit 2
 fi
 
 echo "Training SmolVLA from local B601 dataset"
 echo "  dataset root : ${DATASET_ROOT}"
 echo "  repo id      : ${DATASET_REPO_ID}"
 echo "  policy       : ${POLICY_PATH}"
+echo "  VLM          : ${VLM_PATH:-Hugging Face config/default}"
 echo "  output dir   : ${OUTPUT_DIR}"
 echo "  batch size   : ${BATCH_SIZE}"
 echo "  steps        : ${STEPS}"
+echo "  vision frozen: ${FREEZE_VISION_ENCODER}"
+echo "  expert only  : ${TRAIN_EXPERT_ONLY}"
+echo "  action steps : ${N_ACTION_STEPS}"
+echo "  python        : $(command -v "${PYTHON_BIN}" || echo "${PYTHON_BIN}")"
 echo
 
 cd "${REPO_ROOT}"
 
-lerobot-train \
+"${PYTHON_BIN}" -m lerobot.scripts.lerobot_train \
   --policy.path="${POLICY_PATH}" \
   --policy.device="${DEVICE}" \
   --policy.use_amp="${USE_AMP}" \
+  --policy.freeze_vision_encoder="${FREEZE_VISION_ENCODER}" \
+  --policy.train_expert_only="${TRAIN_EXPERT_ONLY}" \
+  --policy.optimizer_lr="${OPTIMIZER_LR}" \
+  --policy.scheduler_warmup_steps="${SCHEDULER_WARMUP_STEPS}" \
+  --policy.scheduler_decay_steps="${SCHEDULER_DECAY_STEPS}" \
+  --policy.n_action_steps="${N_ACTION_STEPS}" \
   --policy.push_to_hub="${POLICY_PUSH_TO_HUB}" \
   --dataset.repo_id="${DATASET_REPO_ID}" \
   --dataset.root="${DATASET_ROOT}" \
