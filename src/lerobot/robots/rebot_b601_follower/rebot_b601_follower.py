@@ -63,12 +63,14 @@ class RebotB601Follower(Robot):
         self.cameras = make_cameras_from_configs(config.cameras)
         self._last_observation_states: dict[str, dict[str, float]] = {}
         self._last_safety_hold_log_s = 0.0
+        self._last_relative_clamp_log_s = 0.0
         self._safety_hold_active = False
         self._safety_fault_active = False
         self._episode_start_pos: dict[str, float] | None = None
         self._runtime_error_hold_done = False
         self._gripper_contact_hold_pos: float | None = None
         self._gripper_closing_started_s: float | None = None
+        self._gripper_closing_start_pos: float | None = None
         self._gripper_contact_samples = 0
         self._validate_gripper_control_config()
         self._validate_safety_config()
@@ -80,6 +82,7 @@ class RebotB601Follower(Robot):
         nonnegative_values = {
             "gripper_close_kd": self.config.gripper_close_kd,
             "gripper_contact_min_closing_error_deg": self.config.gripper_contact_min_closing_error_deg,
+            "gripper_contact_min_travel_deg": self.config.gripper_contact_min_travel_deg,
             "gripper_contact_max_velocity_deg_s": self.config.gripper_contact_max_velocity_deg_s,
             "gripper_contact_min_torque": self.config.gripper_contact_min_torque,
             "gripper_contact_detection_delay_s": self.config.gripper_contact_detection_delay_s,
@@ -119,6 +122,7 @@ class RebotB601Follower(Robot):
     def _reset_gripper_contact_state(self) -> None:
         self._gripper_contact_hold_pos = None
         self._gripper_closing_started_s = None
+        self._gripper_closing_start_pos = None
         self._gripper_contact_samples = 0
 
     def _validate_safety_config(self) -> None:
@@ -133,6 +137,47 @@ class RebotB601Follower(Robot):
         }
         if invalid:
             raise ValueError(f"Follower coupled-pose safety thresholds must be finite: {invalid}")
+        if (
+            not math.isfinite(float(self.config.startup_position_tolerance_deg))
+            or self.config.startup_position_tolerance_deg < 0
+        ):
+            raise ValueError("startup_position_tolerance_deg must be finite and nonnegative.")
+        if self.config.safety_hold_clamp_joint_count < 1:
+            raise ValueError("safety_hold_clamp_joint_count must be at least 1.")
+        optional_delta_thresholds = {
+            "safety_hold_multi_joint_delta_deg": self.config.safety_hold_multi_joint_delta_deg,
+            "safety_hold_single_joint_delta_deg": self.config.safety_hold_single_joint_delta_deg,
+        }
+        invalid_delta_thresholds = {
+            name: value
+            for name, value in optional_delta_thresholds.items()
+            if value is not None and (not math.isfinite(float(value)) or float(value) <= 0)
+        }
+        if invalid_delta_thresholds:
+            raise ValueError(
+                "Follower absolute safety-hold delta thresholds must be positive and finite: "
+                f"{invalid_delta_thresholds}"
+            )
+
+    def _startup_position_violations(
+        self, states: dict[str, dict[str, float]]
+    ) -> dict[str, dict[str, float]]:
+        tolerance = float(self.config.startup_position_tolerance_deg)
+        violations: dict[str, dict[str, float]] = {}
+        for motor_name, state in states.items():
+            limits = self._joint_limits_for(motor_name)
+            if limits is None or "position" not in state:
+                continue
+            position = float(state["position"])
+            min_limit, max_limit = limits
+            if position < min_limit - tolerance or position > max_limit + tolerance:
+                violations[motor_name] = {
+                    "position": position,
+                    "min": min_limit,
+                    "max": max_limit,
+                    "tolerance": tolerance,
+                }
+        return violations
 
     @property
     def _state_ft(self) -> dict[str, type]:
@@ -181,6 +226,14 @@ class RebotB601Follower(Robot):
         self.configure()
         states = self.bus.sync_read_all_states()
         self._check_motorbridge_health(require_enabled=False)
+        if self.config.startup_position_guard_enabled:
+            violations = self._startup_position_violations(states)
+            if violations:
+                raise RuntimeError(
+                    "Refusing to enable follower torque because startup motor positions are outside the "
+                    f"configured limits: {violations}. Move or re-zero the affected motor into the same "
+                    "coordinate range used for training, then retry. No torque command was sent."
+                )
         initial_goal = {
             motor: float(state.get("position", 0.0))
             for motor, state in states.items()
@@ -451,12 +504,22 @@ class RebotB601Follower(Robot):
 
         closing_error = close_direction * (requested_target - current_pos)
         if closing_error <= float(self.config.gripper_contact_min_closing_error_deg):
-            self._gripper_closing_started_s = None
-            self._gripper_contact_samples = 0
+            self._reset_gripper_contact_state()
             return None
 
         if self._gripper_closing_started_s is None:
             self._gripper_closing_started_s = now_s
+            self._gripper_closing_start_pos = current_pos
+
+        closing_start_pos = (
+            current_pos
+            if self._gripper_closing_start_pos is None
+            else self._gripper_closing_start_pos
+        )
+        closing_travel = close_direction * (current_pos - closing_start_pos)
+        traveled_before_contact = closing_travel >= float(
+            self.config.gripper_contact_min_travel_deg
+        )
 
         detection_ready = (
             now_s - self._gripper_closing_started_s
@@ -464,6 +527,7 @@ class RebotB601Follower(Robot):
         )
         contact_sample = (
             detection_ready
+            and traveled_before_contact
             and abs(velocity) <= float(self.config.gripper_contact_max_velocity_deg_s)
             and abs(torque) >= float(self.config.gripper_contact_min_torque)
         )
@@ -474,12 +538,13 @@ class RebotB601Follower(Robot):
             logger.info(
                 "%s follower gripper contact detected at %.2f deg "
                 "(requested=%.2f, velocity=%.2f deg/s, torque=%.2f); "
-                "switching to bounded hold torque %.2f Nm.",
+                "closing travel=%.2f deg; switching to bounded hold torque %.2f Nm.",
                 self.name,
                 current_pos,
                 requested_target,
                 velocity,
                 torque,
+                closing_travel,
                 self.config.gripper_contact_hold_torque,
             )
             return (
@@ -680,13 +745,27 @@ class RebotB601Follower(Robot):
 
         monitored_joints = set(self.config.safety_hold_joints)
         large_clamps = 0
-        for motor_name, (target_pos, safe_target, _current_pos, max_relative_target) in clamp_info.items():
+        for motor_name, (target_pos, safe_target, current_pos, max_relative_target) in clamp_info.items():
             if motor_name not in monitored_joints:
                 continue
+            requested_delta = abs(target_pos - current_pos)
             excess = abs(target_pos - safe_target)
-            if excess >= max_relative_target * self.config.safety_hold_single_joint_ratio:
+            single_joint_threshold = self.config.safety_hold_single_joint_delta_deg
+            single_joint_triggered = (
+                requested_delta >= float(single_joint_threshold)
+                if single_joint_threshold is not None
+                else excess >= max_relative_target * self.config.safety_hold_single_joint_ratio
+            )
+            if single_joint_triggered:
                 return True
-            if excess >= max_relative_target * self.config.safety_hold_clamp_ratio:
+
+            multi_joint_threshold = self.config.safety_hold_multi_joint_delta_deg
+            multi_joint_triggered = (
+                requested_delta >= float(multi_joint_threshold)
+                if multi_joint_threshold is not None
+                else excess >= max_relative_target * self.config.safety_hold_clamp_ratio
+            )
+            if multi_joint_triggered:
                 large_clamps += 1
 
         return large_clamps >= self.config.safety_hold_clamp_joint_count
@@ -702,6 +781,7 @@ class RebotB601Follower(Robot):
                 "requested": target,
                 "limited": limited,
                 "present": present,
+                "requested_delta": abs(target - present),
                 "max_relative_target": max_relative,
             }
             for motor, (target, limited, present, max_relative) in clamp_info.items()
@@ -709,6 +789,34 @@ class RebotB601Follower(Robot):
         }
         logger.error(
             "%s safety hold active: follower target is too far from current pose; holding present pose. %s",
+            self.name,
+            details,
+        )
+
+    def _log_relative_clamp(self, clamp_info: dict[str, tuple[float, float, float, float]]) -> None:
+        now_s = time.monotonic()
+        if now_s - self._last_relative_clamp_log_s < self.config.safety_hold_log_interval_s:
+            return
+
+        monitored_joints = set(self.config.safety_hold_joints)
+        details = {
+            motor: {
+                "requested": target,
+                "limited": limited,
+                "present": present,
+                "requested_delta": abs(target - present),
+                "max_relative_target": max_relative,
+            }
+            for motor, (target, limited, present, max_relative) in clamp_info.items()
+            if motor in monitored_joints
+        }
+        if not details:
+            return
+
+        self._last_relative_clamp_log_s = now_s
+        logger.warning(
+            "%s target was slew-limited but remains below the safety-hold threshold; "
+            "continuing with bounded commands. %s",
             self.name,
             details,
         )
@@ -748,7 +856,10 @@ class RebotB601Follower(Robot):
             motor: float(present_pos[motor]) if motor in hold_joints else target_pos
             for motor, target_pos in goal_pos.items()
         }
-        return self._clamp_to_joint_limits(guarded_goal), True
+        # The requested targets were already hard-clamped before this guard.
+        # Keep the measured position verbatim so an already out-of-range motor
+        # is never commanded to jump straight to the hard-limit boundary.
+        return guarded_goal, True
 
     def send_action(self, action: RobotAction) -> RobotAction:
         if not self.is_connected:
@@ -757,7 +868,7 @@ class RebotB601Follower(Robot):
             self.bus.check_mit_command_stream(max_gap_s=self.config.command_stream_max_gap_s)
 
         goal_pos = {key.removesuffix(".pos"): val for key, val in action.items() if key.endswith(".pos")}
-        if "gripper" in goal_pos:
+        if "gripper" in goal_pos and self.config.gripper_map_leader_to_follower:
             goal_pos["gripper"] = self._map_gripper_goal(float(goal_pos["gripper"]))
 
         goal_pos = self._clamp_to_joint_limits(goal_pos)
@@ -782,15 +893,14 @@ class RebotB601Follower(Robot):
                     motor: float(present_pos[motor]) if motor in hold_joints else target_pos
                     for motor, target_pos in goal_pos.items()
                 }
-                goal_pos = self._clamp_to_joint_limits(goal_pos)
             else:
+                self._log_relative_clamp(clamp_info)
                 if self._safety_hold_active:
                     logger.info(
                         "%s safety hold cleared; follower target is back within safe range.",
                         self.name,
                     )
                 self._safety_hold_active = False
-                goal_pos = self._clamp_to_joint_limits(goal_pos)
         else:
             self._safety_hold_active = False
 

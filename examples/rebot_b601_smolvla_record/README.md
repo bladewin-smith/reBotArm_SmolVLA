@@ -1232,8 +1232,63 @@ Before running it, edit the `User settings` block at the top of
 `train_smolvla_local.sh`, especially `DATASET_ROOT`, `DATASET_REPO_ID`, and
 `OUTPUT_DIR`.
 
-For RTX 4090 24GB, start with `--batch-size 32 --use-amp true`. If CUDA memory
-is tight, lower `--batch-size` to 16.
+After copying this repository to a cloud machine, reinstall the current
+checkout in the active training environment. An editable install records an
+absolute source path, so copying an environment or repository can leave the
+`lerobot-train` executable pointing to a directory that does not exist on the
+cloud machine:
+
+```shell
+cd /path/to/current/lerobot
+python -m pip install -e ".[smolvla]"
+python -c 'import lerobot; print(lerobot.__file__)'
+```
+
+The printed module path must be inside the current checkout. If
+`pip list` shows LeRobot at an older directory, reinstalling with the command
+above replaces that stale editable path. The provided training script also
+prepends the current checkout's `src` directory to `PYTHONPATH` and starts the
+trainer with `python -m`, so it cannot accidentally invoke an old
+`lerobot-train` entry point.
+
+If the cloud container cannot reach `huggingface.co`, prepare both model
+repositories on a machine with Hub access and upload the resulting directories:
+
+```shell
+hf download lerobot/smolvla_base \
+  --local-dir models/smolvla_base
+
+hf download HuggingFaceTB/SmolVLM2-500M-Video-Instruct \
+  --local-dir models/SmolVLM2-500M-Video-Instruct \
+  --exclude "onnx/*"
+```
+
+The second exclusion avoids downloading deployment formats that are not used
+by PyTorch training. After uploading both folders to the cloud data disk, pass
+their absolute paths and enable offline mode:
+
+```shell
+export HF_HUB_OFFLINE=1
+bash examples/rebot_b601_smolvla_record/train_smolvla_local.sh \
+  --policy-path /path/to/models/smolvla_base \
+  --vlm-path /path/to/models/SmolVLM2-500M-Video-Instruct
+```
+
+Do not upload only `smolvla_base`: its configuration constructs the SmolVLM2
+backbone and processor before loading the integrated SmolVLA weights.
+The local `--vlm-path` is also propagated to the pretrained tokenizer step;
+otherwise the processor JSON stored in `smolvla_base` would retain the original
+Hub repository ID and attempt an online tokenizer lookup. The factory also
+replaces the base processor's generic six-dimensional normalization schema and
+statistics with the current B601 dataset's 21-dimensional state and
+seven-dimensional action statistics.
+
+For this 43-episode, 18,392-frame dataset on an RTX 4090 24GB, start with
+`--batch-size 8 --steps 20000 --use-amp true`. Three visual inputs are resized
+to 512x512 by SmolVLA, so batch 32 is too aggressive as a default. If CUDA
+memory is tight, lower the batch size to 4. Keep the vision encoder frozen for
+the first baseline and save checkpoints every 5,000 steps. With batch 8, 20,000
+updates process about 8.7 dataset-equivalent epochs.
 
 Equivalent expanded command:
 
@@ -1242,8 +1297,14 @@ lerobot-train \
   --policy.path=lerobot/smolvla_base \
   --dataset.repo_id="${HF_USER}/rebot_b601_banana_bottle_rgbd" \
   --dataset.root=/home/r/datasets/rebot_b601_banana_bottle_rgbd \
-  --batch_size=32 \
-  --steps=80000
+  --batch_size=8 \
+  --steps=20000 \
+  --save_freq=5000 \
+  --policy.use_amp=true \
+  --policy.freeze_vision_encoder=true \
+  --policy.train_expert_only=true \
+  --policy.scheduler_decay_steps=20000 \
+  --policy.n_action_steps=10
 ```
 
 The raw depth tensor is stored in the dataset but is not consumed by the stock
@@ -1273,6 +1334,152 @@ The startup log must bind `observation.state` with shape `(21,)`, the visual
 keys `observation.images.wrist`, `observation.images.top`, and
 `observation.images.top_depth`, plus `action` with shape `(7,)`. Stop if the
 base checkpoint's generic `camera1`/`camera2`/`camera3` keys remain.
+
+## Deploy And Evaluate SmolVLA On Jetson
+
+Copy only a checkpoint's `pretrained_model` directory to the Jetson for
+inference. The optimizer and training-state files outside this directory are
+not needed. Also keep a local SmolVLM2 directory because model construction
+still reads its config, tokenizer, and processor files:
+
+```text
+/home/r/models/rebot_smolvla_b601_14000/pretrained_model
+/home/r/models/SmolVLM2-500M-Video-Instruct
+```
+
+Edit the `User settings` block in
+`infer_b601_smolvla_rgbd.sh`, then start one 30-second evaluation rollout:
+
+```shell
+bash examples/rebot_b601_smolvla_record/infer_b601_smolvla_rgbd.sh
+```
+
+The script intentionally uses the same observation distribution as training:
+
+```text
+observation.state                    21 float values
+observation.images.wrist            Gemini 305 RGB, 640x480 at 10 FPS
+observation.images.top              Gemini 335L RGB, 640x480 at 10 FPS
+observation.images.top_depth        filtered depth visualization
+observation.depths.top               filtered uint16 depth, archived only
+action                               7 follower positions
+```
+
+The raw depth tensor is recorded for diagnosis but removed by the SmolVLA
+preprocessor. `top_depth`, which is generated from EnhancedDepthFilter output
+with the same 250-1800 mm visualization range used during collection, is the
+third model image.
+
+The recorded B601 action is the target that was actually sent to the follower,
+including the follower gripper coordinate. Therefore policy inference sets
+`robot.gripper_map_leader_to_follower=false`. Leaving leader-to-follower
+gripper mapping enabled would transform the predicted gripper position a
+second time and produce incorrect opening and closing commands. Teleoperation
+and recording retain the default value `true`.
+
+For the first autonomous test, support the arm, keep the E-stop ready, use an
+initial arm pose represented in the demonstrations, and leave the script's
+`max_relative_target=5` and `gripper_max_relative_target=15` limits in place.
+The script disables automatic recovery during this first test. A safety clamp
+therefore ends the rollout instead of starting an unexpected return motion.
+Only move the limits toward the collection values `12` and `30` after several
+short, controlled rollouts show that the predicted action is correct.
+
+Policy inference separates the physical slew limit from model-output fault
+detection. The follower still moves by at most `5` degrees per inference cycle,
+but a bounded command is allowed to continue unless at least two arm joints
+request a delta of `20` degrees or one arm joint requests a delta of `30`
+degrees. This accommodates moderate discontinuities between SmolVLA action
+chunks without disabling the safety guard for clearly outlying predictions.
+The message `target was slew-limited ... continuing with bounded
+commands` is informational; `safety hold active` is the abort condition. The
+thresholds can be tested independently without changing the slew limit:
+
+```shell
+bash examples/rebot_b601_smolvla_record/infer_b601_smolvla_rgbd.sh \
+  --safety-hold-multi-joint-delta 20 \
+  --safety-hold-single-joint-delta 30
+```
+
+Do not disable the hold guard to make a poor checkpoint move. Repeated clamping
+that does not converge, targets in the wrong direction, or repeated holds from
+a demonstrated start pose indicate a policy/data problem rather than a need
+for higher motor gains.
+
+The script records one evaluation episode under `/home/r/eval_rollouts` by
+default. This adds some image-writing and final H.264 encoding load, but leaves
+an exact observation/action trace for diagnosis. Keep display disabled on the
+Jetson unless Rerun is specifically needed.
+
+Evaluate the `7000`, `10500`, and `14000` checkpoints under the same object
+placements and initial robot pose. Change only `--policy-path`, for example:
+
+```shell
+bash examples/rebot_b601_smolvla_record/infer_b601_smolvla_rgbd.sh \
+  --policy-path /home/r/models/rebot_smolvla_b601_10500/pretrained_model
+```
+
+Use a fixed held-out matrix of at least 20 random placements and record full
+task success, banana placement success, bottle placement success, safety
+aborts, and completion time. Training loss alone cannot choose the best
+checkpoint. If `10500` succeeds more often than `14000`, use `10500`; the
+lower final training loss then reflects fitting the training demonstrations,
+not better real-world generalization.
+
+At 10 FPS, `n_action_steps=10` executes one second of a predicted chunk before
+replanning. If perception is correct but the arm reacts too late to small
+errors, compare with more frequent replanning:
+
+```shell
+bash examples/rebot_b601_smolvla_record/infer_b601_smolvla_rgbd.sh \
+  --n-action-steps 5
+```
+
+Confirm that the Jetson can maintain the requested loop rate before adopting
+this setting. A slower loop cannot be repaired by raising motor gains.
+
+## Fine-Tune After Real-World Evaluation
+
+With 43 demonstrations, a smooth training curve is a useful baseline but is
+not strong evidence of random-placement generalization. When rollout failures
+cluster around particular positions, orientations, occlusions, grasp sides,
+or recovery states, collect additional successful demonstrations concentrated
+on those cases. Keep camera mounts, calibration, task text, depth filter,
+confidence threshold, depth visualization range, FPS, and feature names
+unchanged. Merge the original and new data so fine-tuning does not forget the
+already successful cases.
+
+For a first corrective pass, add roughly 40-80 diverse demonstrations and
+fine-tune from the best real-world checkpoint with a lower learning rate:
+
+```shell
+bash examples/rebot_b601_smolvla_record/train_smolvla_local.sh \
+  --dataset-root /root/gpufree-data/datasets/rebot_b601_banana_bottle_rgbd_merged_v2 \
+  --repo-id local/rebot_b601_banana_bottle_rgbd_merged_v2 \
+  --policy-path /root/gpufree-data/models/rebot_smolvla_best/pretrained_model \
+  --vlm-path /root/gpufree-data/models/SmolVLM2-500M-Video-Instruct \
+  --output-dir /root/gpufree-data/outputs/rebot_smolvla_b601_finetune_v2 \
+  --batch-size 12 \
+  --steps 4000 \
+  --save-freq 1000 \
+  --optimizer-lr 2e-5 \
+  --scheduler-warmup-steps 200 \
+  --scheduler-decay-steps 4000 \
+  --use-amp true
+```
+
+Keep the vision encoder frozen and train the expert only for this pass. If the
+robot reaches objects but misses grasps, add demonstrations beginning near the
+failed approach and grasp states. If it ignores objects in parts of the table,
+balance the placement grid instead of repeating easy center-table episodes. If
+the gripper alone is wrong, verify the deployment mapping flag and follower
+calibration before collecting or training more data.
+
+Do not enable the stock color augmentation pipeline unchanged for this RGB-D
+dataset: applying hue or saturation jitter to `top_depth` changes its encoded
+metric meaning. Modality-aware augmentation should apply matched geometry to
+all views, RGB photometric changes only to RGB streams, and no color jitter to
+the depth visualization.
 
 ## LingBot EnhancedDepthFilter Notes
 

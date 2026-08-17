@@ -58,10 +58,17 @@ class RebotB601FollowerConfigBase:
     motor_feedback_max_consecutive_misses: int = 3
     runtime_error_hold_s: float = 15.0
     max_relative_target: float | dict[str, float] | None = 15.0
+    startup_position_guard_enabled: bool = True
+    startup_position_tolerance_deg: float = 5.0
     safety_hold_on_relative_clamp: bool = True
     safety_hold_clamp_joint_count: int = 2
     safety_hold_clamp_ratio: float = 1.2
     safety_hold_single_joint_ratio: float = 3.0
+    # Optional absolute requested-target thresholds for policy inference. These
+    # are independent of max_relative_target, which remains the motion slew
+    # limit. None preserves the ratio-based teleoperation behavior above.
+    safety_hold_multi_joint_delta_deg: float | None = None
+    safety_hold_single_joint_delta_deg: float | None = None
     safety_hold_log_interval_s: float = 1.0
     safety_hold_position_kp_scale: float = 0.65
     safety_hold_joints: list[str] = field(
@@ -88,6 +95,10 @@ class RebotB601FollowerConfigBase:
     safety_leader_start_timeout_s: float = 45.0
     gripper_action_scale: float = 1.0
     gripper_action_offset: float = 0.0
+    # Teleoperation actions use leader-gripper coordinates and need endpoint
+    # mapping. Policy actions recorded by this robot are already follower
+    # coordinates, so deployment must set this to false.
+    gripper_map_leader_to_follower: bool = True
     gripper_leader_close_pos: float | None = 5.0
     gripper_leader_open_pos: float | None = -310.0
     gripper_follower_close_pos: float | None = 10.0
@@ -105,6 +116,9 @@ class RebotB601FollowerConfigBase:
     gripper_close_torque: float = 1.0
     gripper_close_kd: float = 0.5
     gripper_contact_min_closing_error_deg: float = 8.0
+    # Seeed's reference driver requires about 0.3 rad of closing travel before
+    # a low-velocity sample can be classified as contact/stall.
+    gripper_contact_min_travel_deg: float = 17.0
     gripper_contact_max_velocity_deg_s: float = 3.0
     gripper_contact_min_torque: float = 0.0
     gripper_contact_detection_delay_s: float = 0.25

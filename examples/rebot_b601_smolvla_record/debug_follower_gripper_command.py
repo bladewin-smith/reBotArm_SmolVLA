@@ -23,12 +23,18 @@ def main() -> None:
     parser.add_argument("--max-pos", type=float, default=10.0)
     parser.add_argument("--max-relative-target", type=float, default=30.0)
     parser.add_argument(
+        "--allow-out-of-range-start",
+        action="store_true",
+        help="Allow a guarded, relative-limited recovery command when feedback starts outside min/max.",
+    )
+    parser.add_argument(
         "--control-mode",
         choices=("position", "torque_limited_close"),
         default="torque_limited_close",
     )
     parser.add_argument("--max-torque", type=float, default=0.8)
     parser.add_argument("--close-torque", type=float, default=0.5)
+    parser.add_argument("--contact-min-travel-deg", type=float, default=17.0)
     parser.add_argument("--hold-kp", type=float, default=2.0)
     parser.add_argument("--hold-kd", type=float, default=0.5)
     parser.add_argument("--hold-torque", type=float, default=0.12)
@@ -52,10 +58,12 @@ def main() -> None:
             gripper_control_mode=args.control_mode,
             gripper_max_torque=args.max_torque,
             gripper_close_torque=args.close_torque,
+            gripper_contact_min_travel_deg=args.contact_min_travel_deg,
             gripper_contact_hold_kp=args.hold_kp,
             gripper_contact_hold_kd=args.hold_kd,
             gripper_contact_hold_torque=args.hold_torque,
             max_relative_target=args.max_relative_target,
+            startup_position_guard_enabled=not args.allow_out_of_range_start,
         )
     )
 

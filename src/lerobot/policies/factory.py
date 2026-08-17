@@ -248,6 +248,41 @@ def make_pre_post_processors(
             from lerobot.policies.smolvla.processor_smolvla import SmolVLARawDepthFilterProcessor
 
             smolvla_raw_depth_filter_cls = SmolVLARawDepthFilterProcessor
+            preprocessor_overrides = dict(kwargs.get("preprocessor_overrides") or {})
+            tokenizer_overrides = dict(preprocessor_overrides.get("tokenizer_processor", {}))
+            tokenizer_overrides.setdefault("tokenizer_name", policy_cfg.vlm_model_name)
+            preprocessor_overrides["tokenizer_processor"] = tokenizer_overrides
+            logging.info(
+                "Using SmolVLA tokenizer from %s instead of any path saved in the checkpoint processor.",
+                tokenizer_overrides["tokenizer_name"],
+            )
+
+            policy_features = {**policy_cfg.input_features, **policy_cfg.output_features}
+            normalizer_overrides = dict(preprocessor_overrides.get("normalizer_processor", {}))
+            normalizer_overrides.setdefault("features", policy_features)
+            normalizer_overrides.setdefault("norm_map", policy_cfg.normalization_mapping)
+            if policy_cfg.device is not None:
+                normalizer_overrides.setdefault("device", policy_cfg.device)
+            if kwargs.get("dataset_stats"):
+                normalizer_overrides.setdefault("stats", kwargs["dataset_stats"])
+            preprocessor_overrides["normalizer_processor"] = normalizer_overrides
+
+            device_overrides = dict(preprocessor_overrides.get("device_processor", {}))
+            if policy_cfg.device is not None:
+                device_overrides.setdefault("device", policy_cfg.device)
+            preprocessor_overrides["device_processor"] = device_overrides
+            kwargs["preprocessor_overrides"] = preprocessor_overrides
+
+            postprocessor_overrides = dict(kwargs.get("postprocessor_overrides") or {})
+            unnormalizer_overrides = dict(postprocessor_overrides.get("unnormalizer_processor", {}))
+            unnormalizer_overrides.setdefault("features", policy_cfg.output_features)
+            unnormalizer_overrides.setdefault("norm_map", policy_cfg.normalization_mapping)
+            if policy_cfg.device is not None:
+                unnormalizer_overrides.setdefault("device", policy_cfg.device)
+            if kwargs.get("dataset_stats"):
+                unnormalizer_overrides.setdefault("stats", kwargs["dataset_stats"])
+            postprocessor_overrides["unnormalizer_processor"] = unnormalizer_overrides
+            kwargs["postprocessor_overrides"] = postprocessor_overrides
 
         # TODO(Steven): Temporary patch, implement correctly the processors for Gr00t
         if isinstance(policy_cfg, GrootConfig):
